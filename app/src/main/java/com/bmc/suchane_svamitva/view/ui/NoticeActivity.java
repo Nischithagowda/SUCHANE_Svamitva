@@ -28,4 +28,10 @@ public class NoticeActivity extends AppCompatActivity {
         NoticeActivityViewModel viewModel = new NoticeActivityViewModel(noticeActivityCallback);
         binding.setViewModel(viewModel);
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

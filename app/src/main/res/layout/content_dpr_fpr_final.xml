@@ -3,7 +3,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.bmc.suchane_svamitva.view_model.NoticeActivityViewModel" />
+            type="com.bmc.suchane_svamitva.view_model.DPR_FPR_FinalActivityViewModel" />
         <variable
             name="link"
             type="android.text.method.LinkMovementMethod" />
@@ -31,6 +31,76 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/owner_details"
+                    android:textColor="@color/white"
+                    style="@style/text_view_header"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="10dp">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="@string/owner_name"
+                        style="@style/text_view" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="0.1"
+                        android:layout_height="match_parent"
+                        android:text="@string/colon"
+                        android:textStyle="bold"
+                        style="@style/text_view" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="@{viewModel.ownerName}"
+                        style="@style/text_view" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="10dp">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="@string/mobile_number"
+                        style="@style/text_view" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="0.1"
+                        android:layout_height="match_parent"
+                        android:text="@string/colon"
+                        android:textStyle="bold"
+                        style="@style/text_view" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="@{viewModel.mobileNumber}"
+                        style="@style/text_view" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/service_amp_photos_you_must_be_near_prperty_land_to_click_photo"
+                    android:textColor="@color/white"
+                    style="@style/text_view_header"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -88,21 +158,24 @@
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/click_photo_of_serving_of_notice"
+                                android:text="@string/click_photo_of_serving_of_dpr_fpr"
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="14sp"
                                 android:layout_marginStart="5dp"/>
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/enter_postal_address"
+                    android:text="@string/postal_address"
                     android:textColor="@color/white"
                     style="@style/text_view_header"/>
-                <include layout="@layout/content_owner_address_notice"
+
+                <include layout="@layout/content_owner_address"
                     app:viewModel="@{viewModel}"/>
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

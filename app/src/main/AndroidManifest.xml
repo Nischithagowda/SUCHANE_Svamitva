@@ -40,7 +40,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".view.ui.NoticeActivity"
+            android:name=".view.ui.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,6 +49,13 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".view.ui.SignIn"/>
+        <activity android:name=".view.ui.MainActivity"/>
+        <activity android:name=".view.ui.OTPVerify"/>
+        <activity android:name=".view.ui.SelectActivity"/>
+        <activity android:name=".view.ui.NoticeActivity"/>
+        <activity android:name=".view.ui.DPR_FPR_LaunchActivity"/>
+        <activity android:name=".view.ui.DPR_FPR_FinalActivity"/>
         <activity android:name=".view.ui.NoticeMapsFragment"
             android:configChanges="screenSize|orientation" />
     </application>

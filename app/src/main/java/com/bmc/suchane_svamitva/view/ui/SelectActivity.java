@@ -38,4 +38,10 @@ public class SelectActivity extends AppCompatActivity {
         SelectActivityViewModel viewModel = new SelectActivityViewModel(selectActivityInterface);
         binding.setViewModel(viewModel);
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

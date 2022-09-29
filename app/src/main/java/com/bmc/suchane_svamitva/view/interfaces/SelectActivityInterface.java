@@ -5,4 +5,7 @@ package com.bmc.suchane_svamitva.view.interfaces;
 //
 
 public interface SelectActivityInterface {
+    void onNavigateToNotice();
+    void onNavigateToDPR();
+    void onNavigateToFPR();
 }

@@ -8,4 +8,5 @@ public interface NoticeMapsInterface {
     void loadMap(NoticeMapsViewModel viewModel);
     void loadAddress(NoticeMapsViewModel viewModel);
     void onConfirmLocation(NoticeMapsViewModel viewModel);
+    void onNavigateToNotice();
 }

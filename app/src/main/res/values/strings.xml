@@ -51,6 +51,24 @@
     <string name="enter_above_notice_number_and_address_code_in_notice_you_are_serving">(Enter above Notice number and Address code in Notice you are serving)</string>
     <string name="click_full_property_land_photo">Click full Property/\nLand Photo</string>
     <string name="click_photo_of_serving_of_notice">Click photo of Serving \nof Notice</string>
+    <string name="click_photo_of_serving_of_dpr_fpr">Click photo of Serving \DPR/FPR</string>
     <string name="star">*</string>
     <string name="enter_postal_address">Enter Postal Address</string>
+    <string name="door_no">Door No</string>
+    <string name="building">Building</string>
+    <string name="street_or_area">Street / Area</string>
+    <string name="landmark">Landmark</string>
+    <string name="save">Save</string>
+    <string name="save_amp_next"><![CDATA[Save & Next]]></string>
+    <string name="home">Home</string>
+    <string name="sl_no">Sl.No.</string>
+    <string name="chalta_no">Chalta No.</string>
+    <string name="municipal_gpfd">Municipal/GPFD</string>
+    <string name="owner_name">Owner name</string>
+    <string name="action">Action</string>
+    <string name="serve">Serve</string>
+    <string name="postal_address">Postal Address</string>
+    <string name="service_amp_photos_you_must_be_near_prperty_land_to_click_photo"><![CDATA[Service & Photos \n(You must be near prperty / Land to click Photo)]]></string>
+    <string name="owner_details">Owner Details</string>
+    <string name="mobile_number">Mobile Number</string>
 </resources>

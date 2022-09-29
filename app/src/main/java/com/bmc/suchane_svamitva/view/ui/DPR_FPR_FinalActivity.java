@@ -1,36 +1,35 @@
 package com.bmc.suchane_svamitva.view.ui;
 
+import android.os.Bundle;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
-import android.os.Bundle;
-
 import com.bmc.suchane_svamitva.R;
+import com.bmc.suchane_svamitva.databinding.ActivityDprFprFinalBinding;
 import com.bmc.suchane_svamitva.databinding.ActivityMainBinding;
-import com.bmc.suchane_svamitva.databinding.ActivitySignInBinding;
+import com.bmc.suchane_svamitva.view.callbacks.DPR_FPR_FinalActivityCallback;
 import com.bmc.suchane_svamitva.view.callbacks.MainActivityCallback;
-import com.bmc.suchane_svamitva.view.callbacks.SignInCallback;
+import com.bmc.suchane_svamitva.view.interfaces.DPR_FPR_FinalActivityInterface;
 import com.bmc.suchane_svamitva.view.interfaces.MainActivityInterface;
-import com.bmc.suchane_svamitva.view.interfaces.SignInInterface;
+import com.bmc.suchane_svamitva.view_model.DPR_FPR_FinalActivityViewModel;
 import com.bmc.suchane_svamitva.view_model.MainActivityViewModel;
-import com.bmc.suchane_svamitva.view_model.SignInViewModel;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
-
+public class DPR_FPR_FinalActivity extends AppCompatActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        ActivityDprFprFinalBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_dpr_fpr_final);
         Toolbar toolbar = binding.toolbar;
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        MainActivityInterface mainActivityInterface = new MainActivityCallback(this);
-        MainActivityViewModel viewModel = new MainActivityViewModel(mainActivityInterface);
+        DPR_FPR_FinalActivityInterface dpr_fpr_finalActivityInterface = new DPR_FPR_FinalActivityCallback(this);
+        DPR_FPR_FinalActivityViewModel viewModel = new DPR_FPR_FinalActivityViewModel(dpr_fpr_finalActivityInterface);
         binding.setViewModel(viewModel);
     }
 

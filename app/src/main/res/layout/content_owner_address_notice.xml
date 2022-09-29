@@ -3,7 +3,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.bmc.suchane_svamitva.view_model.DPR_FPR_FinalActivityViewModel" />
+            type="com.bmc.suchane_svamitva.view_model.NoticeActivityViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

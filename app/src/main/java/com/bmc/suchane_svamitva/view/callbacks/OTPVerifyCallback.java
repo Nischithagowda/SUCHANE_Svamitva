@@ -19,6 +19,7 @@ import com.bmc.suchane_svamitva.utils.Constant;
 import com.bmc.suchane_svamitva.view.interfaces.OTPVerifyInterface;
 import com.bmc.suchane_svamitva.view.ui.MainActivity;
 import com.bmc.suchane_svamitva.view.ui.OTPVerify;
+import com.bmc.suchane_svamitva.view.ui.SelectActivity;
 import com.bmc.suchane_svamitva.view_model.OTPVerifyViewModel;
 
 import io.reactivex.Observable;
@@ -62,6 +63,8 @@ public class OTPVerifyCallback implements OTPVerifyInterface {
         validateOtp.setMobileNo(viewModel.USER_MOBILE.get());
         validateOtp.setOTP(viewModel.otpNumber.get());
 
+        saveRequiredInfo(viewModel);
+
         Retrofit client = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
         API_Interface_Suchane apiService = client.create(API_Interface_Suchane.class);
 //        Observable<UserDetailsResponse> responseObservable = apiService.FN_ValidateOTP_Svamitva(accessToken, validateOtp);
@@ -83,14 +86,14 @@ public class OTPVerifyCallback implements OTPVerifyInterface {
 
     }
 
-//    public void saveRequiredInfo(OTPVerifyViewModel viewModel, List<UserDetails> userDetailsList) {
-//        SharedPreferences.Editor sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, Context.MODE_PRIVATE).edit();
-//        sharedPreferences.putBoolean(Constant.LOGIN_STATUS, true);
-//        sharedPreferences.putBoolean(Constant.REFRESH_COUNT, false);
-//        sharedPreferences.putString(Constant.USER_MOBILE, viewModel.USER_MOBILE.get());
-//        sharedPreferences.apply();
-//        checkUserDetails(userDetailsList);
-//    }
+    public void saveRequiredInfo(OTPVerifyViewModel viewModel) {
+        SharedPreferences.Editor sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, Context.MODE_PRIVATE).edit();
+        sharedPreferences.putBoolean(Constant.LOGIN_STATUS, true);
+        sharedPreferences.putBoolean(Constant.REFRESH_COUNT, false);
+        sharedPreferences.putString(Constant.USER_MOBILE, viewModel.USER_MOBILE.get());
+        sharedPreferences.apply();
+        startNavigateToDeliveryLaunch();
+    }
 //    public void saveRequiredUPOR(OTPVerifyViewModel viewModel, List<UserDetails_UPOR> userDetailsList) {
 //        SharedPreferences.Editor sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, Context.MODE_PRIVATE).edit();
 //        sharedPreferences.putBoolean(Constant.LOGIN_STATUS, true);
@@ -293,46 +296,46 @@ public class OTPVerifyCallback implements OTPVerifyInterface {
 
     @Override
     public void onClickResendOtp(OTPVerifyViewModel viewModel) {
-        ProgressDialog dialog = new ProgressDialog(activity);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-        dialog.setMessage("Checking Wait ..");
-        dialog.show();
-
-        Retrofit client = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
-        API_Interface_Suchane apiService = client.create(API_Interface_Suchane.class);
-        Observable<TokenRes> serviceToken = apiService.getToken(activity.getString(R.string.api_user_id), activity.getString(R.string.api_password), activity.getString(R.string.grant_type));
-        serviceToken.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((result) -> {
-                    SharedPreferences.Editor editor = activity.getSharedPreferences(activity.getString(R.string.Auth), MODE_PRIVATE).edit();
-                    editor.putString(activity.getString(R.string.token), result.getAccessToken());
-                    editor.putString(activity.getString(R.string.token_type),result.getTokenType());
-                    editor.putString(activity.getString(R.string.refresh_tkn), result.getRefreshToken());
-                    editor.apply();
-
-                    String accessToken = result.getTokenType() + " " + result.getAccessToken();
-                    Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
-                    API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
-
-                    Observable<SMS_Response> responseObservable = apiService1.FN_Login_UPOR(accessToken, viewModel.USER_MOBILE.get());
-                    responseObservable.subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe((result1) -> {
-                                dialog.dismiss();
-                                if (result1.isSuccessful()) {
-                                    viewModel.resendEnable.set(false);
-                                } else {
-                                    Toast.makeText(activity, ""+result1.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            }, (error) -> {
-                                dialog.dismiss();
-                                Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                            });
-                }, (error) -> {
-                    Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                    dialog.dismiss();
-                });
+//        ProgressDialog dialog = new ProgressDialog(activity);
+//        dialog.setCanceledOnTouchOutside(false);
+//        dialog.setCancelable(false);
+//        dialog.setMessage("Checking Wait ..");
+//        dialog.show();
+//
+//        Retrofit client = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
+//        API_Interface_Suchane apiService = client.create(API_Interface_Suchane.class);
+//        Observable<TokenRes> serviceToken = apiService.getToken(activity.getString(R.string.api_user_id), activity.getString(R.string.api_password), activity.getString(R.string.grant_type));
+//        serviceToken.subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe((result) -> {
+//                    SharedPreferences.Editor editor = activity.getSharedPreferences(activity.getString(R.string.Auth), MODE_PRIVATE).edit();
+//                    editor.putString(activity.getString(R.string.token), result.getAccessToken());
+//                    editor.putString(activity.getString(R.string.token_type),result.getTokenType());
+//                    editor.putString(activity.getString(R.string.refresh_tkn), result.getRefreshToken());
+//                    editor.apply();
+//
+//                    String accessToken = result.getTokenType() + " " + result.getAccessToken();
+//                    Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
+//                    API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
+//
+//                    Observable<SMS_Response> responseObservable = apiService1.FN_Login_UPOR(accessToken, viewModel.USER_MOBILE.get());
+//                    responseObservable.subscribeOn(Schedulers.io())
+//                            .observeOn(AndroidSchedulers.mainThread())
+//                            .subscribe((result1) -> {
+//                                dialog.dismiss();
+//                                if (result1.isSuccessful()) {
+//                                    viewModel.resendEnable.set(false);
+//                                } else {
+//                                    Toast.makeText(activity, ""+result1.getMessage(), Toast.LENGTH_SHORT).show();
+//                                }
+//                            }, (error) -> {
+//                                dialog.dismiss();
+//                                Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+//                            });
+//                }, (error) -> {
+//                    Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+//                    dialog.dismiss();
+//                });
     }
 
     @Override

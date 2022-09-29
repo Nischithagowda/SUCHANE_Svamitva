@@ -18,9 +18,12 @@ import com.bmc.suchane_svamitva.R;
 import com.bmc.suchane_svamitva.model.UserLatLon;
 import com.bmc.suchane_svamitva.utils.Constant;
 import com.bmc.suchane_svamitva.view.interfaces.NoticeMapsInterface;
+import com.bmc.suchane_svamitva.view.ui.DPR_FPR_LaunchActivity;
+import com.bmc.suchane_svamitva.view.ui.NoticeActivity;
 import com.bmc.suchane_svamitva.view.ui.NoticeMapsFragment;
 import com.bmc.suchane_svamitva.view_model.NoticeMapsViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -52,6 +55,7 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
             if (checkLocationPermission()) {
                 LatLng latLng = new LatLng(12.9716, 77.5946);
                 viewModel.choosedLocationMarker.set(Objects.requireNonNull(viewModel.googleMap.get()).addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin))));
+                Objects.requireNonNull(viewModel.googleMap.get()).setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 Objects.requireNonNull(viewModel.googleMap.get()).moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 Objects.requireNonNull(viewModel.googleMap.get()).animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
                 Objects.requireNonNull(viewModel.googleMap.get()).setOnCameraMoveStartedListener(viewModel);
@@ -84,6 +88,20 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
 
     @Override
     public void onConfirmLocation(NoticeMapsViewModel viewModel) {
+        if (checkLocationPermission()) {
+            LatLng latLng = new LatLng(12.9716, 77.5946);
+            viewModel.choosedLocationMarker.set(Objects.requireNonNull(viewModel.googleMap.get()).addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin))));
+            Objects.requireNonNull(viewModel.googleMap.get()).setMapType(GoogleMap.MAP_TYPE_HYBRID);
+            Objects.requireNonNull(viewModel.googleMap.get()).moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            Objects.requireNonNull(viewModel.googleMap.get()).animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
+            Objects.requireNonNull(viewModel.googleMap.get()).setOnCameraMoveStartedListener(viewModel);
+            Objects.requireNonNull(viewModel.googleMap.get()).setOnCameraMoveListener(viewModel);
+            Objects.requireNonNull(viewModel.googleMap.get()).setOnCameraIdleListener(viewModel);
+            Objects.requireNonNull(viewModel.googleMap.get()).setMyLocationEnabled(true);
+        }  else {
+            ActivityCompat.requestPermissions(activity, new String[]{ACCESS_FINE_LOCATION, CAMERA},
+                    Constant.LOCATION_PERMISSION_REQUEST_CODE);
+        }
         if (viewModel.userLocationAddress.get() != null & viewModel.userLocationCoordinates.get()!=null) {
             UserLatLon userLatLon=new UserLatLon();
             userLatLon.setLatitude(Objects.requireNonNull(viewModel.userLocationCoordinates.get()).latitude);
@@ -102,10 +120,18 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
         returnIntent.putExtra(Constant.BUNDLE_DATA, args);
         activity.setResult(Activity.RESULT_OK, returnIntent);
         activity.finish();
+
+        onNavigateToNotice();
     }
 
     private boolean checkLocationPermission() {
         return ContextCompat.checkSelfPermission(activity, ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    @Override
+    public void onNavigateToNotice(){
+        Intent intent = new Intent(activity, NoticeActivity.class);
+        activity.startActivity(intent);
     }
 }

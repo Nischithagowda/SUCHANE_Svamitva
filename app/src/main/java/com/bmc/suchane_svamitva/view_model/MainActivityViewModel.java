@@ -8,7 +8,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.bmc.suchane_svamitva.model.District;
 import com.bmc.suchane_svamitva.model.Hobli;
+import com.bmc.suchane_svamitva.model.Taluka;
 import com.bmc.suchane_svamitva.model.Village;
 import com.bmc.suchane_svamitva.view.interfaces.MainActivityInterface;
 
@@ -19,12 +21,12 @@ import androidx.databinding.ObservableList;
 
 public class MainActivityViewModel {
     MainActivityInterface mainActivityInterface;
-    public final ObservableList<Village> districtNameList = new ObservableArrayList<>();
+    public final ObservableList<District> districtNameList = new ObservableArrayList<>();
     public final ObservableInt selectedItemPosition = new ObservableInt(0);
     public final ObservableInt districtCode = new ObservableInt(0);
     public final ObservableField<String> districtError = new ObservableField<>(null);
     public final ObservableField<String> districtName = new ObservableField<>("");
-    public final ObservableList<Village> talukNameList = new ObservableArrayList<>();
+    public final ObservableList<Taluka> talukNameList = new ObservableArrayList<>();
     public final ObservableField<String> talukCode = new ObservableField<>("");
     public final ObservableField<String> talukError = new ObservableField<>(null);
     public final ObservableField<String> talukName = new ObservableField<>("");
@@ -56,16 +58,18 @@ public class MainActivityViewModel {
     }
 
     public void onClickFetchData(View view) {
-        String villCode = this.villageCode.get();
+//        String villCode = this.villageCode.get();
+//
+//        boolean status = false;
+//        if (TextUtils.isEmpty(villCode)) {
+//            status = true;
+//            villageError.set("Village is required");
+//        }
+//
+//        if (!status) {
+//            //mainActivityInterface.getPropDetailsFromServer(this);
+//        }
 
-        boolean status = false;
-        if (TextUtils.isEmpty(villCode)) {
-            status = true;
-            villageError.set("Village is required");
-        }
-
-        if (!status) {
-            //mainActivityInterface.getPropDetailsFromServer(this);
-        }
+        mainActivityInterface.onNavigateToNext();
     }
 }

@@ -40,8 +40,7 @@ public class SplashScreen extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION, CAMERA},
                     Constant.LOCATION_PERMISSION_REQUEST_CODE);
         }
-        Intent intent = new Intent(SplashScreen.this, NoticeMapsFragment.class);
-        startActivity(intent);
+        checkLoginStatus();
     }
 
     private boolean checkLocationPermission() {
@@ -49,6 +48,19 @@ public class SplashScreen extends AppCompatActivity {
                 == PackageManager.PERMISSION_GRANTED;
     }
 
+    public void checkLoginStatus() {
+        SharedPreferences sharedPreferences = getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
+        boolean status = sharedPreferences.getBoolean(Constant.LOGIN_STATUS, false);
+        if (status) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Intent i = new Intent(this, SignIn.class);
+            startActivity(i);
+            finish();
+        }
+    }
     private void getRefreshToken() {
         ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage("Checking please wait..");

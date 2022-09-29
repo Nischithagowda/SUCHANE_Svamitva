@@ -12,10 +12,10 @@ import com.bmc.suchane_svamitva.model.District;
 import com.bmc.suchane_svamitva.model.Hobli;
 import com.bmc.suchane_svamitva.model.Taluka;
 import com.bmc.suchane_svamitva.model.Village;
-import com.bmc.suchane_svamitva.view.interfaces.NoticeActivityInterface;
+import com.bmc.suchane_svamitva.view.interfaces.DPR_FPR_FinalActivityInterface;
 
-public class NoticeActivityViewModel {
-    NoticeActivityInterface noticeActivityInterface;
+public class DPR_FPR_FinalActivityViewModel {
+    DPR_FPR_FinalActivityInterface dpr_fpr_finalActivityInterface;
     public final ObservableField<String> noticeNumber = new ObservableField<>("1234");
     public final ObservableField<String> addressCode = new ObservableField<>("34567");
     public final ObservableField<String> Lat = new ObservableField<>("12.567");
@@ -45,9 +45,11 @@ public class NoticeActivityViewModel {
     public final ObservableField<String> villageError = new ObservableField<>(null);
     public final ObservableField<String> village = new ObservableField<>("");
     public final ObservableField<String> villageId = new ObservableField<>("");
+    public final ObservableField<String> mobileNumber = new ObservableField<>("7894561230");
+    public final ObservableField<String> ownerName = new ObservableField<>("Test");
 
-    public NoticeActivityViewModel(NoticeActivityInterface noticeActivityInterface) {
-        this.noticeActivityInterface = noticeActivityInterface;
+    public DPR_FPR_FinalActivityViewModel(DPR_FPR_FinalActivityInterface dpr_fpr_finalActivityInterface) {
+        this.dpr_fpr_finalActivityInterface = dpr_fpr_finalActivityInterface;
     }
 
     public void capturePropertyPicture(View view){
@@ -103,5 +105,4 @@ public class NoticeActivityViewModel {
     public void onClickHomeData(View view) {
 
     }
-
 }

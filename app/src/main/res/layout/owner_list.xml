@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="dataVariable"
+            type="com.bmc.suchane_svamitva.model.OwnerTbl" />
+        <variable
+            name="handler"
+            type="com.bmc.suchane_svamitva.view.interfaces.OwnerListInterface" />
+    </data>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/card_view_margin"
+        card_view:cardCornerRadius="4dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text="@{dataVariable.owner_id+``}"
+                style="@style/owner_list_tv_header"
+                />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_weight="1.3"
+                android:layout_height="match_parent"
+                android:text="@{dataVariable.chalta_No}"
+                style="@style/owner_list_tv_header"
+                android:drawablePadding="8dp"
+                />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text="@{dataVariable.municipal_GPFD}"
+                style="@style/owner_list_tv_header"
+                android:drawablePadding="8dp"
+                />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:drawableEnd="@drawable/ic_navigate_next"
+                android:drawablePadding="8dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text="@{dataVariable.owner_Name}"
+                style="@style/owner_list_tv_header"
+                />
+
+            <Button
+                android:layout_weight="1"
+                android:onClick="@{(v)->handler.onClickOwner(dataVariable,dataVariable.chalta_No)}"
+                style="@style/btn"
+                android:textAllCaps="false"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/serve"/>
+        </LinearLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+</layout>

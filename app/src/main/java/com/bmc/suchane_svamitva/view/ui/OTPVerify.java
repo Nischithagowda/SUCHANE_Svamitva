@@ -27,4 +27,10 @@ public class OTPVerify extends AppCompatActivity {
         OTPVerifyViewModel viewModel=new OTPVerifyViewModel(otpVerifyInterface);
         binding.setViewModel(viewModel);
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

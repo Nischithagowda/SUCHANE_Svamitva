@@ -3,7 +3,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.bmc.suchane_svamitva.view_model.NoticeActivityViewModel" />
+            type="com.bmc.suchane_svamitva.view_model.DPR_FPR_FinalActivityViewModel" />
         <variable
             name="link"
             type="android.text.method.LinkMovementMethod" />
@@ -167,16 +167,7 @@
                             </LinearLayout>
                         </LinearLayout>
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/enter_above_notice_number_and_address_code_in_notice_you_are_serving"
-                            android:textColor="@android:color/holo_red_dark"
-                            android:textSize="12sp"
-                            android:gravity="center"
-                            android:layout_gravity="center" />
-
-                        <include layout="@layout/content_notice"
+                        <include layout="@layout/content_dpr_fpr_final"
                             app:viewModel="@{viewModel}"/>
 
                     </LinearLayout>

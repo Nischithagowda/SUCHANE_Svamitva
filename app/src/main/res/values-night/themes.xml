@@ -31,14 +31,6 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="edit_text" parent="@android:style/Widget.EditText">
-        <item name="android:textColor">@android:color/black</item>
-        <item name="android:textAlignment">textStart</item>
-        <item name="android:paddingStart">8dp</item>
-        <item name="android:textColorHint">@android:color/darker_gray</item>
-        <item name="android:maxLines">1</item>
-    </style>
-
     <style name="btn" parent="@android:style/Widget.Button">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textAlignment">center</item>
@@ -58,6 +50,31 @@
     </style>
 
     <style name="text_view" parent="@android:style/Widget.TextView">
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="edit_text" parent="@android:style/Widget.EditText">
+        <item name="android:textColor">@android:color/background_dark</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColorHint">@android:color/darker_gray</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="text_list_header">
+        <item name="android:padding">4dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textAlignment">textStart</item>
+    </style>
+
+    <style name="owner_list_tv_header" parent="@android:style/Widget.TextView">
         <item name="android:textAlignment">textStart</item>
         <item name="android:padding">4dp</item>
         <item name="android:textSize">14sp</item>
