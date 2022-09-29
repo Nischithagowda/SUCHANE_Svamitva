@@ -25,6 +25,7 @@ public class DPR_FPR_LaunchActivityCallback implements DPR_FPR_LaunchActivityInt
         ownerTbl.setMunicipal_GPFD("1234");
         ownerTbl.setOwner_Name("Test");
 
+
         viewModel.ownerList.add(ownerTbl);
     }
 
