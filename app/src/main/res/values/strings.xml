@@ -1,0 +1,56 @@
+<resources>
+
+    <string name="api_url">http://117.252.86.211/SvamitvaPR_API/</string>
+    <string name="api_user_id">gthse45g9771064eb83d03ec5ba1e3252d08d9ad102b8f0b2c4ebealyfte7bh</string>
+    <string name="api_password">as345ghytnb4ed834d995bee3d6b99ecd91fc1a2fc346bf7c93aa512dgtuxdfg</string>
+
+    <string name="app_name">SUCHANE Svamitva</string>
+    <string name="token">token</string>
+    <string name="token_type">token_type</string>
+    <string name="grant_type">password</string>
+    <string name="Auth">authentication</string>
+    <string name="refresh_tkn">refresh_token</string>
+    <string name="welcome_to">Welcome To</string>
+    <string name="mobile_no_hint">Enter Mobile Number</string>
+    <string name="next">Next</string>
+    <string name="logo_name">GOK Logo</string>
+    <string name="bhoomi">Bhoomi</string>
+    <string name="kar">Government Of Karnataka</string>
+    <string name="copyright_bhoomi_monitoring_cell_2020_all_right_reserved">Copyright© Bhoomi Monitoring Cell - 2020  All Right Reserved</string>
+    <string name="select_village">Select Village</string>
+    <string name="select_hobli">Select Hobli</string>
+    <string name="select_taluk">Select Taluk</string>
+    <string name="select_district">Select District</string>
+    <string name="fetch">Fetch</string>
+    <string name="token_error">Security token expired.Please logout and login again</string>
+    <string name="refresh_token">Security token refreshed successfully. You can try again.</string>
+    <string name="district">District</string>
+    <string name="taluk">Taluk</string>
+    <string name="hobli">Hobli</string>
+    <string name="village">Village</string>
+    <string name="colon">:</string>
+    <string name="town">Town</string>
+    <string name="ward">Ward</string>
+    <string name="notice">Notice</string>
+    <string name="dpr">DPR</string>
+    <string name="fpr">FPR</string>
+    <string name="title_activity_otp_verify">OTP Verification</string>
+    <string name="resend">Resend</string>
+    <string name="please_enter_otp_sent_to">please enter otp sent to</string>
+    <string name="verification_code">Verification Code</string>
+    <string name="verify_otp">Verify OTP</string>
+    <string name="your_location">Your Location</string>
+    <string name="select_location">Select user location</string>
+    <string name="confirm_location">Confirm Location</string>
+    <string name="pending">Pending</string>
+    <string name="served">Served</string>
+    <string name="notice_number">Notice Number</string>
+    <string name="address_code">Address Code</string>
+    <string name="lat">Lat</string>
+    <string name="long1">Long</string>
+    <string name="enter_above_notice_number_and_address_code_in_notice_you_are_serving">(Enter above Notice number and Address code in Notice you are serving)</string>
+    <string name="click_full_property_land_photo">Click full Property/\nLand Photo</string>
+    <string name="click_photo_of_serving_of_notice">Click photo of Serving \nof Notice</string>
+    <string name="star">*</string>
+    <string name="enter_postal_address">Enter Postal Address</string>
+</resources>

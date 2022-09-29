@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Svamitva_UPRO/SUCHANE_Svamitva/app/src/main/res/drawable/button_shape.xml" value="0.106" />
+        <entry key="..\:/Svamitva_UPRO/SUCHANE_Svamitva/app/src/main/res/drawable/ic_navigate_next.xml" value="0.106" />
+        <entry key="..\:/Svamitva_UPRO/SUCHANE_Svamitva/app/src/main/res/drawable/ic_phone_android_black.xml" value="0.106" />
+        <entry key="..\:/Svamitva_UPRO/SUCHANE_Svamitva/app/src/main/res/layout/activity_main.xml" value="0.17074275362318841" />
+        <entry key="..\:/Svamitva_UPRO/SUCHANE_Svamitva/app/src/main/res/layout/activity_select_action.xml" value="0.1287568306010929" />
+        <entry key="..\:/Svamitva_UPRO/SUCHANE_Svamitva/app/src/main/res/layout/activity_sign_in.xml" value="0.17074275362318841" />
+        <entry key="..\:/Svamitva_UPRO/SUCHANE_Svamitva/app/src/main/res/layout/activity_splash_screen.xml" value="0.17074275362318841" />
+        <entry key="..\:/Svamitva_UPRO/SUCHANE_Svamitva/app/src/main/res/layout/content_activity_main.xml" value="0.2" />
+        <entry key="..\:/Svamitva_UPRO/SUCHANE_Svamitva/app/src/main/res/layout/content_activity_select.xml" value="0.14" />
+        <entry key="..\:/Svamitva_UPRO/SUCHANE_Svamitva/app/src/main/res/layout/content_sign_in.xml" value="0.17074275362318841" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
