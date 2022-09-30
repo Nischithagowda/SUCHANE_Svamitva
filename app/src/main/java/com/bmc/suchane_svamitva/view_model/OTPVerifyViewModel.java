@@ -19,10 +19,14 @@ public class OTPVerifyViewModel {
     public final ObservableField<Boolean> requestFocus2 = new ObservableField<>(false);
     public final ObservableField<Boolean> requestFocus3 = new ObservableField<>(false);
     public final ObservableField<Boolean> requestFocus4 = new ObservableField<>(false);
+    public final ObservableField<Boolean> requestFocus5 = new ObservableField<>(false);
+    public final ObservableField<Boolean> requestFocus6 = new ObservableField<>(false);
     public final ObservableField<String> value1 = new ObservableField<>("");
     public final ObservableField<String> value2 = new ObservableField<>("");
     public final ObservableField<String> value3 = new ObservableField<>("");
     public final ObservableField<String> value4 = new ObservableField<>("");
+    public final ObservableField<String> value5 = new ObservableField<>("");
+    public final ObservableField<String> value6 = new ObservableField<>("");
     public final ObservableField<String> USER_MOBILE = new ObservableField<>();
     public final ObservableBoolean resendEnable = new ObservableBoolean(false);
     public final ObservableInt otpNumber=new ObservableInt();
@@ -83,19 +87,40 @@ public class OTPVerifyViewModel {
     public void value4Watcher(CharSequence text, int start, int end, int count) {
         requestFocus4.set(false);
         value4.set(text.toString());
-        if (count == 0) {
-            requestFocus3.set(true);
-        } else if (count == 1) {
+        if (count == 1) {
+            requestFocus5.set(true);
             requestFocus3.set(false);
+        } else if (count == 0) {
+            requestFocus3.set(true);
+            requestFocus5.set(false);
+        }
+    }
+
+    public void value5Watcher(CharSequence text, int start, int end, int count) {
+        requestFocus5.set(false);
+        value5.set(text.toString());
+        if (count == 1) {
+            requestFocus6.set(true);
+            requestFocus4.set(false);
+        } else if (count == 0) {
+            requestFocus4.set(true);
+            requestFocus6.set(false);
+        }
+    }
+
+    public void value6Watcher(CharSequence text, int start, int end, int count) {
+        requestFocus6.set(false);
+        value6.set(text.toString());
+        if (count == 0) {
+            requestFocus5.set(true);
+        } else if (count == 1) {
+            requestFocus5.set(false);
         }
     }
 
 
     public void verifyOtpWithServer(View view) {
         otpVerifyInterface.verifyOtpWithServer(this);
-    }
-
-    public void onClickMobileNumberChange(View view) {
     }
 
     public void onClickResendOtp(View view) {

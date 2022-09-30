@@ -5,6 +5,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.bmc.suchane_svamitva.R;
 import com.bmc.suchane_svamitva.databinding.ActivityMainBinding;
@@ -15,10 +17,13 @@ import com.bmc.suchane_svamitva.view.interfaces.MainActivityInterface;
 import com.bmc.suchane_svamitva.view.interfaces.SignInInterface;
 import com.bmc.suchane_svamitva.view_model.MainActivityViewModel;
 import com.bmc.suchane_svamitva.view_model.SignInViewModel;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+
+    MaterialSpinner distSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,14 @@ public class MainActivity extends AppCompatActivity {
         MainActivityInterface mainActivityInterface = new MainActivityCallback(this);
         MainActivityViewModel viewModel = new MainActivityViewModel(mainActivityInterface);
         binding.setViewModel(viewModel);
+
+//        distSpinner = findViewById(R.id.distSpinner);
+//        distSpinner.setOnItemSelectedListener((view, position, id, item) -> {
+//            viewModel.districtCode.set(position);
+//            viewModel.districtName.set(item.toString());
+//            Log.d("position", ""+position);
+//            Log.d("item", ""+item);
+//        });
     }
 
     @Override

@@ -2,63 +2,90 @@ package com.bmc.suchane_svamitva.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+@Entity
 public class Village {
 
-    @ColumnInfo(name = "districtCode")
-    private String districtCode;
-    @ColumnInfo(name = "talukCode")
-    private String talukCode;
-    @ColumnInfo(name = "hobliCode")
-    private String hobliCode;
-    @ColumnInfo(name = "villageCode")
-    private String villageCode;
-    @ColumnInfo(name = "bhoomiVillageName")
-    private String bhoomiVillageName;
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private int id;
 
-    public String getDistrictCode() {
-        return districtCode;
+    @SerializedName("DISTRICT_CODE")
+    @Expose
+    private String DISTRICT_CODE;
+
+    @SerializedName("TALUK_CODE")
+    @Expose
+    private String TALUK_CODE;
+
+    @SerializedName("HOBLI_CODE")
+    @ColumnInfo(name = "HOBLI_CODE")
+    private String HOBLI_CODE;
+
+    @SerializedName("VILLAGE_CODE")
+    @ColumnInfo(name = "VILLAGE_CODE")
+    private String VILLAGE_CODE;
+
+    @SerializedName("VILLAGE_NAME")
+    @ColumnInfo(name = "VILLAGE_NAME")
+    private String VILLAGE_NAME;
+
+    public int getId() {
+        return id;
     }
 
-    public void setDistrictCode(String districtCode) {
-        this.districtCode = districtCode;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getTalukCode() {
-        return talukCode;
+    public String getDISTRICT_CODE() {
+        return DISTRICT_CODE;
     }
 
-    public void setTalukCode(String talukCode) {
-        this.talukCode = talukCode;
+    public void setDISTRICT_CODE(String DISTRICT_CODE) {
+        this.DISTRICT_CODE = DISTRICT_CODE;
     }
 
-    public String getHobliCode() {
-        return hobliCode;
+    public String getTALUK_CODE() {
+        return TALUK_CODE;
     }
 
-    public void setHobliCode(String hobliCode) {
-        this.hobliCode = hobliCode;
+    public void setTALUK_CODE(String TALUK_CODE) {
+        this.TALUK_CODE = TALUK_CODE;
     }
 
-    public String getVillageCode() {
-        return villageCode;
+    public String getHOBLI_CODE() {
+        return HOBLI_CODE;
     }
 
-    public void setVillageCode(String villageCode) {
-        this.villageCode = villageCode;
+    public void setHOBLI_CODE(String HOBLI_CODE) {
+        this.HOBLI_CODE = HOBLI_CODE;
     }
 
-    public String getBhoomiVillageName() {
-        return bhoomiVillageName;
+    public String getVILLAGE_CODE() {
+        return VILLAGE_CODE;
     }
 
-    public void setBhoomiVillageName(String bhoomiVillageName) {
-        this.bhoomiVillageName = bhoomiVillageName;
+    public void setVILLAGE_CODE(String VILLAGE_CODE) {
+        this.VILLAGE_CODE = VILLAGE_CODE;
+    }
+
+    public String getVILLAGE_NAME() {
+        return VILLAGE_NAME;
+    }
+
+    public void setVILLAGE_NAME(String VILLAGE_NAME) {
+        this.VILLAGE_NAME = VILLAGE_NAME;
     }
 
     @NonNull
     @Override
     public String toString() {
-        return bhoomiVillageName;
+        return VILLAGE_NAME;
     }
 }

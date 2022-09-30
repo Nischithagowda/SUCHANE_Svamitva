@@ -1,38 +1,42 @@
 package com.bmc.suchane_svamitva.model;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.BaseObservable;
 import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
-public class District {
+public class District extends BaseObservable {
 
-    @SerializedName("district_code")
-    @ColumnInfo(name = "district_code")
-    private String districtId;
-    @SerializedName("DISTRICT_NAME")
-    @ColumnInfo(name = "district_name")
-    private String districtName;
+    @SerializedName("DistrictCode")
+    @ColumnInfo(name = "DistrictCode")
+    private String DISTRICT_CODE;
 
-    public String getDistrictId() {
-        return districtId;
+    @SerializedName("BhoomiDistrictName")
+    @ColumnInfo(name = "BhoomiDistrictName")
+    private String DISTRICT_NAME;
+
+    public String getDISTRICT_CODE() {
+        return DISTRICT_CODE;
     }
 
-    public void setDistrictId(String districtId) {
-        this.districtId = districtId;
+    public void setDISTRICT_CODE(String DISTRICT_CODE) {
+        this.DISTRICT_CODE = DISTRICT_CODE;
     }
 
-    public String getDistrictName() {
-        return districtName;
+    public String getDISTRICT_NAME() {
+        return DISTRICT_NAME;
     }
 
-    public void setDistrictName(String districtName) {
-        this.districtName = districtName;
+    public void setDISTRICT_NAME(String DISTRICT_NAME) {
+        this.DISTRICT_NAME = DISTRICT_NAME;
     }
 
     @NonNull
     @Override
     public String toString() {
-        return districtName;
+        return DISTRICT_NAME;
     }
 }

@@ -111,6 +111,30 @@
                         android:textSize="@dimen/header_text"
                         android:background="@drawable/edittext_otp_mobile_border"
                         />
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:onTextChanged="@{(text,start,end,count)->viewModel.value5Watcher(text,start,end,count)}"
+                        android:text="@{viewModel.value5}"
+                        app:requestFocus="@{viewModel.requestFocus5}"
+                        android:textAlignment="center"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:textSize="@dimen/header_text"
+                        android:background="@drawable/edittext_otp_mobile_border"
+                        />
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:onTextChanged="@{(text,start,end,count)->viewModel.value6Watcher(text,start,end,count)}"
+                        android:text="@{viewModel.value6}"
+                        app:requestFocus="@{viewModel.requestFocus6}"
+                        android:textAlignment="center"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:textSize="@dimen/header_text"
+                        android:background="@drawable/edittext_otp_mobile_border"
+                        />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
 

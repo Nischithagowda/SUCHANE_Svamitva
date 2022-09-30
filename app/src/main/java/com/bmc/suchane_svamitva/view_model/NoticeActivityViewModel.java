@@ -78,19 +78,19 @@ public class NoticeActivityViewModel {
         landmarkError.set(null);
     }
 
-    public void onContactRuralDistrictItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
-        District district = (District) parent.getItemAtPosition(position);
-        this.district.set(district.getDistrictName());
-        this.districtId.set(district.getDistrictId());
-        //noticeActivityInterface.loadRuralTaluksList(this);
-        this.taluk.set("");
-        this.talukId.set("");
-        this.hobli.set("");
-        this.hobliId.set("");
-        this.village.set("");
-        this.villageId.set("");
-
-    }
+//    public void onContactRuralDistrictItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
+//        District district = (District) parent.getItemAtPosition(position);
+//        this.district.set(district.getDistrictName());
+//        this.districtId.set(district.getDistrictId());
+//        //noticeActivityInterface.loadRuralTaluksList(this);
+//        this.taluk.set("");
+//        this.talukId.set("");
+//        this.hobli.set("");
+//        this.hobliId.set("");
+//        this.village.set("");
+//        this.villageId.set("");
+//
+//    }
 
     public void onClickSaveData(View view) {
 

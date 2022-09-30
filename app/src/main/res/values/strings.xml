@@ -1,8 +1,9 @@
 <resources>
 
-    <string name="api_url">http://117.252.86.211/SvamitvaPR_API/</string>
-    <string name="api_user_id">gthse45g9771064eb83d03ec5ba1e3252d08d9ad102b8f0b2c4ebealyfte7bh</string>
-    <string name="api_password">as345ghytnb4ed834d995bee3d6b99ecd91fc1a2fc346bf7c93aa512dgtuxdfg</string>
+<!--    <string name="api_url">http://192.168.0.165/SuchaneSvamitvaAPI/</string>-->
+    <string name="api_url">http://117.252.86.211/SuchaneSvamitvaAPI/</string>
+    <string name="api_user_id">56dhsuiejn83j9633ssgeu8dm9djs235dh965fhslopc098jd</string>
+    <string name="api_password">2d87duikdmc673jsnlpa0245whjdkkfn63xmlopwq96auehsa</string>
 
     <string name="app_name">SUCHANE Svamitva</string>
     <string name="token">token</string>

@@ -4,6 +4,9 @@ package com.bmc.suchane_svamitva.view.interfaces;
 // Copyright (c) 2022 BMC. All rights reserved.
 //
 
+import com.bmc.suchane_svamitva.view_model.MainActivityViewModel;
+
 public interface MainActivityInterface {
     void onNavigateToNext();
+    void getUserDistrict(MainActivityViewModel viewModel);
 }

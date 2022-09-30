@@ -4,28 +4,29 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class ValidateOtpRequest {
+
+    @SerializedName("MobileNumber")
+    @Expose
+    private String MobileNumber;
+
     @SerializedName("OTP")
     @Expose
-    private int oTP;
-    @SerializedName("MobileNo")
-    @Expose
-    private String mobileNo;
+    private String OTP;
 
-    public int getOTP() {
-        return oTP;
+    public String getMobileNumber() {
+        return MobileNumber;
     }
 
-    public void setOTP(int oTP) {
-        this.oTP = oTP;
+    public void setMobileNumber(String mobileNumber) {
+        MobileNumber = mobileNumber;
     }
 
-    public String getMobileNo() {
-        return mobileNo;
+    public String getOTP() {
+        return OTP;
     }
 
-    public void setMobileNo(String mobileNo) {
-        this.mobileNo = mobileNo;
+    public void setOTP(String OTP) {
+        this.OTP = OTP;
     }
-
 }
 

@@ -1,5 +1,6 @@
 package com.bmc.suchane_svamitva.view.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import com.bmc.suchane_svamitva.R;
 import com.bmc.suchane_svamitva.databinding.ActivityOtpVerifyBinding;
 import com.bmc.suchane_svamitva.view.callbacks.OTPVerifyCallback;
+import com.bmc.suchane_svamitva.view.callbacks.SignInCallback;
 import com.bmc.suchane_svamitva.view.interfaces.OTPVerifyInterface;
 import com.bmc.suchane_svamitva.view_model.OTPVerifyViewModel;
 
@@ -32,5 +34,13 @@ public class OTPVerify extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, SignInCallback.class);
+        startActivity(intent);
+        finish();
     }
 }

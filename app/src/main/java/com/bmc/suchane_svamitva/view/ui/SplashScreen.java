@@ -35,12 +35,7 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        //getRefreshToken();
-        if (!checkLocationPermission()){
-            ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION, CAMERA},
-                    Constant.LOCATION_PERMISSION_REQUEST_CODE);
-        }
-        checkLoginStatus();
+        getRefreshToken();
     }
 
     private boolean checkLocationPermission() {
@@ -79,10 +74,16 @@ public class SplashScreen extends AppCompatActivity {
                     editor.putString(getString(R.string.refresh_tkn), result.getRefreshToken());
                     editor.apply();
 
-                    String accessToken = result.getTokenType() + " " + result.getAccessToken();
+                    if (!checkLocationPermission()){
+                        ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION, CAMERA},
+                                Constant.LOCATION_PERMISSION_REQUEST_CODE);
+                    }
+                    dialog.dismiss();
+                    checkLoginStatus();
+//                    String accessToken = result.getTokenType() + " " + result.getAccessToken();
 
-                    Retrofit client1 = APIClient_Suchane.getClient(getApplicationContext(), getString(R.string.api_url));
-                    API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
+//                    Retrofit client1 = APIClient_Suchane.getClient(getApplicationContext(), getString(R.string.api_url));
+//                    API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
 //                    Observable<VersionDetailsResponse> responseObservable = apiService1.FN_CheckVersion(accessToken, BuildConfig.VERSION_CODE);
 //                    responseObservable.subscribeOn(Schedulers.io())
 //                            .observeOn(AndroidSchedulers.mainThread())

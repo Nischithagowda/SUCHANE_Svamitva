@@ -6,6 +6,7 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.bmc.suchane_svamitva.model.District;
 import com.bmc.suchane_svamitva.model.Hobli;
@@ -19,7 +20,10 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.jaredrummler.materialspinner.MaterialSpinner;
+import com.weiwangcn.betterspinner.library.BetterSpinner;
 
 import java.util.List;
 
@@ -72,6 +76,12 @@ public class ViewBinding {
     public static void imageDataBinding(AppCompatImageView imageView, Bitmap bitmap) {
         if (bitmap != null)
             imageView.setImageBitmap(bitmap);
+    }
+
+    @BindingAdapter({"items"})
+    public static void districtBetterSpinner(BetterSpinner spinner, List<District> entries) {
+        ArrayAdapter<District> adapter = new ArrayAdapter<>(spinner.getContext(), android.R.layout.simple_spinner_dropdown_item, entries);
+        spinner.setAdapter(adapter);
     }
 
     @BindingAdapter({"items"})

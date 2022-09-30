@@ -2,53 +2,77 @@ package com.bmc.suchane_svamitva.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
+@Entity
 public class Hobli {
 
-    @ColumnInfo(name = "BhoomiDistrictCode")
-    private String BhoomiDistrictCode;
-    @ColumnInfo(name = "BhoomiTalukCode")
-    private String BhoomiTalukCode;
-    @ColumnInfo(name = "BhoomiHobliCode")
-    private String BhoomiHobliCode;
-    @ColumnInfo(name = "BhoomiHobliName")
-    private String BhoomiHobliName;
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private int id;
 
-    public String getBhoomiDistrictCode() {
-        return BhoomiDistrictCode;
+    @SerializedName("DISTRICT_CODE")
+    @ColumnInfo(name = "DISTRICT_CODE")
+    private String DISTRICT_CODE;
+
+    @SerializedName("TALUKA_CODE")
+    @ColumnInfo(name = "TALUKA_CODE")
+    private String TALUKA_CODE;
+
+    @SerializedName("HOBLI_CODE")
+    @ColumnInfo(name = "HOBLI_CODE")
+    private String HOBLI_CODE;
+
+    @SerializedName("HOBLI_NAME")
+    @ColumnInfo(name = "HOBLI_NAME")
+    private String HOBLI_NAME;
+
+    public int getId() {
+        return id;
     }
 
-    public void setBhoomiDistrictCode(String bhoomiDistrictCode) {
-        BhoomiDistrictCode = bhoomiDistrictCode;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getBhoomiTalukCode() {
-        return BhoomiTalukCode;
+    public String getDISTRICT_CODE() {
+        return DISTRICT_CODE;
     }
 
-    public void setBhoomiTalukCode(String bhoomiTalukCode) {
-        BhoomiTalukCode = bhoomiTalukCode;
+    public void setDISTRICT_CODE(String DISTRICT_CODE) {
+        this.DISTRICT_CODE = DISTRICT_CODE;
     }
 
-    public String getBhoomiHobliCode() {
-        return BhoomiHobliCode;
+    public String getTALUKA_CODE() {
+        return TALUKA_CODE;
     }
 
-    public void setBhoomiHobliCode(String bhoomiHobliCode) {
-        BhoomiHobliCode = bhoomiHobliCode;
+    public void setTALUKA_CODE(String TALUKA_CODE) {
+        this.TALUKA_CODE = TALUKA_CODE;
     }
 
-    public String getBhoomiHobliName() {
-        return BhoomiHobliName;
+    public String getHOBLI_CODE() {
+        return HOBLI_CODE;
     }
 
-    public void setBhoomiHobliName(String bhoomiHobliName) {
-        BhoomiHobliName = bhoomiHobliName;
+    public void setHOBLI_CODE(String HOBLI_CODE) {
+        this.HOBLI_CODE = HOBLI_CODE;
+    }
+
+    public String getHOBLI_NAME() {
+        return HOBLI_NAME;
+    }
+
+    public void setHOBLI_NAME(String HOBLI_NAME) {
+        this.HOBLI_NAME = HOBLI_NAME;
     }
 
     @NonNull
     @Override
     public String toString() {
-        return BhoomiHobliName;
+        return HOBLI_NAME;
     }
 }

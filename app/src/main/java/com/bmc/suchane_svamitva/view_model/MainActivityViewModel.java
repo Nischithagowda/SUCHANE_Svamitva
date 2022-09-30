@@ -5,6 +5,7 @@ package com.bmc.suchane_svamitva.view_model;
 //
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -41,21 +42,49 @@ public class MainActivityViewModel {
 
     public MainActivityViewModel(MainActivityInterface mainActivityInterface) {
         this.mainActivityInterface = mainActivityInterface;
+        mainActivityInterface.getUserDistrict(this);
     }
 
-    public void onContactHobliItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
-        Village village = (Village) parent.getItemAtPosition(position);
-        this.hobliName.set(village.getBhoomiVillageName());
-        this.hobliCode.set(village.getVillageCode());
-        hobliError.set(null);
+    public void onSelectDistrictItem(AdapterView<?> parent, View view, int pos, long id)
+    {
+        Log.d("getDISTRICT_CODE", ""+districtNameList.get(pos).getDISTRICT_CODE());
+        Log.d("getDISTRICT_NAME", ""+districtNameList.get(pos).getDISTRICT_NAME());
+        Log.d("getItem", ""+parent.getAdapter().getItem(pos));
+        Log.d("parent.getSelectedItem", ""+parent.getSelectedItem());
     }
 
-    public void onContactVillageItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
-        Village village = (Village) parent.getItemAtPosition(position);
-        this.villageName.set(village.getBhoomiVillageName());
-        this.villageCode.set(village.getVillageCode());
-        villageError.set(null);
+    public void onSelectTalukItem(AdapterView<?> parent, View view, int pos, long id)
+    {
+        Log.d("getDISTRICT_CODE", ""+talukNameList.get(pos).getDISTRICT_CODE());
+        Log.d("getTALUKA_CODE", ""+talukNameList.get(pos).getTALUKA_CODE());
+        Log.d("getDISTRICT_NAME", ""+talukNameList.get(pos).getTALUKA_NAME());
+        Log.d("getItem", ""+parent.getAdapter().getItem(pos));
+        Log.d("parent.getSelectedItem", ""+parent.getSelectedItem());
     }
+
+    public void onSelectHobliItem(AdapterView<?> parent, View view, int pos, long id)
+    {
+        Log.d("getDISTRICT_CODE", ""+hobliNameList.get(pos).getDISTRICT_CODE());
+        Log.d("getTALUKA_CODE", ""+hobliNameList.get(pos).getTALUKA_CODE());
+        Log.d("getTALUKA_CODE", ""+hobliNameList.get(pos).getHOBLI_CODE());
+        Log.d("getDISTRICT_NAME", ""+hobliNameList.get(pos).getHOBLI_NAME());
+        Log.d("getItem", ""+parent.getAdapter().getItem(pos));
+        Log.d("parent.getSelectedItem", ""+parent.getSelectedItem());
+    }
+
+//    public void onContactHobliItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
+//        Village village = (Village) parent.getItemAtPosition(position);
+//        this.hobliName.set(village.getBhoomiVillageName());
+//        this.hobliCode.set(village.getVillageCode());
+//        hobliError.set(null);
+//    }
+//
+//    public void onContactVillageItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
+//        Village village = (Village) parent.getItemAtPosition(position);
+//        this.villageName.set(village.getBhoomiVillageName());
+//        this.villageCode.set(village.getVillageCode());
+//        villageError.set(null);
+//    }
 
     public void onClickFetchData(View view) {
 //        String villCode = this.villageCode.get();
