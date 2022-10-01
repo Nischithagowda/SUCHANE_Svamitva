@@ -9,6 +9,7 @@ import static android.Manifest.permission.CAMERA;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -19,12 +20,26 @@ import com.bmc.suchane_svamitva.view.ui.DPR_FPR_LaunchActivity;
 import com.bmc.suchane_svamitva.view.ui.MainActivity;
 import com.bmc.suchane_svamitva.view.ui.NoticeMapsFragment;
 import com.bmc.suchane_svamitva.view.ui.SelectActivity;
+import com.bmc.suchane_svamitva.view_model.SelectActivityViewModel;
 
 public class SelectActivityCallback implements SelectActivityInterface {
     SelectActivity activity;
 
     public SelectActivityCallback(SelectActivity activity) {
         this.activity = activity;
+    }
+
+    @Override
+    public void loadJurisdiction(SelectActivityViewModel viewModel){
+        Intent intent = activity.getIntent();
+        viewModel.districtCode.set(intent.getStringExtra("districtCode"));
+        viewModel.districtName.set(intent.getStringExtra("districtName"));
+        viewModel.talukCode.set(intent.getStringExtra("talukCode"));
+        viewModel.talukName.set(intent.getStringExtra("talukName"));
+        viewModel.hobliCode.set(intent.getStringExtra("hobliCode"));
+        viewModel.hobliName.set(intent.getStringExtra("hobliName"));
+        viewModel.villageCode.set(intent.getStringExtra("villageCode"));
+        viewModel.villageName.set(intent.getStringExtra("villageName"));
     }
 
     @Override
@@ -40,14 +55,16 @@ public class SelectActivityCallback implements SelectActivityInterface {
 
     @Override
     public void onNavigateToDPR(){
-        Intent intent = new Intent(activity, DPR_FPR_LaunchActivity.class);
-        activity.startActivity(intent);
+//        Intent intent = new Intent(activity, DPR_FPR_LaunchActivity.class);
+//        activity.startActivity(intent);
+        Toast.makeText(activity, "Service Not Given", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onNavigateToFPR(){
-        Intent intent = new Intent(activity, DPR_FPR_LaunchActivity.class);
-        activity.startActivity(intent);
+//        Intent intent = new Intent(activity, DPR_FPR_LaunchActivity.class);
+//        activity.startActivity(intent);
+        Toast.makeText(activity, "Service Not Given", Toast.LENGTH_SHORT).show();
     }
 
     private boolean checkLocationPermission() {

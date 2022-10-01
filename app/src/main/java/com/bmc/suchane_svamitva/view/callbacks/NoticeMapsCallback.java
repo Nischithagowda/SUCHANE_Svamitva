@@ -106,6 +106,7 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
             UserLatLon userLatLon=new UserLatLon();
             userLatLon.setLatitude(Objects.requireNonNull(viewModel.userLocationCoordinates.get()).latitude);
             userLatLon.setLongitude(Objects.requireNonNull(viewModel.userLocationCoordinates.get()).longitude);
+            userLatLon.setAccuracy(0.0);
             userLatLon.setAddress(viewModel.userLocationAddress.get());
             onNavigateToSelectedAddress(userLatLon);
         } else {

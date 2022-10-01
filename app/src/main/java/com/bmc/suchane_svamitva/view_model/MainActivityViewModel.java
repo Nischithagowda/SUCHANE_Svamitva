@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.bmc.suchane_svamitva.model.District;
 import com.bmc.suchane_svamitva.model.Hobli;
@@ -24,7 +25,7 @@ public class MainActivityViewModel {
     MainActivityInterface mainActivityInterface;
     public final ObservableList<District> districtNameList = new ObservableArrayList<>();
     public final ObservableInt selectedItemPosition = new ObservableInt(0);
-    public final ObservableInt districtCode = new ObservableInt(0);
+    public final ObservableField<String> districtCode = new ObservableField<>(null);
     public final ObservableField<String> districtError = new ObservableField<>(null);
     public final ObservableField<String> districtName = new ObservableField<>("");
     public final ObservableList<Taluka> talukNameList = new ObservableArrayList<>();
@@ -47,58 +48,66 @@ public class MainActivityViewModel {
 
     public void onSelectDistrictItem(AdapterView<?> parent, View view, int pos, long id)
     {
-        Log.d("getDISTRICT_CODE", ""+districtNameList.get(pos).getDISTRICT_CODE());
-        Log.d("getDISTRICT_NAME", ""+districtNameList.get(pos).getDISTRICT_NAME());
-        Log.d("getItem", ""+parent.getAdapter().getItem(pos));
-        Log.d("parent.getSelectedItem", ""+parent.getSelectedItem());
+        this.districtCode.set(districtNameList.get(pos).getDISTRICT_CODE());
+        this.districtName.set(districtNameList.get(pos).getDISTRICT_NAME());
+//        Log.d("getDISTRICT_CODE", ""+districtNameList.get(pos).getDISTRICT_CODE());
+//        Log.d("getDISTRICT_NAME", ""+districtNameList.get(pos).getDISTRICT_NAME());
+//        Log.d("getItem", ""+parent.getAdapter().getItem(pos));
+//        Log.d("parent.getSelectedItem", ""+parent.getSelectedItem());
+
+        mainActivityInterface.getUserTaluk(this);
+
     }
 
     public void onSelectTalukItem(AdapterView<?> parent, View view, int pos, long id)
     {
-        Log.d("getDISTRICT_CODE", ""+talukNameList.get(pos).getDISTRICT_CODE());
-        Log.d("getTALUKA_CODE", ""+talukNameList.get(pos).getTALUKA_CODE());
-        Log.d("getDISTRICT_NAME", ""+talukNameList.get(pos).getTALUKA_NAME());
-        Log.d("getItem", ""+parent.getAdapter().getItem(pos));
-        Log.d("parent.getSelectedItem", ""+parent.getSelectedItem());
+        this.talukCode.set(talukNameList.get(pos).getTALUKA_CODE());
+        this.talukName.set(talukNameList.get(pos).getTALUKA_NAME());
+//        Log.d("getDISTRICT_CODE", ""+talukNameList.get(pos).getDISTRICT_CODE());
+//        Log.d("getTALUKA_CODE", ""+talukNameList.get(pos).getTALUKA_CODE());
+//        Log.d("getDISTRICT_NAME", ""+talukNameList.get(pos).getTALUKA_NAME());
+//        Log.d("getItem", ""+parent.getAdapter().getItem(pos));
+//        Log.d("parent.getSelectedItem", ""+parent.getSelectedItem());
+        mainActivityInterface.getHobli(this);
     }
 
     public void onSelectHobliItem(AdapterView<?> parent, View view, int pos, long id)
     {
-        Log.d("getDISTRICT_CODE", ""+hobliNameList.get(pos).getDISTRICT_CODE());
-        Log.d("getTALUKA_CODE", ""+hobliNameList.get(pos).getTALUKA_CODE());
-        Log.d("getTALUKA_CODE", ""+hobliNameList.get(pos).getHOBLI_CODE());
-        Log.d("getDISTRICT_NAME", ""+hobliNameList.get(pos).getHOBLI_NAME());
-        Log.d("getItem", ""+parent.getAdapter().getItem(pos));
-        Log.d("parent.getSelectedItem", ""+parent.getSelectedItem());
+        this.hobliCode.set(hobliNameList.get(pos).getHOBLI_CODE());
+        this.hobliName.set(hobliNameList.get(pos).getHOBLI_NAME());
+        mainActivityInterface.getVillage(this);
     }
 
-//    public void onContactHobliItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
-//        Village village = (Village) parent.getItemAtPosition(position);
-//        this.hobliName.set(village.getBhoomiVillageName());
-//        this.hobliCode.set(village.getVillageCode());
-//        hobliError.set(null);
-//    }
-//
-//    public void onContactVillageItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
-//        Village village = (Village) parent.getItemAtPosition(position);
-//        this.villageName.set(village.getBhoomiVillageName());
-//        this.villageCode.set(village.getVillageCode());
-//        villageError.set(null);
-//    }
+    public void onSelectVillageItem(AdapterView<?> parent, View view, int pos, long id)
+    {
+        this.villageCode.set(villageNameList.get(pos).getVILLAGE_CODE());
+        this.villageName.set(villageNameList.get(pos).getVILLAGE_NAME());
+    }
 
     public void onClickFetchData(View view) {
-//        String villCode = this.villageCode.get();
-//
-//        boolean status = false;
-//        if (TextUtils.isEmpty(villCode)) {
-//            status = true;
-//            villageError.set("Village is required");
-//        }
-//
-//        if (!status) {
-//            //mainActivityInterface.getPropDetailsFromServer(this);
-//        }
+        String distCode = this.districtCode.get();
+        String talukCode = this.talukCode.get();
+        String hobliCode = this.hobliCode.get();
+        String villCode = this.villageCode.get();
 
-        mainActivityInterface.onNavigateToNext();
+        boolean status = false;
+        if (TextUtils.isEmpty(distCode)) {
+            status = true;
+            Toast.makeText(view.getContext(), "District is required", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(talukCode)) {
+            status = true;
+            Toast.makeText(view.getContext(), "Taluk is required", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(hobliCode)) {
+            status = true;
+            Toast.makeText(view.getContext(), "Hobli is required", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(villCode)) {
+            status = true;
+            Toast.makeText(view.getContext(), "Village is required", Toast.LENGTH_SHORT).show();
+        }
+
+        if (!status) {
+            mainActivityInterface.onNavigateToNext(this);
+        }
+
     }
 }

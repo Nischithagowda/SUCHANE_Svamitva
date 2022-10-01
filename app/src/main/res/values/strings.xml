@@ -72,4 +72,7 @@
     <string name="service_amp_photos_you_must_be_near_prperty_land_to_click_photo"><![CDATA[Service & Photos \n(You must be near prperty / Land to click Photo)]]></string>
     <string name="owner_details">Owner Details</string>
     <string name="mobile_number">Mobile Number</string>
+    <string name="profile">Profile</string>
+    <string name="logout">Logout</string>
+    <string name="version">Version : 1</string>
 </resources>

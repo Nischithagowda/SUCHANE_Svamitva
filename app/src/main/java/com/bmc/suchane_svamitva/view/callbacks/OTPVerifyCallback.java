@@ -7,12 +7,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.bmc.suchane_svamitva.R;
 import com.bmc.suchane_svamitva.api.APIClient_Suchane;
 import com.bmc.suchane_svamitva.api.API_Interface_Suchane;
 import com.bmc.suchane_svamitva.database.DBConnection;
+import com.bmc.suchane_svamitva.model.Hobli;
+import com.bmc.suchane_svamitva.model.HobliRequest;
+import com.bmc.suchane_svamitva.model.HobliResponse;
 import com.bmc.suchane_svamitva.model.SMS_Request;
 import com.bmc.suchane_svamitva.model.SMS_Response;
 import com.bmc.suchane_svamitva.model.TokenRes;
@@ -22,6 +26,7 @@ import com.bmc.suchane_svamitva.utils.Constant;
 import com.bmc.suchane_svamitva.view.interfaces.OTPVerifyInterface;
 import com.bmc.suchane_svamitva.view.ui.MainActivity;
 import com.bmc.suchane_svamitva.view.ui.OTPVerify;
+import com.bmc.suchane_svamitva.view.ui.SignIn;
 import com.bmc.suchane_svamitva.view_model.OTPVerifyViewModel;
 
 import java.util.List;
@@ -89,14 +94,12 @@ public class OTPVerifyCallback implements OTPVerifyInterface {
                     dialog.dismiss();
                     if (result.getRESPONSE_CODE().contains("200")) {
                         if (result.getUserDetailsList().size() > 0) {
-                            saveRequiredInfo(viewModel, result.getUserDetailsList());
+                            getHobliFromServer(viewModel, result.getUserDetailsList());
                         } else {
-                            onBackPressed();
-                            Toast.makeText(activity, "" + result.getUserDetailsList(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, "" + result.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        onBackPressed();
-                        Toast.makeText(activity, "" + result.getUserDetailsList(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "" + result.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
                     }
                 }, (error) -> {
                     dialog.dismiss();
@@ -106,16 +109,16 @@ public class OTPVerifyCallback implements OTPVerifyInterface {
 
     }
 
-    public void saveRequiredInfo(OTPVerifyViewModel viewModel, List<USER_DETAILS> userDetailsList) {
+    public void saveRequiredInfo(OTPVerifyViewModel viewModel, List<USER_DETAILS> userDetailsList, List<Hobli> hobliList) {
         SharedPreferences.Editor sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE).edit();
         sharedPreferences.putBoolean(Constant.LOGIN_STATUS, true);
         sharedPreferences.putBoolean(Constant.REFRESH_COUNT, false);
         sharedPreferences.putString(Constant.USER_MOBILE, viewModel.USER_MOBILE.get());
         sharedPreferences.apply();
-        checkUserDetails(userDetailsList);
+        checkUserDetails(userDetailsList, hobliList);
     }
 
-    public void checkUserDetails(List<USER_DETAILS> userDetailsList){
+    public void checkUserDetails(List<USER_DETAILS> userDetailsList, List<Hobli> hobliList){
         ProgressDialog dialog = new ProgressDialog(activity);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
@@ -130,9 +133,9 @@ public class OTPVerifyCallback implements OTPVerifyInterface {
                 .subscribe(result -> {
                             dialog.dismiss();
                             if (result) {
-                                deleteUserDetails(userDetailsList);
+                                deleteUserDetails(userDetailsList, hobliList);
                             } else {
-                                InsertUserDetails(userDetailsList);
+                                InsertUserDetails(userDetailsList, hobliList);
                             }
                         }, error -> {
                             error.printStackTrace();
@@ -141,7 +144,7 @@ public class OTPVerifyCallback implements OTPVerifyInterface {
                 );
     }
 
-    public void deleteUserDetails(List<USER_DETAILS> userDetailsList){
+    public void deleteUserDetails(List<USER_DETAILS> userDetailsList, List<Hobli> hobliList){
         ProgressDialog dialog = new ProgressDialog(activity);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
@@ -155,7 +158,7 @@ public class OTPVerifyCallback implements OTPVerifyInterface {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             dialog.dismiss();
-                            InsertUserDetails(userDetailsList);
+                            InsertUserDetails(userDetailsList, hobliList);
                         }, error -> {
                             error.printStackTrace();
                             dialog.dismiss();
@@ -163,7 +166,7 @@ public class OTPVerifyCallback implements OTPVerifyInterface {
                 );
     }
 
-    public void InsertUserDetails(List<USER_DETAILS> userDetailsList){
+    public void InsertUserDetails(List<USER_DETAILS> userDetailsList, List<Hobli> hobliList){
         ProgressDialog dialog = new ProgressDialog(activity);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
@@ -178,7 +181,7 @@ public class OTPVerifyCallback implements OTPVerifyInterface {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             dialog.dismiss();
-                            startNavigateToDeliveryLaunch();
+                            deleteHobliDetails(hobliList);
                         }, error -> {
                             error.printStackTrace();
                             dialog.dismiss();
@@ -186,10 +189,111 @@ public class OTPVerifyCallback implements OTPVerifyInterface {
                 );
     }
 
+    public void getHobliFromServer(OTPVerifyViewModel viewModel, List<USER_DETAILS> userDetailsList) {
+        ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Validating Please Wait ..");
+        dialog.show();
+
+        SharedPreferences sharedPreferences1 = activity.getSharedPreferences(activity.getString(R.string.Auth), MODE_PRIVATE);
+        String token = sharedPreferences1.getString(activity.getString(R.string.token), null);
+        String tokenType = sharedPreferences1.getString(activity.getString(R.string.token_type), null);
+        String accessToken = tokenType + " " + token;
+
+        String distCode = userDetailsList.get(0).getDistrictCode();
+        String talukCode = userDetailsList.get(0).getTalukCode();
+
+        HobliRequest hobliRequest = new HobliRequest();
+        hobliRequest.setDISTRICT_CODE(distCode);
+        hobliRequest.setTALUK_CODE(talukCode);
+
+        Retrofit client = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
+        API_Interface_Suchane apiService = client.create(API_Interface_Suchane.class);
+        Observable<HobliResponse> responseObservable = apiService.FnGetHobli(accessToken, hobliRequest);
+        responseObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((result) -> {
+                    dialog.dismiss();
+                    if (result.getRESPONSE_CODE().contains("200")) {
+                        if (result.getHobliList().size() > 0) {
+                            List<Hobli> hobliList;
+                            Log.d("result.getHobliListsize", ""+result.getHobliList().size());
+                            for (int i = 0; i<result.getHobliList().size();i++){
+                                Log.d("result.i", ""+i);
+                                result.getHobliList().get(i).setDISTRICT_CODE(distCode);
+                                result.getHobliList().get(i).setTALUKA_CODE(talukCode);
+                                if (i==result.getHobliList().size()-1){
+                                    hobliList = result.getHobliList();
+                                    saveRequiredInfo(viewModel, userDetailsList, hobliList);
+                                }
+                            }
+
+                        } else {
+                            onBackPressed();
+                            Toast.makeText(activity, "" + result.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        onBackPressed();
+                        Toast.makeText(activity, "" + result.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
+                    }
+                }, (error) -> {
+                    dialog.dismiss();
+                    error.printStackTrace();
+                    Toast.makeText(activity, ""+error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                });
+
+    }
+
     private void startNavigateToDeliveryLaunch() {
         Intent intent = new Intent(activity, MainActivity.class);
         activity.startActivity(intent);
         activity.finish();
+    }
+
+    public void deleteHobliDetails(List<Hobli> hobliList){
+        ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Loading Data Wait ..");
+        dialog.show();
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(activity)
+                        .getDataBaseDao()
+                        .deleteHobliDetails())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                            dialog.dismiss();
+                            InsertHobliDetails(hobliList);
+                        }, error -> {
+                            error.printStackTrace();
+                            dialog.dismiss();
+                        }
+                );
+    }
+
+    public void InsertHobliDetails(List<Hobli> hobliList){
+        ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Loading Data Wait ..");
+        dialog.show();
+
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(activity)
+                        .getDataBaseDao()
+                        .InsertHobliDetails(hobliList))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                            dialog.dismiss();
+                            startNavigateToDeliveryLaunch();
+                        }, error -> {
+                            error.printStackTrace();
+                            dialog.dismiss();
+                        }
+                );
     }
 
     @Override
@@ -241,7 +345,7 @@ public class OTPVerifyCallback implements OTPVerifyInterface {
     }
 
     private void onBackPressed(){
-        Intent intent = new Intent(activity, SignInCallback.class);
+        Intent intent = new Intent(activity, SignIn.class);
         activity.startActivity(intent);
         activity.finish();
     }

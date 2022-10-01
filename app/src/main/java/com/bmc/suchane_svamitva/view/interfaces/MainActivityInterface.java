@@ -7,6 +7,9 @@ package com.bmc.suchane_svamitva.view.interfaces;
 import com.bmc.suchane_svamitva.view_model.MainActivityViewModel;
 
 public interface MainActivityInterface {
-    void onNavigateToNext();
+    void onNavigateToNext(MainActivityViewModel viewModel);
     void getUserDistrict(MainActivityViewModel viewModel);
+    void getUserTaluk(MainActivityViewModel viewModel);
+    void getHobli(MainActivityViewModel viewModel);
+    void getVillage(MainActivityViewModel viewModel);
 }

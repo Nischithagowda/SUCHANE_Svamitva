@@ -13,17 +13,18 @@ import androidx.databinding.ObservableInt;
 
 public class SelectActivityViewModel {
     SelectActivityInterface selectActivityInterface;
-    public final ObservableInt districtCode = new ObservableInt(0);
+    public final ObservableField<String> districtCode = new ObservableField<>(null);
     public final ObservableField<String> districtName = new ObservableField<>("District Name");
-    public final ObservableField<String> talukCode = new ObservableField<>("");
+    public final ObservableField<String> talukCode = new ObservableField<>(null);
     public final ObservableField<String> talukName = new ObservableField<>("Taluk Name");
-    public final ObservableInt hobliCode = new ObservableInt(0);
+    public final ObservableField<String> hobliCode = new ObservableField<>(null);
     public final ObservableField<String> hobliName = new ObservableField<>("Hobli Name");
-    public final ObservableField<String> villageCode = new ObservableField<>("");
+    public final ObservableField<String> villageCode = new ObservableField<>(null);
     public final ObservableField<String> villageName = new ObservableField<>("Village Name");
 
     public SelectActivityViewModel(SelectActivityInterface selectActivityInterface) {
         this.selectActivityInterface = selectActivityInterface;
+        selectActivityInterface.loadJurisdiction(this);
     }
 
     public void onClickNotice(View view) {

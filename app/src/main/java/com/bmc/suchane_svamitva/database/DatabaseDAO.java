@@ -5,7 +5,10 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import com.bmc.suchane_svamitva.model.District;
+import com.bmc.suchane_svamitva.model.Hobli;
+import com.bmc.suchane_svamitva.model.Taluka;
 import com.bmc.suchane_svamitva.model.USER_DETAILS;
+import com.bmc.suchane_svamitva.model.Village;
 
 import java.util.List;
 
@@ -32,6 +35,31 @@ public interface DatabaseDAO {
     List<District> getUserDistrict();
 
     @Query("Select DistrictCode, TalukCode, BhoomiTalukName from USER_DETAILS where DistrictCode = :DistrictCode")
-    List<District> getUserTaluk(String DistrictCode);
+    List<Taluka> getUserTaluk(String DistrictCode);
 
+    //Hobli Tbl
+    @Insert
+    Long[] InsertHobliDetails(List<Hobli> hobliList);
+
+    @Query("SELECT CASE WHEN EXISTS (SELECT * FROM Hobli)THEN CAST(1 AS BIT)ELSE CAST(0 AS BIT) END")
+    Boolean isHobliDetailsAvailable();
+
+    @Query("delete from Hobli")
+    int deleteHobliDetails();
+
+    @Query("Select * from Hobli where DISTRICT_CODE = :DistrictCode and TALUKA_CODE = :TalukCode")
+    List<Hobli> getHobliDetails(String DistrictCode, String TalukCode);
+
+    //Village Tbl
+    @Insert
+    Long[] InsertVillageDetails(List<Village> villageList);
+
+    @Query("SELECT CASE WHEN EXISTS (SELECT * FROM Village)THEN CAST(1 AS BIT)ELSE CAST(0 AS BIT) END")
+    Boolean isVillageDetailsAvailable();
+
+    @Query("delete from Village where DISTRICT_CODE = :DistrictCode and TALUK_CODE = :TalukCode and HOBLI_CODE")
+    int deleteVillageDetails(String DistrictCode, String TalukCode, String HobliCode);
+
+    @Query("Select * from Village where DISTRICT_CODE = :DistrictCode and TALUK_CODE = :TalukCode and HOBLI_CODE")
+    List<Village> getVillageDetails(String DistrictCode, String TalukCode, String HobliCode);
 }
