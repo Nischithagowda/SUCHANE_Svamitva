@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 
 import com.bmc.suchane_svamitva.view.interfaces.NoticeMapsInterface;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;

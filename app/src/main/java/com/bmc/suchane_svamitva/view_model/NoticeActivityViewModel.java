@@ -16,10 +16,10 @@ import com.bmc.suchane_svamitva.view.interfaces.NoticeActivityInterface;
 
 public class NoticeActivityViewModel {
     NoticeActivityInterface noticeActivityInterface;
-    public final ObservableField<String> noticeNumber = new ObservableField<>("1234");
-    public final ObservableField<String> addressCode = new ObservableField<>("34567");
-    public final ObservableField<String> Lat = new ObservableField<>("12.567");
-    public final ObservableField<String> Long = new ObservableField<>("77.567");
+    public final ObservableField<String> noticeNumber = new ObservableField<>("");
+    public final ObservableField<String> addressCode = new ObservableField<>("");
+    public final ObservableField<String> ownerLat = new ObservableField<>("");
+    public final ObservableField<String> ownerLong = new ObservableField<>("");
     public ObservableBoolean fieldEnable = new ObservableBoolean(true);
     public final ObservableField<String> doorNoError = new ObservableField<>();
     public final ObservableField<String> doorNo = new ObservableField<>("");
@@ -48,6 +48,7 @@ public class NoticeActivityViewModel {
 
     public NoticeActivityViewModel(NoticeActivityInterface noticeActivityInterface) {
         this.noticeActivityInterface = noticeActivityInterface;
+        noticeActivityInterface.loadData(this);
     }
 
     public void capturePropertyPicture(View view){

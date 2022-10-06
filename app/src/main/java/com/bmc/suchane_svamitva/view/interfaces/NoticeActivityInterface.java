@@ -7,4 +7,5 @@ public interface NoticeActivityInterface {
     void getUserTaluk(NoticeActivityViewModel viewModel);
     void getHobli(NoticeActivityViewModel viewModel);
     void getVillage(NoticeActivityViewModel viewModel);
+    void loadData(NoticeActivityViewModel viewModel);
 }

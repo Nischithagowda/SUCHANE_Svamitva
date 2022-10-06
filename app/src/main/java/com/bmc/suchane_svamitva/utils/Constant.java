@@ -34,6 +34,7 @@ public class Constant {
     public static final String PLACE = "Location_User";
     public static final String BUNDLE_DATA = "bundle";
     public static final String LOCATION_DATA = "location_data";
+    public static final int LOCATION_REQ = 100;
     Activity activity;
 
     public Constant(Activity activity) {

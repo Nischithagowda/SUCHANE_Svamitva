@@ -7,6 +7,8 @@ public class UserLatLon implements Serializable {
     private double longitude;
     private double accuracy;
     private String address;
+    private String NoticeNo;
+    private String addressCode;
 
     public String getAddress() {
         return address;
@@ -38,5 +40,21 @@ public class UserLatLon implements Serializable {
 
     public void setAccuracy(double accuracy) {
         this.accuracy = accuracy;
+    }
+
+    public String getNoticeNo() {
+        return NoticeNo;
+    }
+
+    public void setNoticeNo(String noticeNo) {
+        NoticeNo = noticeNo;
+    }
+
+    public String getAddressCode() {
+        return addressCode;
+    }
+
+    public void setAddressCode(String addressCode) {
+        this.addressCode = addressCode;
     }
 }

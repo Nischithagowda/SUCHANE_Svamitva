@@ -116,7 +116,7 @@
                                 android:layout_weight="1">
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="0dp"
-                                    android:layout_weight="1"
+                                    android:layout_weight="0.3"
                                     android:layout_height="match_parent"
                                     android:text="@string/lat"
                                     style="@style/text_view" />
@@ -133,7 +133,7 @@
                                     android:layout_width="0dp"
                                     android:layout_weight="1"
                                     android:layout_height="match_parent"
-                                    android:text="@{viewModel.Lat}"
+                                    android:text="@{viewModel.ownerLat}"
                                     style="@style/text_view" />
                             </LinearLayout>
 
@@ -145,7 +145,7 @@
                                 android:layout_weight="1">
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="0dp"
-                                    android:layout_weight="1"
+                                    android:layout_weight="0.3"
                                     android:layout_height="match_parent"
                                     android:text="@string/long1"
                                     style="@style/text_view" />
@@ -162,7 +162,7 @@
                                     android:layout_width="0dp"
                                     android:layout_weight="1"
                                     android:layout_height="match_parent"
-                                    android:text="@{viewModel.Long}"
+                                    android:text="@{viewModel.ownerLong}"
                                     style="@style/text_view" />
                             </LinearLayout>
                         </LinearLayout>

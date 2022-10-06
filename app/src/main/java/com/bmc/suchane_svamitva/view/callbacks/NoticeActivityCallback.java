@@ -1,10 +1,15 @@
 package com.bmc.suchane_svamitva.view.callbacks;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import com.bmc.suchane_svamitva.database.DBConnection;
 import com.bmc.suchane_svamitva.model.District;
 import com.bmc.suchane_svamitva.model.Hobli;
 import com.bmc.suchane_svamitva.model.Taluka;
+import com.bmc.suchane_svamitva.model.UserLatLon;
 import com.bmc.suchane_svamitva.model.Village;
+import com.bmc.suchane_svamitva.utils.Constant;
 import com.bmc.suchane_svamitva.view.interfaces.NoticeActivityInterface;
 import com.bmc.suchane_svamitva.view.ui.NoticeActivity;
 import com.bmc.suchane_svamitva.view_model.NoticeActivityViewModel;
@@ -18,6 +23,28 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
 
     public NoticeActivityCallback(NoticeActivity activity) {
         this.activity = activity;
+    }
+
+    @Override
+    public void loadData(NoticeActivityViewModel viewModel){
+        Intent intent = activity.getIntent();
+        Bundle args = intent.getBundleExtra(Constant.BUNDLE_DATA);
+        UserLatLon address = (UserLatLon) args.getSerializable(Constant.LOCATION_DATA);
+        viewModel.ownerLat.set(""+address.getLatitude());
+        viewModel.ownerLong.set(""+address.getLongitude());
+        viewModel.noticeNumber.set(address.getNoticeNo());
+        viewModel.addressCode.set(address.getAddressCode());
+        String adr=address.getAddress();
+        String[] adrs =adr.split(",");
+        if(adrs.length>0){
+            viewModel.doorNo.set(adrs[0].trim());
+        }
+        if(adrs.length>1){
+            viewModel.building.set(adrs[1].trim());
+        }
+        if(adrs.length>2){
+            viewModel.street.set(adrs[2].trim());
+        }
     }
 
     @Override
