@@ -54,7 +54,7 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
         try {
             if (checkLocationPermission()) {
                 LatLng latLng = new LatLng(12.9716, 77.5946);
-                viewModel.choosedLocationMarker.set(Objects.requireNonNull(viewModel.googleMap.get()).addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin))));
+                viewModel.choosedLocationMarker.set(Objects.requireNonNull(viewModel.googleMap.get()).addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.mpin1))));
                 Objects.requireNonNull(viewModel.googleMap.get()).setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 Objects.requireNonNull(viewModel.googleMap.get()).moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 Objects.requireNonNull(viewModel.googleMap.get()).animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
@@ -90,7 +90,7 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
     public void onConfirmLocation(NoticeMapsViewModel viewModel) {
         if (checkLocationPermission()) {
             LatLng latLng = new LatLng(12.9716, 77.5946);
-            viewModel.choosedLocationMarker.set(Objects.requireNonNull(viewModel.googleMap.get()).addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin))));
+            viewModel.choosedLocationMarker.set(Objects.requireNonNull(viewModel.googleMap.get()).addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.mpin1))));
             Objects.requireNonNull(viewModel.googleMap.get()).setMapType(GoogleMap.MAP_TYPE_HYBRID);
             Objects.requireNonNull(viewModel.googleMap.get()).moveCamera(CameraUpdateFactory.newLatLng(latLng));
             Objects.requireNonNull(viewModel.googleMap.get()).animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));

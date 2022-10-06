@@ -6,6 +6,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -52,9 +54,13 @@ public class OTPVerifyCallback implements OTPVerifyInterface {
         boolean status = !(TextUtils.isEmpty(otp) | otp.length() != 6);
         if (status) {
             viewModel.otpNumber.set(Constant.convertToInt(otp));
-            validateOTPWithServer(viewModel);
+            if (isNetworkAvailable()) {
+                validateOTPWithServer(viewModel);
+            } else {
+                Toast.makeText(activity, activity.getString(R.string.please_switch_on_the_internet), Toast.LENGTH_SHORT).show();
+            }
         } else {
-            Toast.makeText(activity, "Enter Valid OTP To Proceed", Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, activity.getString(R.string.enter_valid_otp_to_proceed), Toast.LENGTH_LONG).show();
         }
 
     }
@@ -342,6 +348,12 @@ public class OTPVerifyCallback implements OTPVerifyInterface {
                     Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                     dialog.dismiss();
                 });
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 
     private void onBackPressed(){

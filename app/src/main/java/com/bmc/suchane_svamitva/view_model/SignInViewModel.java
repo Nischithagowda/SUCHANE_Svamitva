@@ -17,7 +17,7 @@ public class SignInViewModel {
     }
 
     public final ObservableField<String> mobileNumber = new ObservableField<>("");
-    public final ObservableField<String> mobileNumberError = new ObservableField<>(null);
+    public final ObservableField<String> mobileNumberError = new ObservableField<>();
 
     public void onClickNext(View view) {
         String number = mobileNumber.get().trim();

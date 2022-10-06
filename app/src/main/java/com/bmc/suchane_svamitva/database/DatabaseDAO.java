@@ -57,9 +57,9 @@ public interface DatabaseDAO {
     @Query("SELECT CASE WHEN EXISTS (SELECT * FROM Village)THEN CAST(1 AS BIT)ELSE CAST(0 AS BIT) END")
     Boolean isVillageDetailsAvailable();
 
-    @Query("delete from Village where DISTRICT_CODE = :DistrictCode and TALUK_CODE = :TalukCode and HOBLI_CODE")
+    @Query("delete from Village where DISTRICT_CODE = :DistrictCode and TALUK_CODE = :TalukCode and HOBLI_CODE = :HobliCode")
     int deleteVillageDetails(String DistrictCode, String TalukCode, String HobliCode);
 
-    @Query("Select * from Village where DISTRICT_CODE = :DistrictCode and TALUK_CODE = :TalukCode and HOBLI_CODE")
+    @Query("Select * from Village where DISTRICT_CODE = :DistrictCode and TALUK_CODE = :TalukCode and HOBLI_CODE = :HobliCode")
     List<Village> getVillageDetails(String DistrictCode, String TalukCode, String HobliCode);
 }

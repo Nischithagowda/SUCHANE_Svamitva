@@ -7,6 +7,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,17 +27,13 @@ public class OwnerAdapter  extends RecyclerView.Adapter<OwnerAdapter.DataViewHol
     OwnerListInterface ownerListInterface;
 
 
-    public OwnerAdapter(OwnerListInterface ownerListInterface
-    ) {
-        this.ownerListInterface
-                =ownerListInterface;
-        this.data=new ArrayList<>();
-        this.mOwnerDisplayFilterList =new ArrayList<>();
-
-
+    public OwnerAdapter(OwnerListInterface ownerListInterface) {
+        this.ownerListInterface = ownerListInterface;
+        this.data = new ArrayList<>();
+        this.mOwnerDisplayFilterList = new ArrayList<>();
     }
 
-
+    @NonNull
     @Override
     public OwnerAdapter.DataViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.owner_list,
@@ -58,13 +55,13 @@ public class OwnerAdapter  extends RecyclerView.Adapter<OwnerAdapter.DataViewHol
     }
 
     @Override
-    public void onViewAttachedToWindow(OwnerAdapter.DataViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull OwnerAdapter.DataViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         holder.bind();
     }
 
     @Override
-    public void onViewDetachedFromWindow(OwnerAdapter.DataViewHolder holder) {
+    public void onViewDetachedFromWindow(@NonNull OwnerAdapter.DataViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
         holder.unbind();
     }
@@ -77,7 +74,7 @@ public class OwnerAdapter  extends RecyclerView.Adapter<OwnerAdapter.DataViewHol
             this.data.addAll(data);
             this.mOwnerDisplayFilterList.addAll(data);
         }
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 
     public void addData(@Nullable List<OwnerTbl> data) {
@@ -91,11 +88,6 @@ public class OwnerAdapter  extends RecyclerView.Adapter<OwnerAdapter.DataViewHol
         }
         notifyDataSetChanged();
     }
-
-
-
-
-
 
     /* package */ static class DataViewHolder extends RecyclerView.ViewHolder {
         /* package */ OwnerListBinding binding;

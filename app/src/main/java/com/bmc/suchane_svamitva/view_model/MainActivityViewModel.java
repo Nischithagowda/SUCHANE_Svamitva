@@ -21,24 +21,25 @@ import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
 import androidx.databinding.ObservableList;
 
+import java.util.Objects;
+
 public class MainActivityViewModel {
     MainActivityInterface mainActivityInterface;
     public final ObservableList<District> districtNameList = new ObservableArrayList<>();
-    public final ObservableInt selectedItemPosition = new ObservableInt(0);
-    public final ObservableField<String> districtCode = new ObservableField<>(null);
-    public final ObservableField<String> districtError = new ObservableField<>(null);
+    public final ObservableField<String> districtCode = new ObservableField<>();
+    public final ObservableField<String> districtError = new ObservableField<>();
     public final ObservableField<String> districtName = new ObservableField<>("");
     public final ObservableList<Taluka> talukNameList = new ObservableArrayList<>();
     public final ObservableField<String> talukCode = new ObservableField<>("");
-    public final ObservableField<String> talukError = new ObservableField<>(null);
+    public final ObservableField<String> talukError = new ObservableField<>();
     public final ObservableField<String> talukName = new ObservableField<>("");
     public final ObservableList<Hobli> hobliNameList = new ObservableArrayList<>();
     public final ObservableField<String> hobliName = new ObservableField<>("");
-    public final ObservableField<String> hobliError = new ObservableField<>(null);
+    public final ObservableField<String> hobliError = new ObservableField<>();
     public final ObservableField<String> hobliCode = new ObservableField<>("");
     public final ObservableList<Village> villageNameList = new ObservableArrayList<>();
     public final ObservableField<String> villageName = new ObservableField<>("");
-    public final ObservableField<String> villageError = new ObservableField<>(null);
+    public final ObservableField<String> villageError = new ObservableField<>();
     public final ObservableField<String> villageCode = new ObservableField<>("");
 
     public MainActivityViewModel(MainActivityInterface mainActivityInterface) {
@@ -46,42 +47,47 @@ public class MainActivityViewModel {
         mainActivityInterface.getUserDistrict(this);
     }
 
-    public void onSelectDistrictItem(AdapterView<?> parent, View view, int pos, long id)
-    {
-        this.districtCode.set(districtNameList.get(pos).getDISTRICT_CODE());
-        this.districtName.set(districtNameList.get(pos).getDISTRICT_NAME());
-//        Log.d("getDISTRICT_CODE", ""+districtNameList.get(pos).getDISTRICT_CODE());
-//        Log.d("getDISTRICT_NAME", ""+districtNameList.get(pos).getDISTRICT_NAME());
-//        Log.d("getItem", ""+parent.getAdapter().getItem(pos));
-//        Log.d("parent.getSelectedItem", ""+parent.getSelectedItem());
-
+    public void onContactDistrictItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
+        District district = (District) parent.getItemAtPosition(position);
+        this.districtName.set(district.getDISTRICT_NAME());
+        this.districtCode.set(district.getDISTRICT_CODE());
+        districtError.set(null);
+        this.talukCode.set("");
+        this.talukName.set("");
+        this.hobliCode.set("");
+        this.hobliName.set("");
+        this.villageCode.set("");
+        this.villageName.set("");
         mainActivityInterface.getUserTaluk(this);
-
     }
 
-    public void onSelectTalukItem(AdapterView<?> parent, View view, int pos, long id)
-    {
-        this.talukCode.set(talukNameList.get(pos).getTALUKA_CODE());
-        this.talukName.set(talukNameList.get(pos).getTALUKA_NAME());
-//        Log.d("getDISTRICT_CODE", ""+talukNameList.get(pos).getDISTRICT_CODE());
-//        Log.d("getTALUKA_CODE", ""+talukNameList.get(pos).getTALUKA_CODE());
-//        Log.d("getDISTRICT_NAME", ""+talukNameList.get(pos).getTALUKA_NAME());
-//        Log.d("getItem", ""+parent.getAdapter().getItem(pos));
-//        Log.d("parent.getSelectedItem", ""+parent.getSelectedItem());
+    public void onContactTalukItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
+        Taluka taluka = (Taluka) parent.getItemAtPosition(position);
+        this.talukName.set(taluka.getTALUKA_NAME());
+        this.talukCode.set(taluka.getTALUKA_CODE());
+        talukError.set(null);
+        this.hobliCode.set("");
+        this.hobliName.set("");
+        this.villageCode.set("");
+        this.villageName.set("");
         mainActivityInterface.getHobli(this);
     }
 
-    public void onSelectHobliItem(AdapterView<?> parent, View view, int pos, long id)
-    {
-        this.hobliCode.set(hobliNameList.get(pos).getHOBLI_CODE());
-        this.hobliName.set(hobliNameList.get(pos).getHOBLI_NAME());
+    public void onContactHobliItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
+        Hobli hobli = (Hobli) parent.getItemAtPosition(position);
+        this.hobliName.set(hobli.getHOBLI_NAME());
+        this.hobliCode.set(hobli.getHOBLI_CODE());
+        hobliError.set(null);
+        this.villageCode.set("");
+        this.villageName.set("");
         mainActivityInterface.getVillage(this);
     }
 
-    public void onSelectVillageItem(AdapterView<?> parent, View view, int pos, long id)
-    {
-        this.villageCode.set(villageNameList.get(pos).getVILLAGE_CODE());
-        this.villageName.set(villageNameList.get(pos).getVILLAGE_NAME());
+    public void onContactVillageItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
+        Village village = (Village) parent.getItemAtPosition(position);
+        this.villageName.set(village.getVILLAGE_NAME());
+        this.villageCode.set(village.getVILLAGE_CODE());
+        villageError.set(null);
     }
 
     public void onClickFetchData(View view) {
@@ -91,18 +97,18 @@ public class MainActivityViewModel {
         String villCode = this.villageCode.get();
 
         boolean status = false;
-        if (TextUtils.isEmpty(distCode)) {
+        if (TextUtils.isEmpty(distCode) || Objects.equals(distCode, "0")) {
             status = true;
-            Toast.makeText(view.getContext(), "District is required", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(talukCode)) {
+            districtError.set("District is required");
+        } else if (TextUtils.isEmpty(talukCode) || Objects.equals(talukCode, "0")) {
             status = true;
-            Toast.makeText(view.getContext(), "Taluk is required", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(hobliCode)) {
+            talukError.set("Taluk is required");
+        } else if (TextUtils.isEmpty(hobliCode)|| Objects.equals(hobliCode, "0")) {
             status = true;
-            Toast.makeText(view.getContext(), "Hobli is required", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(villCode)) {
+            hobliError.set("Hobli is required");
+        } else if (TextUtils.isEmpty(villCode)|| Objects.equals(villCode, "0")) {
             status = true;
-            Toast.makeText(view.getContext(), "Village is required", Toast.LENGTH_SHORT).show();
+            villageError.set("Village is required");
         }
 
         if (!status) {

@@ -61,16 +61,11 @@ public class MainActivityCallback implements MainActivityInterface {
                 .subscribe(result ->{
                     viewModel.districtNameList.clear();
                     if (result.size()>0) {
-                        District district = new District();
-                        district.setDISTRICT_CODE("0");
-                        district.setDISTRICT_NAME("Select District");
-                        result.add(0, district);
                         viewModel.districtNameList.addAll(result);
-
                     } else {
                         District district = new District();
                         district.setDISTRICT_CODE("0");
-                        district.setDISTRICT_NAME("Select District");
+                        district.setDISTRICT_NAME("No District");
                         viewModel.districtNameList.add(district);
                     }
                 }, error -> error.printStackTrace());
@@ -88,20 +83,14 @@ public class MainActivityCallback implements MainActivityInterface {
                 .subscribe(result ->{
                     viewModel.talukNameList.clear();
                     if (result.size()>0) {
-                        Taluka taluka = new Taluka();
-                        taluka.setDISTRICT_CODE("0");
-                        taluka.setTALUKA_CODE("0");
-                        taluka.setTALUKA_NAME("Select Taluk");
-                        result.add(0, taluka);
                         viewModel.talukNameList.addAll(result);
 
                     } else {
                         Taluka taluka = new Taluka();
                         taluka.setDISTRICT_CODE("0");
                         taluka.setTALUKA_CODE("0");
-                        taluka.setTALUKA_NAME("Select Taluk");
+                        taluka.setTALUKA_NAME("No Taluk");
                         viewModel.talukNameList.add(taluka);
-                        Toast.makeText(activity, "Select District", Toast.LENGTH_SHORT).show();
                     }
                 }, error -> error.printStackTrace());
     }
@@ -117,22 +106,14 @@ public class MainActivityCallback implements MainActivityInterface {
                 .subscribe(result ->{
                     viewModel.hobliNameList.clear();
                     if (result.size()>0) {
-                        Hobli hobli = new Hobli();
-                        hobli.setDISTRICT_CODE("0");
-                        hobli.setTALUKA_CODE("0");
-                        hobli.setHOBLI_CODE("0");
-                        hobli.setHOBLI_NAME("Select Hobli");
-                        result.add(0, hobli);
                         viewModel.hobliNameList.addAll(result);
-
                     } else {
                         Hobli hobli = new Hobli();
                         hobli.setDISTRICT_CODE("0");
                         hobli.setTALUKA_CODE("0");
                         hobli.setHOBLI_CODE("0");
-                        hobli.setHOBLI_NAME("Select Hobli");
+                        hobli.setHOBLI_NAME("No Hobli");
                         viewModel.hobliNameList.add(hobli);
-                        Toast.makeText(activity, "Select Taluk", Toast.LENGTH_SHORT).show();
                     }
                 }, error -> error.printStackTrace());
     }
@@ -149,24 +130,15 @@ public class MainActivityCallback implements MainActivityInterface {
                 .subscribe(result ->{
                     viewModel.villageNameList.clear();
                     if (result.size()>0) {
-                        Village village = new Village();
-                        village.setDISTRICT_CODE("0");
-                        village.setTALUK_CODE("0");
-                        village.setHOBLI_CODE("0");
-                        village.setVILLAGE_CODE("0");
-                        village.setVILLAGE_NAME("Select Village");
-                        result.add(0, village);
                         viewModel.villageNameList.addAll(result);
-
                     } else {
                         Village village = new Village();
                         village.setDISTRICT_CODE("0");
                         village.setTALUK_CODE("0");
                         village.setHOBLI_CODE("0");
                         village.setVILLAGE_CODE("0");
-                        village.setVILLAGE_NAME("Select Village");
+                        village.setVILLAGE_NAME("No Village");
                         viewModel.villageNameList.add(village);
-                        //Toast.makeText(activity, "Select Hobli", Toast.LENGTH_SHORT).show();
                         getVillageFromServer(viewModel);
                     }
                 }, error -> error.printStackTrace());
@@ -227,7 +199,7 @@ public class MainActivityCallback implements MainActivityInterface {
                         Toast.makeText(activity, "" + error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                     });
         } else {
-            Toast.makeText(activity, "Please Switch on the Internet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, activity.getString(R.string.please_switch_on_the_internet), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -268,20 +240,13 @@ public class MainActivityCallback implements MainActivityInterface {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                            dialog.dismiss();
-                            Village village = new Village();
-                            village.setDISTRICT_CODE("0");
-                            village.setTALUK_CODE("0");
-                            village.setHOBLI_CODE("0");
-                            village.setVILLAGE_CODE("0");
-                            village.setVILLAGE_NAME("Select Village");
-                            villageList.add(0, village);
-                            viewModel.villageNameList.addAll(villageList);
-                        }, error -> {
-                            error.printStackTrace();
-                            dialog.dismiss();
-                        }
-                );
+                    dialog.dismiss();
+                    viewModel.villageNameList.clear();
+                    viewModel.villageNameList.addAll(villageList);
+                    }, error -> {
+                    error.printStackTrace();
+                    dialog.dismiss();
+                });
     }
 
     private boolean isNetworkAvailable() {
@@ -293,14 +258,14 @@ public class MainActivityCallback implements MainActivityInterface {
     @Override
     public void onNavigateToNext(MainActivityViewModel viewModel){
         Intent intent = new Intent(activity, SelectActivity.class);
-        intent.putExtra("districtCode", ""+viewModel.districtCode);
-        intent.putExtra("districtName", ""+viewModel.districtName);
-        intent.putExtra("talukCode", ""+viewModel.talukCode);
-        intent.putExtra("talukName", ""+viewModel.talukName);
-        intent.putExtra("hobliCode", ""+viewModel.hobliCode);
-        intent.putExtra("hobliName", ""+viewModel.hobliName);
-        intent.putExtra("villageCode", ""+viewModel.villageCode);
-        intent.putExtra("villageName", ""+viewModel.villageName);
+        intent.putExtra("districtCode", ""+viewModel.districtCode.get());
+        intent.putExtra("districtName", ""+viewModel.districtName.get());
+        intent.putExtra("talukCode", ""+viewModel.talukCode.get());
+        intent.putExtra("talukName", ""+viewModel.talukName.get());
+        intent.putExtra("hobliCode", ""+viewModel.hobliCode.get());
+        intent.putExtra("hobliName", ""+viewModel.hobliName.get());
+        intent.putExtra("villageCode", ""+viewModel.villageCode.get());
+        intent.putExtra("villageName", ""+viewModel.villageName.get());
         activity.startActivity(intent);
     }
 }

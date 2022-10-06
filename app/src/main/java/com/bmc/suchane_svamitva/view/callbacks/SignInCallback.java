@@ -1,9 +1,12 @@
 package com.bmc.suchane_svamitva.view.callbacks;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.widget.Toast;
 
 import com.bmc.suchane_svamitva.R;
@@ -38,49 +41,53 @@ public class SignInCallback implements SignInInterface, ActivityCompat.OnRequest
 
     @Override
     public void sendOtp(String number) {
-        ProgressDialog dialog = new ProgressDialog(activity);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-        dialog.setMessage("Checking Please Wait ..");
-        dialog.show();
+        if (isNetworkAvailable()) {
+            ProgressDialog dialog = new ProgressDialog(activity);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            dialog.setMessage("Checking Please Wait ..");
+            dialog.show();
 
-        Retrofit client = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
-        API_Interface_Suchane apiService = client.create(API_Interface_Suchane.class);
-        Observable<TokenRes> serviceToken = apiService.getToken(activity.getString(R.string.api_user_id), activity.getString(R.string.api_password), activity.getString(R.string.grant_type));
-        serviceToken.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((result) -> {
-                    SharedPreferences.Editor editor = activity.getSharedPreferences(activity.getString(R.string.Auth), MODE_PRIVATE).edit();
-                    editor.putString(activity.getString(R.string.token), result.getAccessToken());
-                    editor.putString(activity.getString(R.string.token_type),result.getTokenType());
-                    editor.putString(activity.getString(R.string.refresh_tkn), result.getRefreshToken());
-                    editor.apply();
+            Retrofit client = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
+            API_Interface_Suchane apiService = client.create(API_Interface_Suchane.class);
+            Observable<TokenRes> serviceToken = apiService.getToken(activity.getString(R.string.api_user_id), activity.getString(R.string.api_password), activity.getString(R.string.grant_type));
+            serviceToken.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe((result) -> {
+                        SharedPreferences.Editor editor = activity.getSharedPreferences(activity.getString(R.string.Auth), MODE_PRIVATE).edit();
+                        editor.putString(activity.getString(R.string.token), result.getAccessToken());
+                        editor.putString(activity.getString(R.string.token_type), result.getTokenType());
+                        editor.putString(activity.getString(R.string.refresh_tkn), result.getRefreshToken());
+                        editor.apply();
 
-                    String accessToken = result.getTokenType() + " " + result.getAccessToken();
+                        String accessToken = result.getTokenType() + " " + result.getAccessToken();
 
-                    SMS_Request sms_request = new SMS_Request();
-                    sms_request.setMobileNumberToSendOTP(number);
+                        SMS_Request sms_request = new SMS_Request();
+                        sms_request.setMobileNumberToSendOTP(number);
 
-                    Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
-                    API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
-                    Observable<SMS_Response> responseObservable = apiService1.FnSendOTP(accessToken, sms_request);
-                    responseObservable.subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe((result1) -> {
-                                dialog.dismiss();
-                                if (result1.getRESPONSE_CODE().contains("200")) {
-                                    onNavigateToOtpVerify(number);
-                                } else {
-                                    Toast.makeText(activity, ""+result1.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
-                                }
-                            }, (error) -> {
-                                dialog.dismiss();
-                                Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                            });
-                }, (error) -> {
-                    Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                    dialog.dismiss();
-                });
+                        Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
+                        API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
+                        Observable<SMS_Response> responseObservable = apiService1.FnSendOTP(accessToken, sms_request);
+                        responseObservable.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe((result1) -> {
+                                    dialog.dismiss();
+                                    if (result1.getRESPONSE_CODE().contains("200")) {
+                                        onNavigateToOtpVerify(number);
+                                    } else {
+                                        Toast.makeText(activity, "" + result1.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }, (error) -> {
+                                    dialog.dismiss();
+                                    Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                });
+                    }, (error) -> {
+                        Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+                    });
+        } else {
+            Toast.makeText(activity, activity.getString(R.string.please_switch_on_the_internet), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onNavigateToOtpVerify(String number) {
@@ -100,5 +107,11 @@ public class SignInCallback implements SignInInterface, ActivityCompat.OnRequest
                 Toast.makeText(activity, "Permission denied", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 }

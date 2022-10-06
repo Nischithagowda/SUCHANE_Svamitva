@@ -48,35 +48,47 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/select_jurisdiction"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_marginTop="10dp"/>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:layout_margin="10dp">
 
-                            <Spinner
+                            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                                app:items="@{viewModel.districtNameList}"
+                                android:text="@{viewModel.districtName}"
+                                android:error="@{viewModel.districtError}"
+                                android:onItemClick="@{viewModel::onContactDistrictItemClick}"
                                 android:layout_width="0dp"
-                                android:layout_height="48dp"
                                 android:layout_weight="1"
-                                android:entries="@{viewModel.districtNameList}"
-                                android:onItemSelected="@{(parent,view,pos,id)->viewModel.onSelectDistrictItem(parent,view,pos,id)}"
+                                android:layout_height="wrap_content"
                                 android:hint="@string/select_district"
-                                android:gravity="center"
-                                android:textColor="@android:color/black"
-                                android:textColorHint="@android:color/darker_gray"
-                                />
+                                app:met_textColor="@android:color/black"
+                                app:met_textColorHint="@android:color/darker_gray" />
 
-                            <Spinner
+                            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                                app:items="@{viewModel.talukNameList}"
+                                android:text="@{viewModel.talukName}"
+                                android:error="@{viewModel.talukError}"
+                                android:onItemClick="@{viewModel::onContactTalukItemClick}"
                                 android:layout_width="0dp"
-                                android:layout_height="48dp"
                                 android:layout_weight="1"
-                                android:entries="@{viewModel.talukNameList}"
-                                android:onItemSelected="@{(parent,view,pos,id)->viewModel.onSelectTalukItem(parent,view,pos,id)}"
+                                android:layout_height="wrap_content"
                                 android:hint="@string/select_taluk"
-                                android:gravity="center"
-                                android:textColor="@android:color/black"
-                                android:textColorHint="@android:color/darker_gray"
-                                />
+                                app:met_textColor="@android:color/black"
+                                app:met_textColorHint="@android:color/darker_gray"
+                                android:layout_marginStart="10dp"/>
 
                         </LinearLayout>
                         <LinearLayout
@@ -85,29 +97,30 @@
                             android:orientation="horizontal"
                             android:layout_margin="10dp">
 
-                            <Spinner
+                            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                                app:items="@{viewModel.hobliNameList}"
+                                android:text="@{viewModel.hobliName}"
+                                android:error="@{viewModel.hobliError}"
+                                android:onItemClick="@{viewModel::onContactHobliItemClick}"
                                 android:layout_width="0dp"
-                                android:layout_height="48dp"
                                 android:layout_weight="1"
-                                android:entries="@{viewModel.hobliNameList}"
-                                android:onItemSelected="@{(parent,view,pos,id)->viewModel.onSelectHobliItem(parent,view,pos,id)}"
+                                android:layout_height="wrap_content"
                                 android:hint="@string/select_hobli"
-                                android:gravity="center"
-                                android:textColor="@android:color/black"
-                                android:textColorHint="@android:color/darker_gray"
-                                />
+                                app:met_textColor="@android:color/black"
+                                app:met_textColorHint="@android:color/darker_gray" />
 
-                            <Spinner
+                            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                                app:items="@{viewModel.villageNameList}"
+                                android:text="@{viewModel.villageName}"
+                                android:error="@{viewModel.villageError}"
+                                android:onItemClick="@{viewModel::onContactVillageItemClick}"
                                 android:layout_width="0dp"
-                                android:layout_height="48dp"
                                 android:layout_weight="1"
-                                android:entries="@{viewModel.villageNameList}"
-                                android:onItemSelected="@{(parent,view,pos,id)->viewModel.onSelectVillageItem(parent,view,pos,id)}"
+                                android:layout_height="wrap_content"
                                 android:hint="@string/select_village"
-                                android:gravity="center"
-                                android:textColor="@android:color/black"
-                                android:textColorHint="@android:color/darker_gray"
-                                />
+                                app:met_textColor="@android:color/black"
+                                app:met_textColorHint="@android:color/darker_gray"
+                                android:layout_marginStart="10dp"/>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"

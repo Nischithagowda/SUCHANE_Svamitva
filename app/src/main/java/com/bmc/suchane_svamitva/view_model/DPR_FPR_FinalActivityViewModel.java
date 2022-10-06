@@ -21,30 +21,30 @@ public class DPR_FPR_FinalActivityViewModel {
     public final ObservableField<String> Lat = new ObservableField<>("12.567");
     public final ObservableField<String> Long = new ObservableField<>("77.567");
     public ObservableBoolean fieldEnable = new ObservableBoolean(true);
-    public final ObservableField<String> doorNoError = new ObservableField<>(null);
+    public final ObservableField<String> doorNoError = new ObservableField<>();
     public final ObservableField<String> doorNo = new ObservableField<>("");
-    public final ObservableField<String> buildingError = new ObservableField<>(null);
+    public final ObservableField<String> buildingError = new ObservableField<>();
     public final ObservableField<String> building = new ObservableField<>("");
-    public final ObservableField<String> streetError = new ObservableField<>(null);
+    public final ObservableField<String> streetError = new ObservableField<>();
     public final ObservableField<String> street = new ObservableField<>("");
-    public final ObservableField<String> landmarkError = new ObservableField<>(null);
+    public final ObservableField<String> landmarkError = new ObservableField<>();
     public final ObservableField<String> landmark = new ObservableField<>("");
     public final ObservableList<District> districtNameList = new ObservableArrayList<>();
-    public final ObservableField<String> districtError = new ObservableField<>(null);
-    public final ObservableField<String> district = new ObservableField<>("");
-    public final ObservableField<String> districtId = new ObservableField<>("");
+    public final ObservableField<String> districtCode = new ObservableField<>();
+    public final ObservableField<String> districtError = new ObservableField<>();
+    public final ObservableField<String> districtName = new ObservableField<>("");
     public final ObservableList<Taluka> talukNameList = new ObservableArrayList<>();
-    public final ObservableField<String> talukError = new ObservableField<>(null);
-    public final ObservableField<String> taluk = new ObservableField<>("");
-    public final ObservableField<String> talukId = new ObservableField<>("");
+    public final ObservableField<String> talukCode = new ObservableField<>("");
+    public final ObservableField<String> talukError = new ObservableField<>();
+    public final ObservableField<String> talukName = new ObservableField<>("");
     public final ObservableList<Hobli> hobliNameList = new ObservableArrayList<>();
-    public final ObservableField<String> hobliError = new ObservableField<>(null);
-    public final ObservableField<String> hobli = new ObservableField<>("");
-    public final ObservableField<String> hobliId = new ObservableField<>("");
+    public final ObservableField<String> hobliName = new ObservableField<>("");
+    public final ObservableField<String> hobliError = new ObservableField<>();
+    public final ObservableField<String> hobliCode = new ObservableField<>("");
     public final ObservableList<Village> villageNameList = new ObservableArrayList<>();
-    public final ObservableField<String> villageError = new ObservableField<>(null);
-    public final ObservableField<String> village = new ObservableField<>("");
-    public final ObservableField<String> villageId = new ObservableField<>("");
+    public final ObservableField<String> villageName = new ObservableField<>("");
+    public final ObservableField<String> villageError = new ObservableField<>();
+    public final ObservableField<String> villageCode = new ObservableField<>("");
     public final ObservableField<String> mobileNumber = new ObservableField<>("7894561230");
     public final ObservableField<String> ownerName = new ObservableField<>("Test");
 
@@ -80,19 +80,48 @@ public class DPR_FPR_FinalActivityViewModel {
         landmarkError.set(null);
     }
 
-//    public void onContactRuralDistrictItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
-//        District district = (District) parent.getItemAtPosition(position);
-//        this.district.set(district.getDistrictName());
-//        this.districtId.set(district.getDistrictId());
-//        //noticeActivityInterface.loadRuralTaluksList(this);
-//        this.taluk.set("");
-//        this.talukId.set("");
-//        this.hobli.set("");
-//        this.hobliId.set("");
-//        this.village.set("");
-//        this.villageId.set("");
-//
-//    }
+    public void onContactDistrictItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
+        District district = (District) parent.getItemAtPosition(position);
+        this.districtName.set(district.getDISTRICT_NAME());
+        this.districtCode.set(district.getDISTRICT_CODE());
+        districtError.set(null);
+        this.talukCode.set("");
+        this.talukName.set("");
+        this.hobliCode.set("");
+        this.hobliName.set("");
+        this.villageCode.set("");
+        this.villageName.set("");
+        dpr_fpr_finalActivityInterface.getUserTaluk(this);
+    }
+
+    public void onContactTalukItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
+        Taluka taluka = (Taluka) parent.getItemAtPosition(position);
+        this.talukName.set(taluka.getTALUKA_NAME());
+        this.talukCode.set(taluka.getTALUKA_CODE());
+        talukError.set(null);
+        this.hobliCode.set("");
+        this.hobliName.set("");
+        this.villageCode.set("");
+        this.villageName.set("");
+        dpr_fpr_finalActivityInterface.getHobli(this);
+    }
+
+    public void onContactHobliItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
+        Hobli hobli = (Hobli) parent.getItemAtPosition(position);
+        this.hobliName.set(hobli.getHOBLI_NAME());
+        this.hobliCode.set(hobli.getHOBLI_CODE());
+        hobliError.set(null);
+        this.villageCode.set("");
+        this.villageName.set("");
+        dpr_fpr_finalActivityInterface.getVillage(this);
+    }
+
+    public void onContactVillageItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
+        Village village = (Village) parent.getItemAtPosition(position);
+        this.villageName.set(village.getVILLAGE_NAME());
+        this.villageCode.set(village.getVILLAGE_CODE());
+        villageError.set(null);
+    }
 
     public void onClickSaveData(View view) {
 

@@ -55,15 +55,15 @@
                                 android:orientation="horizontal"
                                 android:layout_weight="1">
 
-                                <com.bmc.suchane_svamitva.utils.customfonts.MyTextView
+                                <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="start"
                                     android:padding="2sp"
                                     android:text="@string/district"
-                                    android:textColor="@color/black"
+                                    android:textSize="16sp"
                                     android:textStyle="bold"
-                                    android:textSize="16sp" />
+                                    android:textColor="@color/colorPrimary" />
 
                                 <com.bmc.suchane_svamitva.utils.customfonts.MyTextView
                                     android:layout_width="wrap_content"
@@ -95,15 +95,15 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1">
 
-                                <com.bmc.suchane_svamitva.utils.customfonts.MyTextView
+                                <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="start"
                                     android:padding="2sp"
                                     android:text="@string/taluk"
-                                    android:textColor="@color/black"
+                                    android:textSize="16sp"
                                     android:textStyle="bold"
-                                    android:textSize="16sp" />
+                                    android:textColor="@color/colorPrimary" />
 
                                 <com.bmc.suchane_svamitva.utils.customfonts.MyTextView
                                     android:layout_width="wrap_content"
@@ -142,15 +142,15 @@
                                 android:orientation="horizontal"
                                 android:layout_weight="1">
 
-                                <com.bmc.suchane_svamitva.utils.customfonts.MyTextView
+                                <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="start"
                                     android:padding="2sp"
                                     android:text="@string/hobli"
-                                    android:textColor="@color/black"
+                                    android:textSize="16sp"
                                     android:textStyle="bold"
-                                    android:textSize="16sp" />
+                                    android:textColor="@color/colorPrimary" />
 
                                 <com.bmc.suchane_svamitva.utils.customfonts.MyTextView
                                     android:layout_width="wrap_content"
@@ -183,15 +183,15 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1">
 
-                                <com.bmc.suchane_svamitva.utils.customfonts.MyTextView
+                                <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="start"
                                     android:padding="2sp"
                                     android:text="@string/village"
-                                    android:textColor="@color/black"
+                                    android:textSize="16sp"
                                     android:textStyle="bold"
-                                    android:textSize="16sp" />
+                                    android:textColor="@color/colorPrimary" />
 
                                 <com.bmc.suchane_svamitva.utils.customfonts.MyTextView
                                     android:layout_width="wrap_content"

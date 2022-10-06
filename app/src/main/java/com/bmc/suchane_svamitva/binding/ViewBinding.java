@@ -1,12 +1,13 @@
 package com.bmc.suchane_svamitva.binding;
 
 import android.graphics.Bitmap;
-import android.os.Bundle;
+import android.graphics.Color;
 import android.text.InputType;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.bmc.suchane_svamitva.model.District;
 import com.bmc.suchane_svamitva.model.Hobli;
@@ -14,19 +15,11 @@ import com.bmc.suchane_svamitva.model.OwnerTbl;
 import com.bmc.suchane_svamitva.model.Taluka;
 import com.bmc.suchane_svamitva.model.Village;
 import com.bmc.suchane_svamitva.view.adapter.OwnerAdapter;
-import com.bmc.suchane_svamitva.view_model.MainActivityViewModel;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.jaredrummler.materialspinner.MaterialSpinner;
-import com.weiwangcn.betterspinner.library.BetterSpinner;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.databinding.BindingAdapter;
@@ -79,31 +72,30 @@ public class ViewBinding {
     }
 
     @BindingAdapter({"items"})
-    public static void districtBetterSpinner(BetterSpinner spinner, List<District> entries) {
-        ArrayAdapter<District> adapter = new ArrayAdapter<>(spinner.getContext(), android.R.layout.simple_spinner_dropdown_item, entries);
+    public static void districtSpinner1(com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner spinner, List<District> entries) {
+        ArrayAdapter<District> adapter = new ArrayAdapter<>(spinner.getContext(),
+                android.R.layout.simple_spinner_dropdown_item, entries);
         spinner.setAdapter(adapter);
     }
 
     @BindingAdapter({"items"})
-    public static void districtSpinner(com.jaredrummler.materialspinner.MaterialSpinner spinner, List<District> entries) {
-        ArrayAdapter<District> adapter = new ArrayAdapter<>(spinner.getContext(), android.R.layout.simple_spinner_dropdown_item, entries);
+    public static void talukSpinner1(com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner spinner, List<Taluka> entries) {
+        ArrayAdapter<Taluka> adapter = new ArrayAdapter<>(spinner.getContext(),
+                android.R.layout.simple_spinner_dropdown_item, entries);
         spinner.setAdapter(adapter);
     }
 
     @BindingAdapter({"items"})
-    public static void talukSpinner(com.jaredrummler.materialspinner.MaterialSpinner spinner, List<Taluka> entries) {
-        ArrayAdapter<Taluka> adapter = new ArrayAdapter<>(spinner.getContext(), android.R.layout.simple_spinner_dropdown_item, entries);
+    public static void hoblipinner1(com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner spinner, List<Hobli> entries) {
+        ArrayAdapter<Hobli> adapter = new ArrayAdapter<>(spinner.getContext(),
+                android.R.layout.simple_spinner_dropdown_item, entries);
         spinner.setAdapter(adapter);
     }
 
     @BindingAdapter({"items"})
-    public static void hobliSpinner(com.jaredrummler.materialspinner.MaterialSpinner spinner, List<Hobli> entries) {
-        ArrayAdapter<Hobli> adapter = new ArrayAdapter<>(spinner.getContext(), android.R.layout.simple_spinner_dropdown_item, entries);
-        spinner.setAdapter(adapter);
-    }
-    @BindingAdapter({"items"})
-    public static void villageSpinner(com.jaredrummler.materialspinner.MaterialSpinner spinner, List<Village> entries) {
-        ArrayAdapter<Village> adapter = new ArrayAdapter<>(spinner.getContext(), android.R.layout.simple_spinner_dropdown_item, entries);
+    public static void villageSpinner1(com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner spinner, List<Village> entries) {
+        ArrayAdapter<Village> adapter = new ArrayAdapter<>(spinner.getContext(),
+                android.R.layout.simple_spinner_dropdown_item, entries);
         spinner.setAdapter(adapter);
     }
 
