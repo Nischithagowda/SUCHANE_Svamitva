@@ -8,4 +8,10 @@ public interface NoticeActivityInterface {
     void getHobli(NoticeActivityViewModel viewModel);
     void getVillage(NoticeActivityViewModel viewModel);
     void loadData(NoticeActivityViewModel viewModel);
+    void capturePropertyOrLandPhoto(NoticeActivityViewModel viewModel);
+    void captureServingNoticePhoto(NoticeActivityViewModel viewModel);
+    void imageProcessPropertyOrLand(NoticeActivityViewModel viewModel);
+    void imageProcessServingNotice(NoticeActivityViewModel viewModel);
+    void saveAndNext(NoticeActivityViewModel viewModel);
+    void goHome();
 }

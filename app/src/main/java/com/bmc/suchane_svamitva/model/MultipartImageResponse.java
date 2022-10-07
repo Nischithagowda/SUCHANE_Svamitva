@@ -5,51 +5,39 @@ import com.google.gson.annotations.SerializedName;
 
 public class MultipartImageResponse {
 
-    @SerializedName("status_code")
+    @SerializedName("RESPONSE_MESSAGE")
     @Expose
-    private int statusCode;
+    private String RESPONSE_MESSAGE;
 
-    @SerializedName("status_messaage")
+    @SerializedName("RESPONSE_CODE")
     @Expose
-    private String statusMessaage;
+    private String RESPONSE_CODE;
 
-    @SerializedName("DOC_Hamlet_Code")
+    @SerializedName("RESPONSE_REF_ID")
     @Expose
-    private int DOC_Hamlet_Code;
+    private String RESPONSE_REF_ID;
 
-    @SerializedName("DOC_Property_No")
-    @Expose
-    private int DOC_Property_No;
-
-    public int getStatusCode() {
-        return statusCode;
+    public String getRESPONSE_MESSAGE() {
+        return RESPONSE_MESSAGE;
     }
 
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
+    public void setRESPONSE_MESSAGE(String RESPONSE_MESSAGE) {
+        this.RESPONSE_MESSAGE = RESPONSE_MESSAGE;
     }
 
-    public String getStatusMessaage() {
-        return statusMessaage;
+    public String getRESPONSE_CODE() {
+        return RESPONSE_CODE;
     }
 
-    public void setStatusMessaage(String statusMessaage) {
-        this.statusMessaage = statusMessaage;
+    public void setRESPONSE_CODE(String RESPONSE_CODE) {
+        this.RESPONSE_CODE = RESPONSE_CODE;
     }
 
-    public int getDOC_Hamlet_Code() {
-        return DOC_Hamlet_Code;
+    public String getRESPONSE_REF_ID() {
+        return RESPONSE_REF_ID;
     }
 
-    public void setDOC_Hamlet_Code(int DOC_Hamlet_Code) {
-        this.DOC_Hamlet_Code = DOC_Hamlet_Code;
-    }
-
-    public int getDOC_Property_No() {
-        return DOC_Property_No;
-    }
-
-    public void setDOC_Property_No(int DOC_Property_No) {
-        this.DOC_Property_No = DOC_Property_No;
+    public void setRESPONSE_REF_ID(String RESPONSE_REF_ID) {
+        this.RESPONSE_REF_ID = RESPONSE_REF_ID;
     }
 }

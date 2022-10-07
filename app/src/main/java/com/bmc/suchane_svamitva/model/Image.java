@@ -4,52 +4,36 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import okhttp3.MultipartBody;
+
 @Entity
 public class Image {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @ColumnInfo(name = "DistCode")
-    private int DistCode;
+    @ColumnInfo(name = "VIRTUAL_ID")
+    private String VIRTUAL_ID;
 
-    @ColumnInfo(name = "TalukCode")
-    private String TalukCode;
+    @ColumnInfo(name = "NOTICE_NO")
+    private String NOTICE_NO;
 
-    @ColumnInfo(name = "HobliCode")
-    private String HobliCode;
+    @ColumnInfo(name = "ADDRESS_CODE")
+    private String ADDRESS_CODE;
 
-    @ColumnInfo(name = "VillageCode")
-    private String VillageCode;
+    @ColumnInfo(name = "DOC_TYPE_ID")
+    private String DOC_TYPE_ID;
 
-    @ColumnInfo(name = "HamletCode")
-    private int HamletCode;
+    @ColumnInfo(name = "DOC_NAME")
+    private String DOC_NAME;
 
-    @ColumnInfo(name = "PropertyNo")
-    private int PropertyNo;
+    @ColumnInfo(name = "DOC_PATH")
+    private String DOC_PATH;
 
-    @ColumnInfo(name = "IsDraftCopyIssued")
-    private int IsDraftCopyIssued;
+    @ColumnInfo(name = "USER_ID")
+    private String USER_ID;
 
-    @ColumnInfo(name = "image_path")
-    private String imagePath;
-
-    @ColumnInfo(name = "image_name")
-    private String imageName;
-
-    @ColumnInfo(name = "latitude")
-    private double latitude;
-
-    @ColumnInfo(name = "longitude")
-    private double longitude;
-
-    @ColumnInfo(name = "created_date")
-    private String createdDate;
-
-    @ColumnInfo(name = "created_by")
-    private String createdBy;
-
-    @ColumnInfo(name = "created_mobile")
-    private String createdMobile;
+    @ColumnInfo(name = "DOC_TIMESTAMP")
+    private String DOC_TIMESTAMP;
 
     @ColumnInfo(name = "is_not_sent")
     private boolean isNotSent;
@@ -62,116 +46,68 @@ public class Image {
         this.id = id;
     }
 
-    public int getDistCode() {
-        return DistCode;
+    public String getVIRTUAL_ID() {
+        return VIRTUAL_ID;
     }
 
-    public void setDistCode(int distCode) {
-        DistCode = distCode;
+    public void setVIRTUAL_ID(String VIRTUAL_ID) {
+        this.VIRTUAL_ID = VIRTUAL_ID;
     }
 
-    public String getTalukCode() {
-        return TalukCode;
+    public String getNOTICE_NO() {
+        return NOTICE_NO;
     }
 
-    public void setTalukCode(String talukCode) {
-        TalukCode = talukCode;
+    public void setNOTICE_NO(String NOTICE_NO) {
+        this.NOTICE_NO = NOTICE_NO;
     }
 
-    public String getHobliCode() {
-        return HobliCode;
+    public String getADDRESS_CODE() {
+        return ADDRESS_CODE;
     }
 
-    public void setHobliCode(String hobliCode) {
-        HobliCode = hobliCode;
+    public void setADDRESS_CODE(String ADDRESS_CODE) {
+        this.ADDRESS_CODE = ADDRESS_CODE;
     }
 
-    public String getVillageCode() {
-        return VillageCode;
+    public String getDOC_TYPE_ID() {
+        return DOC_TYPE_ID;
     }
 
-    public void setVillageCode(String villageCode) {
-        VillageCode = villageCode;
+    public void setDOC_TYPE_ID(String DOC_TYPE_ID) {
+        this.DOC_TYPE_ID = DOC_TYPE_ID;
     }
 
-    public int getHamletCode() {
-        return HamletCode;
+    public String getDOC_NAME() {
+        return DOC_NAME;
     }
 
-    public void setHamletCode(int hamletCode) {
-        HamletCode = hamletCode;
+    public void setDOC_NAME(String DOC_NAME) {
+        this.DOC_NAME = DOC_NAME;
     }
 
-    public int getPropertyNo() {
-        return PropertyNo;
+    public String getDOC_PATH() {
+        return DOC_PATH;
     }
 
-    public void setPropertyNo(int propertyNo) {
-        PropertyNo = propertyNo;
+    public void setDOC_PATH(String DOC_PATH) {
+        this.DOC_PATH = DOC_PATH;
     }
 
-    public int getIsDraftCopyIssued() {
-        return IsDraftCopyIssued;
+    public String getUSER_ID() {
+        return USER_ID;
     }
 
-    public void setIsDraftCopyIssued(int isDraftCopyIssued) {
-        IsDraftCopyIssued = isDraftCopyIssued;
+    public void setUSER_ID(String USER_ID) {
+        this.USER_ID = USER_ID;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public String getDOC_TIMESTAMP() {
+        return DOC_TIMESTAMP;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public String getImageName() {
-        return imageName;
-    }
-
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(String createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getCreatedMobile() {
-        return createdMobile;
-    }
-
-    public void setCreatedMobile(String createdMobile) {
-        this.createdMobile = createdMobile;
+    public void setDOC_TIMESTAMP(String DOC_TIMESTAMP) {
+        this.DOC_TIMESTAMP = DOC_TIMESTAMP;
     }
 
     public boolean isNotSent() {

@@ -93,12 +93,6 @@ public interface API_Interface_Suchane {
             @Body AddressCodeNoticeNoRequest addressCodeNoticeNoRequest
     );
 
-    @POST("api/values/FnSVM_UploadDocument/")
-    Observable<FnSVM_UploadDocumentResponse> FnSVM_UploadDocument(
-            @Header("Authorization") String accessToken,
-            @Body FnSVM_UploadDocumentRequest fnSVM_uploadDocumentRequest
-    );
-
     @POST("api/values/FnSvmInsertNoticeDetails/")
     Observable<FnSvmInsertNoticeDetailsResponse> FnSvmInsertNoticeDetails(
             @Header("Authorization") String accessToken,
@@ -107,19 +101,14 @@ public interface API_Interface_Suchane {
 
     @Multipart
     @POST("api/Images/Multipart_UploadImage")
-    Observable<MultipartImageResponse> sendImage(@Header("Authorization") String accessToken,
-                                                 @retrofit2.http.Part MultipartBody.Part file,
-                                                 @retrofit2.http.Part MultipartBody.Part DistCode,
-                                                 @retrofit2.http.Part MultipartBody.Part TalukCode,
-                                                 @retrofit2.http.Part MultipartBody.Part HobliCode,
-                                                 @retrofit2.http.Part MultipartBody.Part VillageCode,
-                                                 @retrofit2.http.Part MultipartBody.Part HamletCode,
-                                                 @retrofit2.http.Part MultipartBody.Part PropertyNo,
-                                                 @retrofit2.http.Part MultipartBody.Part IS_DRAFT_COPY_ISSUED,
-                                                 @retrofit2.http.Part MultipartBody.Part imageName,
-                                                 @retrofit2.http.Part MultipartBody.Part todayDate,
-                                                 @retrofit2.http.Part MultipartBody.Part s2,
-                                                 @retrofit2.http.Part MultipartBody.Part lat,
-                                                 @retrofit2.http.Part MultipartBody.Part lon,
-                                                 @retrofit2.http.Part MultipartBody.Part mobile);
+    Observable<MultipartImageResponse> FnSVM_UploadDocument(@Header("Authorization") String accessToken,
+                                                 @retrofit2.http.Part MultipartBody.Part VIRTUAL_ID,
+                                                 @retrofit2.http.Part MultipartBody.Part NOTICE_NO,
+                                                 @retrofit2.http.Part MultipartBody.Part ADDRESS_CODE,
+                                                 @retrofit2.http.Part MultipartBody.Part DOC_TYPE_ID,
+                                                 @retrofit2.http.Part MultipartBody.Part DOC_NAME,
+                                                 @retrofit2.http.Part MultipartBody.Part DOC_PATH,
+                                                 @retrofit2.http.Part MultipartBody.Part USER_ID,
+                                                 @retrofit2.http.Part MultipartBody.Part DOC_TIMESTAMP,
+                                                 @retrofit2.http.Part MultipartBody.Part file);
 }

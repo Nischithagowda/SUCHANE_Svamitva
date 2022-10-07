@@ -19,6 +19,14 @@ public class NoticeMapsViewModel implements OnMapReadyCallback, GoogleMap.OnCame
     public final ObservableField<LatLng> userLocationCoordinates = new ObservableField<>();
     public final ObservableField<GoogleMap> googleMap = new ObservableField<>();
     public final ObservableField<Marker> choosedLocationMarker = new ObservableField<>();
+    public final ObservableField<String> districtCode = new ObservableField<>();
+    public final ObservableField<String> districtName = new ObservableField<>("");
+    public final ObservableField<String> talukCode = new ObservableField<>();
+    public final ObservableField<String> talukName = new ObservableField<>("");
+    public final ObservableField<String> hobliCode = new ObservableField<>();
+    public final ObservableField<String> hobliName = new ObservableField<>("");
+    public final ObservableField<String> villageCode = new ObservableField<>();
+    public final ObservableField<String> villageName = new ObservableField<>("");
 
     public NoticeMapsViewModel(NoticeMapsInterface noticeMapsInterface) {
         this.noticeMapsInterface = noticeMapsInterface;

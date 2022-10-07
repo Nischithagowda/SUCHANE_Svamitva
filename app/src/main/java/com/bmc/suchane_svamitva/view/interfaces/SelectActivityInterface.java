@@ -7,7 +7,7 @@ package com.bmc.suchane_svamitva.view.interfaces;
 import com.bmc.suchane_svamitva.view_model.SelectActivityViewModel;
 
 public interface SelectActivityInterface {
-    void onNavigateToNotice();
+    void onNavigateToNotice(SelectActivityViewModel viewModel);
     void onNavigateToDPR();
     void onNavigateToFPR();
     void loadJurisdiction(SelectActivityViewModel viewModel);

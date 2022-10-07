@@ -134,6 +134,14 @@
                             android:inputType="text" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:text="@string/district"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     app:items="@{viewModel.districtNameList}"
                     android:text="@{viewModel.districtName}"
@@ -142,8 +150,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/select_district"
-                    app:met_textColor="@android:color/black"
+                    android:enabled="false"
+                    app:met_textColor="@android:color/darker_gray"
                     app:met_textColorHint="@android:color/darker_gray" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:text="@string/taluk"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     app:items="@{viewModel.talukNameList}"
                     android:text="@{viewModel.talukName}"
@@ -152,8 +169,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/select_taluk"
-                    app:met_textColor="@android:color/black"
+                    android:enabled="false"
+                    app:met_textColor="@android:color/darker_gray"
                     app:met_textColorHint="@android:color/darker_gray"/>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:text="@string/hobli"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
 
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     app:items="@{viewModel.hobliNameList}"
@@ -163,8 +188,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/select_hobli"
-                    app:met_textColor="@android:color/black"
+                    android:enabled="false"
+                    app:met_textColor="@android:color/darker_gray"
                     app:met_textColorHint="@android:color/darker_gray" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:text="@string/village"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
 
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     app:items="@{viewModel.villageNameList}"
@@ -174,7 +207,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/select_village"
-                    app:met_textColor="@android:color/black"
+                    android:enabled="false"
+                    app:met_textColor="@android:color/darker_gray"
                     app:met_textColorHint="@android:color/darker_gray"/>
                 <LinearLayout
                     android:layout_width="match_parent"

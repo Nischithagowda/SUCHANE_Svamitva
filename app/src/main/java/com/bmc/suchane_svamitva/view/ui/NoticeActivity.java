@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
@@ -33,6 +34,20 @@ public class NoticeActivity extends AppCompatActivity {
         NoticeActivityInterface noticeActivityCallback = new NoticeActivityCallback(this);
         viewModel = new NoticeActivityViewModel(noticeActivityCallback);
         binding.setViewModel(viewModel);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constant.CAMERA_REQUEST_PropertyOrLand) {
+            if (resultCode == RESULT_OK) {
+                viewModel.processImagePropertyOrLand();
+            }
+        } else if (requestCode == Constant.CAMERA_REQUEST_ServingNotice) {
+            if (resultCode == RESULT_OK) {
+                viewModel.processImageServingNotice();
+            }
+        }
     }
 
     @Override

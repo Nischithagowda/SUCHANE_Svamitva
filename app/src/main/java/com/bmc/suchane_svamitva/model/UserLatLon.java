@@ -9,6 +9,7 @@ public class UserLatLon implements Serializable {
     private String address;
     private String NoticeNo;
     private String addressCode;
+    private String VirtualID;
 
     public String getAddress() {
         return address;
@@ -56,5 +57,13 @@ public class UserLatLon implements Serializable {
 
     public void setAddressCode(String addressCode) {
         this.addressCode = addressCode;
+    }
+
+    public String getVirtualID() {
+        return VirtualID;
+    }
+
+    public void setVirtualID(String virtualID) {
+        VirtualID = virtualID;
     }
 }

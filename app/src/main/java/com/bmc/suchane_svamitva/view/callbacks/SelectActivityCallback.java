@@ -43,9 +43,17 @@ public class SelectActivityCallback implements SelectActivityInterface {
     }
 
     @Override
-    public void onNavigateToNotice(){
+    public void onNavigateToNotice(SelectActivityViewModel viewModel){
         if (checkLocationPermission()) {
             Intent intent = new Intent(activity, NoticeMapsFragment.class);
+            intent.putExtra("districtCode", ""+viewModel.districtCode.get());
+            intent.putExtra("districtName", ""+viewModel.districtName.get());
+            intent.putExtra("talukCode", ""+viewModel.talukCode.get());
+            intent.putExtra("talukName", ""+viewModel.talukName.get());
+            intent.putExtra("hobliCode", ""+viewModel.hobliCode.get());
+            intent.putExtra("hobliName", ""+viewModel.hobliName.get());
+            intent.putExtra("villageCode", ""+viewModel.villageCode.get());
+            intent.putExtra("villageName", ""+viewModel.villageName.get());
             activity.startActivity(intent);
         }  else {
             ActivityCompat.requestPermissions(activity, new String[]{ACCESS_FINE_LOCATION, CAMERA},

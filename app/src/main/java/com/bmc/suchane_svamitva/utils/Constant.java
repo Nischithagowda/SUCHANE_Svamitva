@@ -26,8 +26,10 @@ public class Constant {
     public static final String SHOW_DATA_REQ_UPOR = "show_data_UPOR";
     public static final int IMAGE_CAPTURE_REQ = 77;
     public static final int LOCATION_PERMISSION_REQUEST_CODE = 7;
-    public static final int CAMERA_REQUEST = 11;
-    public static final String APP_IMAGE = "Svamitva/Pictures";
+    public static final int CAMERA_REQUEST= 11;
+    public static final int CAMERA_REQUEST_PropertyOrLand = 11;
+    public static final int CAMERA_REQUEST_ServingNotice = 12;
+    public static final String APP_IMAGE = "SvamitvaNotice/Pictures";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final String REFRESH_COUNT = "refresh_count";
     public static final String DATE_TIME_FORMAT = "dd-MM-yyyy HH:mm:ss";

@@ -66,6 +66,16 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
         mapFragment.getMapAsync(viewModel);
+
+        Intent intent = activity.getIntent();
+        viewModel.districtCode.set(intent.getStringExtra("districtCode"));
+        viewModel.districtName.set(intent.getStringExtra("districtName"));
+        viewModel.talukCode.set(intent.getStringExtra("talukCode"));
+        viewModel.talukName.set(intent.getStringExtra("talukName"));
+        viewModel.hobliCode.set(intent.getStringExtra("hobliCode"));
+        viewModel.hobliName.set(intent.getStringExtra("hobliName"));
+        viewModel.villageCode.set(intent.getStringExtra("villageCode"));
+        viewModel.villageName.set(intent.getStringExtra("villageName"));
     }
 
     @Override
@@ -114,7 +124,7 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
                 userLatLon.setLongitude(Objects.requireNonNull(viewModel.userLocationCoordinates.get()).longitude);
                 userLatLon.setAccuracy(0.0);
                 userLatLon.setAddress(viewModel.userLocationAddress.get());
-                GetAddressCodeNoticeNo(userLatLon);
+                GetAddressCodeNoticeNo(viewModel, userLatLon);
             } else {
                 Toast.makeText(activity, "select address to proceed further", Toast.LENGTH_LONG).show();
             }
@@ -124,7 +134,7 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
         }
     }
 
-    public void GetAddressCodeNoticeNo(UserLatLon userLatLon) {
+    public void GetAddressCodeNoticeNo(NoticeMapsViewModel viewModel, UserLatLon userLatLon) {
         if (isNetworkAvailable()) {
             ProgressDialog dialog = new ProgressDialog(activity);
             dialog.setCanceledOnTouchOutside(false);
@@ -160,7 +170,8 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
                                     if (result1.getRESPONSE_CODE().contains("200") && result1.getNOTICE_NO()!=null && result1.getADDRESS_CODE()!=null) {
                                         userLatLon.setNoticeNo(result1.getNOTICE_NO());
                                         userLatLon.setAddressCode(result1.getADDRESS_CODE());
-                                        onNavigateToSelectedAddress(userLatLon);
+                                        userLatLon.setVirtualID(result1.getVIRTUAL_ID());
+                                        onNavigateToSelectedAddress(viewModel, userLatLon);
                                     } else {
                                         Toast.makeText(activity, "" + result1.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
                                     }
@@ -177,11 +188,19 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
         }
     }
 
-    private void onNavigateToSelectedAddress(UserLatLon userLatLon) {
+    private void onNavigateToSelectedAddress(NoticeMapsViewModel viewModel, UserLatLon userLatLon) {
         Bundle args = new Bundle();
         args.putSerializable(Constant.LOCATION_DATA, userLatLon);
         Intent intent = new Intent(activity, NoticeActivity.class);
         intent.putExtra(Constant.BUNDLE_DATA, args);
+        intent.putExtra("districtCode", ""+viewModel.districtCode.get());
+        intent.putExtra("districtName", ""+viewModel.districtName.get());
+        intent.putExtra("talukCode", ""+viewModel.talukCode.get());
+        intent.putExtra("talukName", ""+viewModel.talukName.get());
+        intent.putExtra("hobliCode", ""+viewModel.hobliCode.get());
+        intent.putExtra("hobliName", ""+viewModel.hobliName.get());
+        intent.putExtra("villageCode", ""+viewModel.villageCode.get());
+        intent.putExtra("villageName", ""+viewModel.villageName.get());
         activity.startActivity(intent);
         activity.finish();
     }

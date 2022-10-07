@@ -1,5 +1,6 @@
 package com.bmc.suchane_svamitva.view_model;
 
+import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -14,10 +15,13 @@ import com.bmc.suchane_svamitva.model.Taluka;
 import com.bmc.suchane_svamitva.model.Village;
 import com.bmc.suchane_svamitva.view.interfaces.NoticeActivityInterface;
 
+import java.io.File;
+
 public class NoticeActivityViewModel {
     NoticeActivityInterface noticeActivityInterface;
     public final ObservableField<String> noticeNumber = new ObservableField<>("");
     public final ObservableField<String> addressCode = new ObservableField<>("");
+    public final ObservableField<String> virtualID = new ObservableField<>("");
     public final ObservableField<String> ownerLat = new ObservableField<>("");
     public final ObservableField<String> ownerLong = new ObservableField<>("");
     public ObservableBoolean fieldEnable = new ObservableBoolean(true);
@@ -45,6 +49,14 @@ public class NoticeActivityViewModel {
     public final ObservableField<String> villageName = new ObservableField<>("");
     public final ObservableField<String> villageError = new ObservableField<>();
     public final ObservableField<String> villageCode = new ObservableField<>("");
+    public ObservableField<Bitmap> imageBitMapPropertyOrLand = new ObservableField<>();
+    public ObservableField<String> mCurrentPropertyOrLandPhotoPath = new ObservableField<>();
+    public final ObservableField<byte[]> imageDataPropertyOrLand = new ObservableField<>();
+    public final ObservableField<File> imageFilePropertyOrLand = new ObservableField<File>();
+    public ObservableField<Bitmap> imageBitMapServingNotice = new ObservableField<>();
+    public ObservableField<String> mCurrentServingNoticePhotoPath = new ObservableField<>();
+    public final ObservableField<byte[]> imageDataServingNotice = new ObservableField<>();
+    public final ObservableField<File> imageFileServingNotice = new ObservableField<File>();
 
     public NoticeActivityViewModel(NoticeActivityInterface noticeActivityInterface) {
         this.noticeActivityInterface = noticeActivityInterface;
@@ -52,13 +64,20 @@ public class NoticeActivityViewModel {
     }
 
     public void capturePropertyPicture(View view){
-
+        noticeActivityInterface.capturePropertyOrLandPhoto(this);
     }
 
     public void captureNoticePicture(View view){
-
+        noticeActivityInterface.captureServingNoticePhoto(this);
     }
 
+    public void processImagePropertyOrLand() {
+        noticeActivityInterface.imageProcessPropertyOrLand(this);
+    }
+
+    public void processImageServingNotice() {
+        noticeActivityInterface.imageProcessServingNotice(this);
+    }
     public void onContactDoorNoTextChanged(CharSequence s, int start, int before, int count) {
         doorNo.set(s.toString());
         doorNoError.set(null);
@@ -123,15 +142,15 @@ public class NoticeActivityViewModel {
     }
 
     public void onClickSaveData(View view) {
-
+        noticeActivityInterface.saveAndNext(this);
     }
 
     public void onClickSaveAndNextData(View view) {
-
+        noticeActivityInterface.saveAndNext(this);
     }
 
     public void onClickHomeData(View view) {
-
+        noticeActivityInterface.goHome();
     }
 
 }

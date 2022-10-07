@@ -6,6 +6,8 @@ import androidx.room.Query;
 
 import com.bmc.suchane_svamitva.model.District;
 import com.bmc.suchane_svamitva.model.Hobli;
+import com.bmc.suchane_svamitva.model.Image;
+import com.bmc.suchane_svamitva.model.NoticeDetailsTbl;
 import com.bmc.suchane_svamitva.model.Taluka;
 import com.bmc.suchane_svamitva.model.USER_DETAILS;
 import com.bmc.suchane_svamitva.model.Village;
@@ -62,4 +64,18 @@ public interface DatabaseDAO {
 
     @Query("Select * from Village where DISTRICT_CODE = :DistrictCode and TALUK_CODE = :TalukCode and HOBLI_CODE = :HobliCode")
     List<Village> getVillageDetails(String DistrictCode, String TalukCode, String HobliCode);
+
+    //NoticeDetails Tbl
+    @Insert
+    long InsertNoticeDetailsDetails(NoticeDetailsTbl noticeDetailsTbl);
+
+    @Query("SELECT CASE WHEN EXISTS (SELECT * FROM NoticeDetailsTbl where NTC_NOTICE_NO = :NTC_NOTICE_NO and NTC_ADD_CODE = :NTC_ADD_CODE and NTC_VID = :NTC_VID)THEN CAST(1 AS BIT)ELSE CAST(0 AS BIT) END")
+    Boolean isNoticeDetailsAvailable(String NTC_NOTICE_NO, String NTC_ADD_CODE, String NTC_VID);
+
+    @Query("delete from NoticeDetailsTbl where NTC_NOTICE_NO = :NTC_NOTICE_NO and NTC_ADD_CODE = :NTC_ADD_CODE and NTC_VID = :NTC_VID")
+    int deleteNoticeDetails(String NTC_NOTICE_NO, String NTC_ADD_CODE, String NTC_VID);
+
+    //Image Tbl
+    @Insert
+    long InsertImage(Image image);
 }

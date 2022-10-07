@@ -70,7 +70,7 @@
                                 android:layout_weight="1"
                                 android:layout_height="match_parent"
                                 android:text="@{viewModel.noticeNumber}"
-                                style="@style/text_view" />
+                                style="@style/text_view_value" />
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -99,7 +99,7 @@
                                 android:layout_weight="1"
                                 android:layout_height="match_parent"
                                 android:text="@{viewModel.addressCode}"
-                                style="@style/text_view" />
+                                style="@style/text_view_value" />
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -134,7 +134,7 @@
                                     android:layout_weight="1"
                                     android:layout_height="match_parent"
                                     android:text="@{viewModel.ownerLat}"
-                                    style="@style/text_view" />
+                                    style="@style/text_view_value" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -163,7 +163,7 @@
                                     android:layout_weight="1"
                                     android:layout_height="match_parent"
                                     android:text="@{viewModel.ownerLong}"
-                                    style="@style/text_view" />
+                                    style="@style/text_view_value" />
                             </LinearLayout>
                         </LinearLayout>
 
