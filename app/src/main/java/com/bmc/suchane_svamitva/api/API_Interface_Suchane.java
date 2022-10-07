@@ -100,7 +100,7 @@ public interface API_Interface_Suchane {
     );
 
     @Multipart
-    @POST("api/Images/Multipart_UploadImage")
+    @POST("api/values/FnSVM_UploadDocument")
     Observable<MultipartImageResponse> FnSVM_UploadDocument(@Header("Authorization") String accessToken,
                                                  @retrofit2.http.Part MultipartBody.Part VIRTUAL_ID,
                                                  @retrofit2.http.Part MultipartBody.Part NOTICE_NO,

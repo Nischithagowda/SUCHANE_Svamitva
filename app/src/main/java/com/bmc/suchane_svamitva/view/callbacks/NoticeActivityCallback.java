@@ -517,7 +517,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         noticeDetailsTbl.setNTC_DIST_CODE(viewModel.districtCode.get());
         noticeDetailsTbl.setNTC_TLK_TWN_CODE(viewModel.talukCode.get());
         noticeDetailsTbl.setNTC_WRD_VLG_CODE(viewModel.villageCode.get());
-        noticeDetailsTbl.setNTC_AREA_TYPE("");
+        noticeDetailsTbl.setNTC_AREA_TYPE("2");
         noticeDetailsTbl.setNTC_NOTICE_NO(viewModel.noticeNumber.get());
         noticeDetailsTbl.setNTC_ADD_CODE(viewModel.addressCode.get());
         noticeDetailsTbl.setNTC_ADD_DOORNO(viewModel.doorNo.get());
@@ -572,7 +572,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         svmInsertNoticeDetailsRequest.setNTC_DIST_CODE(viewModel.districtCode.get());
         svmInsertNoticeDetailsRequest.setNTC_TLK_TWN_CODE(viewModel.talukCode.get());
         svmInsertNoticeDetailsRequest.setNTC_WRD_VLG_CODE(viewModel.villageCode.get());
-        svmInsertNoticeDetailsRequest.setNTC_AREA_TYPE("");
+        svmInsertNoticeDetailsRequest.setNTC_AREA_TYPE("2");
         svmInsertNoticeDetailsRequest.setNTC_NOTICE_NO(viewModel.noticeNumber.get());
         svmInsertNoticeDetailsRequest.setNTC_ADD_CODE(viewModel.addressCode.get());
         svmInsertNoticeDetailsRequest.setNTC_ADD_DOORNO(viewModel.doorNo.get());
