@@ -48,7 +48,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:padding="10dp"
-                            android:background="@drawable/edittext_otp_mobile_border">
+                            android:background="@color/colorPrimary">
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -60,9 +60,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/click_full_property_land_photo"
-                                style="@style/text_view_value"
                                 android:textSize="14sp"
-                                android:layout_marginStart="5dp"/>
+                                android:layout_marginStart="5dp"
+                                android:textColor="@color/white"/>
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
                     <androidx.cardview.widget.CardView
@@ -70,7 +70,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginStart="5dp"
+                        android:layout_marginStart="15dp"
                         android:onClick="@{viewModel::captureNoticePicture}"
                         card_view:cardCornerRadius="4dp">
                         <LinearLayout
@@ -78,7 +78,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:padding="10dp"
-                            android:background="@drawable/edittext_otp_mobile_border">
+                            android:background="@color/colorPrimary">
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -89,18 +89,46 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/click_photo_of_serving_of_notice"
-                                style="@style/text_view_value"
+                                android:textColor="@color/white"
                                 android:textSize="14sp"
                                 android:layout_marginStart="5dp"/>
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:visibility="@{viewModel.isImageVisible}">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+                        android:layout_gravity="center"
+                        android:src="@{@drawable/img_png}"
+                        app:imageBitMap="@{viewModel.imageBitMapPropertyOrLand}"
+                        android:onClick="@{viewModel::onClickShowImagePropertyOrLand}"/>
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+                        android:layout_gravity="center"
+                        android:src="@{@drawable/img_png}"
+                        android:layout_marginStart="15dp"
+                        app:imageBitMap="@{viewModel.imageBitMapServingNotice}"
+                        android:onClick="@{viewModel::onClickShowImageServingNotice}"/>
                 </LinearLayout>
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/enter_postal_address"
                     android:textColor="@color/white"
-                    style="@style/text_view_header"/>
+                    style="@style/text_view_header"
+                    android:layout_marginTop="10dp"/>
                 <include layout="@layout/content_owner_address_notice"
                     app:viewModel="@{viewModel}"/>
             </LinearLayout>

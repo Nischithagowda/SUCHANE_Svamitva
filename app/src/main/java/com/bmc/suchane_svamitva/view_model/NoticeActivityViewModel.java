@@ -59,6 +59,7 @@ public class NoticeActivityViewModel {
     public ObservableField<String> mCurrentServingNoticePhotoPath = new ObservableField<>();
     public final ObservableField<byte[]> imageDataServingNotice = new ObservableField<>();
     public final ObservableField<File> imageFileServingNotice = new ObservableField<File>();
+    public ObservableBoolean isImageVisible = new ObservableBoolean(false);
 
     public NoticeActivityViewModel(NoticeActivityInterface noticeActivityInterface) {
         this.noticeActivityInterface = noticeActivityInterface;
@@ -71,6 +72,14 @@ public class NoticeActivityViewModel {
 
     public void captureNoticePicture(View view){
         noticeActivityInterface.captureServingNoticePhoto(this);
+    }
+
+    public void onClickShowImagePropertyOrLand(View view){
+        noticeActivityInterface.showImagePropertyOrLand(this);
+    }
+
+    public void onClickShowImageServingNotice(View view){
+        noticeActivityInterface.showImageServingNotice(this);
     }
 
     public void processImagePropertyOrLand() {

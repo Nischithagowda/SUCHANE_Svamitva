@@ -7,8 +7,10 @@ import static com.bmc.suchane_svamitva.utils.Constant.IMAGE_CAPTURE_REQ;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -16,6 +18,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import androidx.exifinterface.media.ExifInterface;
+
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -24,6 +28,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -292,6 +300,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         try {
             Bitmap bitmap = scaleDownAndRotatePic(viewModel.mCurrentPropertyOrLandPhotoPath.get());
             viewModel.imageBitMapPropertyOrLand.set(bitmap);
+            viewModel.isImageVisible.set(true);
             ImageCompressionAsyncTaskPropertyOrLand imagetask = new ImageCompressionAsyncTaskPropertyOrLand(activity, viewModel);
             String folder_main = "PropertyOrLandPictures";
             File myDir = activity.getDir( folder_main, MODE_PRIVATE);
@@ -306,6 +315,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         try {
             Bitmap bitmap = scaleDownAndRotatePic(viewModel.mCurrentServingNoticePhotoPath.get());
             viewModel.imageBitMapServingNotice.set(bitmap);
+            viewModel.isImageVisible.set(true);
             ImageCompressionAsyncTaskServingNotice imagetask = new ImageCompressionAsyncTaskServingNotice(activity, viewModel);
             String folder_main = "ServingNoticePictures";
             File myDir = activity.getDir( folder_main, MODE_PRIVATE);
@@ -807,6 +817,26 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         alert.setTitle("Confirmation");
         alert.show();
 
+    }
+
+    @Override
+    public void showImagePropertyOrLand(NoticeActivityViewModel viewModel){
+        Dialog settingsDialog = new Dialog(activity);
+        settingsDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        settingsDialog.setContentView(R.layout.image_popup);
+        ImageView imageView = settingsDialog.findViewById(R.id.showImg);
+        imageView.setImageBitmap(viewModel.imageBitMapPropertyOrLand.get());
+        settingsDialog.show();
+    }
+
+    @Override
+    public void showImageServingNotice(NoticeActivityViewModel viewModel){
+        Dialog settingsDialog = new Dialog(activity);
+        settingsDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        settingsDialog.setContentView(R.layout.image_popup);
+        ImageView imageView = settingsDialog.findViewById(R.id.showImg);
+        imageView.setImageBitmap(viewModel.imageBitMapServingNotice.get());
+        settingsDialog.show();
     }
 
     private boolean isNetworkAvailable() {

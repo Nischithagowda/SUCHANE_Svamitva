@@ -14,4 +14,6 @@ public interface NoticeActivityInterface {
     void imageProcessServingNotice(NoticeActivityViewModel viewModel);
     void saveAndNext(NoticeActivityViewModel viewModel);
     void goHome();
+    void showImagePropertyOrLand(NoticeActivityViewModel viewModel);
+    void showImageServingNotice(NoticeActivityViewModel viewModel);
 }

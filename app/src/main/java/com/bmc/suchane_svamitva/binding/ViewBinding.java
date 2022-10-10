@@ -6,6 +6,7 @@ import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -50,6 +51,11 @@ public class ViewBinding {
     }
 
     @BindingAdapter("visibility")
+    public static void imageBinding(View view, boolean visibility) {
+        view.setVisibility(visibility ? View.VISIBLE : View.GONE);
+    }
+
+    @BindingAdapter("visibility")
     public static void spinnerBinding(View view, boolean visibility) {
         view.setVisibility(visibility ? View.VISIBLE : View.GONE);
     }
@@ -66,7 +72,13 @@ public class ViewBinding {
     }
 
     @BindingAdapter({"imageBitMap"})
-    public static void imageDataBinding(AppCompatImageView imageView, Bitmap bitmap) {
+    public static void appCompatImageDataBinding(AppCompatImageView imageView, Bitmap bitmap) {
+        if (bitmap != null)
+            imageView.setImageBitmap(bitmap);
+    }
+
+    @BindingAdapter({"imageBitMap"})
+    public static void imageDataBinding(ImageView imageView, Bitmap bitmap) {
         if (bitmap != null)
             imageView.setImageBitmap(bitmap);
     }
