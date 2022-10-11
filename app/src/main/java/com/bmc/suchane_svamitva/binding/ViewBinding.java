@@ -21,8 +21,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,6 +71,18 @@ public class ViewBinding {
     @BindingAdapter("visibility")
     public static void recyclerBinding(RecyclerView view, boolean visibility) {
         view.setVisibility(visibility ? View.VISIBLE : View.GONE);
+    }
+
+
+    @BindingAdapter("visibility")
+    public static void AppCompatTextViewBinding(AppCompatTextView view, boolean visibility) {
+        view.setVisibility(visibility ? View.VISIBLE : View.GONE);
+    }
+
+
+    @BindingAdapter("backgroundcolor")
+    public static void AppCompatButtonBinding(AppCompatButton view, int color) {
+        view.setBackgroundColor(color);
     }
 
     @BindingAdapter({"imageBitMap"})

@@ -9,6 +9,10 @@
         android:icon="@drawable/ic_baseline_logout_24"
         android:title="@string/logout"
         app:showAsAction="never"/>
+    <item android:id="@+id/send"
+        android:icon="@drawable/ic_baseline_send_24"
+        android:title="@string/send"
+        app:showAsAction="never" />
     <item android:id="@+id/version"
         android:icon="@drawable/ic_baseline_build_24"
         android:title="@string/version"

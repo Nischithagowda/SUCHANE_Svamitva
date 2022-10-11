@@ -15,6 +15,8 @@ import com.bmc.suchane_svamitva.R;
 import com.bmc.suchane_svamitva.api.APIClient_Suchane;
 import com.bmc.suchane_svamitva.api.API_Interface_Suchane;
 import com.bmc.suchane_svamitva.model.TokenRes;
+import com.bmc.suchane_svamitva.model.VersionRequest;
+import com.bmc.suchane_svamitva.model.VersionResponse;
 import com.bmc.suchane_svamitva.utils.Constant;
 
 import androidx.annotation.Nullable;
@@ -78,34 +80,32 @@ public class SplashScreen extends AppCompatActivity {
                         ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION, CAMERA},
                                 Constant.LOCATION_PERMISSION_REQUEST_CODE);
                     }
-                    dialog.dismiss();
-                    checkLoginStatus();
-//                    String accessToken = result.getTokenType() + " " + result.getAccessToken();
 
-//                    Retrofit client1 = APIClient_Suchane.getClient(getApplicationContext(), getString(R.string.api_url));
-//                    API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
-//                    Observable<VersionDetailsResponse> responseObservable = apiService1.FN_CheckVersion(accessToken, BuildConfig.VERSION_CODE);
-//                    responseObservable.subscribeOn(Schedulers.io())
-//                            .observeOn(AndroidSchedulers.mainThread())
-//                            .subscribe((result1) -> {
-//                                dialog.dismiss();
-//                                if (result1.getVersionDetailResponse().size()>0) {
-//                                    VersionDetailsResponse versionDetailsResponse = result1;
-//                                    List<VersionDetails> versionDetailsList = versionDetailsResponse.getVersionDetailResponse();
-//                                    if (versionDetailsList.get(0).isVersionIsExits()){
-//                                        Intent intent = new Intent(SplashScreen.this, SelectServiceActivity.class);
-//                                        startActivity(intent);
-//                                        finish();
-//                                    } else {
-//                                        Toast.makeText(getApplicationContext(), "Application Version has been changed, Please contact Admin For clarification.", Toast.LENGTH_SHORT).show();
-//                                    }
-//                                } else {
-//                                    Toast.makeText(getApplicationContext(), "Application Version has been changed, Please contact Admin For clarification.", Toast.LENGTH_SHORT).show();
-//                                }
-//                            }, (error) -> {
-//                                dialog.dismiss();
-//                                Toast.makeText(getApplicationContext(), error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-//                            });
+                    VersionRequest versionRequest = new VersionRequest();
+                    versionRequest.setVERSION_CODE(""+BuildConfig.VERSION_NAME);
+
+                    String accessToken = result.getTokenType() + " " + result.getAccessToken();
+
+                    Retrofit client1 = APIClient_Suchane.getClient(getApplicationContext(), getString(R.string.api_url));
+                    API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
+                    Observable<VersionResponse> responseObservable = apiService1.FnGetVersion(accessToken, versionRequest);
+                    responseObservable.subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe((result1) -> {
+                                dialog.dismiss();
+                                if (result1.getRESPONSE_CODE().contains("200")) {
+                                    SharedPreferences.Editor sharedPreferences = getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE).edit();
+                                    sharedPreferences.putString(Constant.VersionCode, result1.getVERSION_CODE());
+                                    sharedPreferences.putString(Constant.DistanceRange, result1.getDISTANCE_RANGE());
+                                    sharedPreferences.apply();
+                                    checkLoginStatus();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Application Version has been changed, Please contact Admin For clarification."+result1.getVERSION_CODE(), Toast.LENGTH_SHORT).show();
+                                }
+                            }, (error) -> {
+                                dialog.dismiss();
+                                Toast.makeText(getApplicationContext(), error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                            });
                 }, (error) -> {
                     Toast.makeText(getApplicationContext(), error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                     dialog.dismiss();

@@ -72,10 +72,22 @@ public interface DatabaseDAO {
     @Query("SELECT CASE WHEN EXISTS (SELECT * FROM NoticeDetailsTbl where NTC_NOTICE_NO = :NTC_NOTICE_NO and NTC_ADD_CODE = :NTC_ADD_CODE and NTC_VID = :NTC_VID)THEN CAST(1 AS BIT)ELSE CAST(0 AS BIT) END")
     Boolean isNoticeDetailsAvailable(String NTC_NOTICE_NO, String NTC_ADD_CODE, String NTC_VID);
 
+    @Query("Select * from NoticeDetailsTbl")
+    List<NoticeDetailsTbl> getNoticeDetailsTblValues();
+
     @Query("delete from NoticeDetailsTbl where NTC_NOTICE_NO = :NTC_NOTICE_NO and NTC_ADD_CODE = :NTC_ADD_CODE and NTC_VID = :NTC_VID")
     int deleteNoticeDetails(String NTC_NOTICE_NO, String NTC_ADD_CODE, String NTC_VID);
+
+    @Query("delete from NoticeDetailsTbl")
+    int deleteFullNoticeDetails();
 
     //Image Tbl
     @Insert
     long InsertImage(Image image);
+
+    @Query("Select * from Image where is_not_sent = :notSent")
+    List<Image> getImageTblValues(boolean notSent);
+
+    @Query("delete from Image where NOTICE_NO = :NoticeNo and ADDRESS_CODE = :AddrCode")
+    int deleteImageDetails(String NoticeNo, String AddrCode);
 }

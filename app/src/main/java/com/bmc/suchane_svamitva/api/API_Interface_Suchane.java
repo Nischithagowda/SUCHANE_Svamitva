@@ -4,12 +4,12 @@ import com.bmc.suchane_svamitva.model.AddressCodeNoticeNoRequest;
 import com.bmc.suchane_svamitva.model.AddressCodeNoticeNoResponse;
 import com.bmc.suchane_svamitva.model.DistrictRequest;
 import com.bmc.suchane_svamitva.model.DistrictResponse;
-import com.bmc.suchane_svamitva.model.FnSVM_UploadDocumentRequest;
-import com.bmc.suchane_svamitva.model.FnSVM_UploadDocumentResponse;
 import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsRequest;
 import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsResponse;
 import com.bmc.suchane_svamitva.model.HobliRequest;
 import com.bmc.suchane_svamitva.model.HobliResponse;
+import com.bmc.suchane_svamitva.model.LogoutRequest;
+import com.bmc.suchane_svamitva.model.LogoutResponse;
 import com.bmc.suchane_svamitva.model.MultipartImageResponse;
 import com.bmc.suchane_svamitva.model.SMS_Request;
 import com.bmc.suchane_svamitva.model.SMS_Response;
@@ -17,6 +17,8 @@ import com.bmc.suchane_svamitva.model.TalukRequest;
 import com.bmc.suchane_svamitva.model.TalukResponse;
 import com.bmc.suchane_svamitva.model.TokenRes;
 import com.bmc.suchane_svamitva.model.ValidateOtpRequest;
+import com.bmc.suchane_svamitva.model.VersionRequest;
+import com.bmc.suchane_svamitva.model.VersionResponse;
 import com.bmc.suchane_svamitva.model.VillageRequest;
 import com.bmc.suchane_svamitva.model.VillageResponse;
 
@@ -55,6 +57,18 @@ public interface API_Interface_Suchane {
     Observable<SMS_Response> FnSendOTP(
             @Header("Authorization") String accessToken,
             @Body SMS_Request sms_request
+            );
+
+    @POST("api/values/FnLogout/")
+    Observable<LogoutResponse> FnLogout(
+            @Header("Authorization") String accessToken,
+            @Body LogoutRequest logoutRequest
+            );
+
+    @POST("api/values/FnGetVersion/")
+    Observable<VersionResponse> FnGetVersion(
+            @Header("Authorization") String accessToken,
+            @Body VersionRequest versionRequest
             );
 
     @POST("api/values/FnValidateOTP/")

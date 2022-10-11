@@ -62,6 +62,7 @@ import com.iceteck.silicompressorr.SiliCompressor;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -83,11 +84,13 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
 
     @Override
     public void loadData(NoticeActivityViewModel viewModel){
+        DecimalFormat df = new DecimalFormat("#.0000000");
+
         Intent intent = activity.getIntent();
         Bundle args = intent.getBundleExtra(Constant.BUNDLE_DATA);
         UserLatLon address = (UserLatLon) args.getSerializable(Constant.LOCATION_DATA);
-        viewModel.ownerLat.set(""+address.getLatitude());
-        viewModel.ownerLong.set(""+address.getLongitude());
+        viewModel.ownerLat.set(""+df.format(address.getLatitude()));
+        viewModel.ownerLong.set(""+df.format(address.getLongitude()));
         viewModel.noticeNumber.set(address.getNoticeNo());
         viewModel.addressCode.set(address.getAddressCode());
         viewModel.virtualID.set(address.getVirtualID());
@@ -553,7 +556,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
                     if (isNetworkAvailable()) {
                         SendNoticeDetailsToServer(viewModel);
                     } else {
-                        Toast.makeText(activity, "Details Saved in mobile.", Toast.LENGTH_LONG).show();
+                        savePropertyOrLandImageLocal(viewModel);
                         Toast.makeText(activity, activity.getString(R.string.please_switch_on_the_internet), Toast.LENGTH_LONG).show();
                     }
                 }, error -> {

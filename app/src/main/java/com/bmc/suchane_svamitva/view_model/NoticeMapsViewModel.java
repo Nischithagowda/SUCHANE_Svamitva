@@ -4,6 +4,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
+import androidx.databinding.ObservableInt;
 
 import com.bmc.suchane_svamitva.view.interfaces.NoticeMapsInterface;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,7 +28,11 @@ public class NoticeMapsViewModel implements OnMapReadyCallback, GoogleMap.OnCame
     public final ObservableField<String> hobliName = new ObservableField<>("");
     public final ObservableField<String> villageCode = new ObservableField<>();
     public final ObservableField<String> villageName = new ObservableField<>("");
-    public final ObservableField<LatLng> CurrentLocationCoordinates = new ObservableField<>();
+    public final ObservableField<LatLng> OffCurrentLocationCoordinates = new ObservableField<>();
+    public final ObservableField<Boolean> btnEnable = new ObservableField<>(true);
+    public final ObservableInt btnColor = new ObservableInt();
+    public final ObservableField<String> noteText = new ObservableField<>("");
+    public final ObservableField<Boolean> isTextVisible = new ObservableField<>(false);
 
     public NoticeMapsViewModel(NoticeMapsInterface noticeMapsInterface) {
         this.noticeMapsInterface = noticeMapsInterface;

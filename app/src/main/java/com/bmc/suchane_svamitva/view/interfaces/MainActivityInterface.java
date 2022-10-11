@@ -12,4 +12,5 @@ public interface MainActivityInterface {
     void getUserTaluk(MainActivityViewModel viewModel);
     void getHobli(MainActivityViewModel viewModel);
     void getVillage(MainActivityViewModel viewModel);
+    void logoutFromServer();
 }

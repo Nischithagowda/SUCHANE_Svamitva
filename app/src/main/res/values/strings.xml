@@ -5,7 +5,7 @@
     <string name="api_user_id">56dhsuiejn83j9633ssgeu8dm9djs235dh965fhslopc098jd</string>
     <string name="api_password">2d87duikdmc673jsnlpa0245whjdkkfn63xmlopwq96auehsa</string>
 
-    <string name="app_name">SUCHANE Svamitva</string>
+    <string name="app_name">SUCHANE[Svamitva]</string>
     <string name="token">token</string>
     <string name="token_type">token_type</string>
     <string name="grant_type">password</string>
@@ -78,4 +78,7 @@
     <string name="select_jurisdiction">Select Jurisdiction</string>
     <string name="please_switch_on_the_internet">Please Switch on the Internet</string>
     <string name="enter_valid_otp_to_proceed">Enter Valid OTP To Proceed</string>
+    <string name="designation">Designation</string>
+    <string name="role">Role</string>
+    <string name="send">Send</string>
 </resources>

@@ -4,6 +4,8 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.CAMERA;
 import static android.content.Context.MODE_PRIVATE;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -12,11 +14,18 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -42,6 +51,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.util.List;
@@ -62,6 +72,8 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
 
     @Override
     public void loadMap(NoticeMapsViewModel viewModel) {
+        viewModel.btnColor.set(activity.getResources().getColor(R.color.colorPrimary));
+
         SupportMapFragment mapFragment = (SupportMapFragment) activity.getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
@@ -82,7 +94,23 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
     public void showMap(NoticeMapsViewModel viewModel) {
         try {
             if (checkLocationPermission()) {
-                LatLng latLng = new LatLng(12.9716, 77.5946);
+                LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+                String locationProvider = LocationManager.NETWORK_PROVIDER;
+                if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
+                double userLat = lastKnownLocation.getLatitude();
+                double userLong = lastKnownLocation.getLongitude();
+
+                LatLng latLng = new LatLng(userLat, userLong);
                 viewModel.choosedLocationMarker.set(Objects.requireNonNull(viewModel.googleMap.get()).addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.mpin1))));
                 Objects.requireNonNull(viewModel.googleMap.get()).setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 Objects.requireNonNull(viewModel.googleMap.get()).moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -91,11 +119,11 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
                 Objects.requireNonNull(viewModel.googleMap.get()).setOnCameraMoveListener(viewModel);
                 Objects.requireNonNull(viewModel.googleMap.get()).setOnCameraIdleListener(viewModel);
                 Objects.requireNonNull(viewModel.googleMap.get()).setMyLocationEnabled(true);
-            }  else {
+            } else {
                 ActivityCompat.requestPermissions(activity, new String[]{ACCESS_FINE_LOCATION, CAMERA},
                         Constant.LOCATION_PERMISSION_REQUEST_CODE);
             }
-        } catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
             ex.printStackTrace();
         }
     }
@@ -110,7 +138,60 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
             addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
             String address = addresses.get(0).getAddressLine(0);
             viewModel.userLocationAddress.set(address);
-        } catch (IOException e) {
+
+            LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+            String locationProvider = LocationManager.NETWORK_PROVIDER;
+            if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
+            double userCurrLat = lastKnownLocation.getLatitude();
+            double userCurrLong = lastKnownLocation.getLongitude();
+            double userCurrAcc = lastKnownLocation.getAccuracy();
+
+            LatLng currLatLng = new LatLng(userCurrLat, userCurrLong);
+            viewModel.OffCurrentLocationCoordinates.set(currLatLng);
+
+            SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
+            String DistanceRange = sharedPreferences.getString(Constant.DistanceRange, null);
+            float FixedBetweenDistance = 60;
+            try {
+                FixedBetweenDistance = Float.parseFloat(DistanceRange);
+            } catch (Exception ex){
+                Toast.makeText(activity, ""+ex.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            Location locationc = new Location("point c");
+            locationc.setLatitude(userCurrLat);
+            locationc.setLongitude(userCurrLong);
+            Location locationd = new Location("point d");
+            locationd.setLatitude(latLng.latitude);
+            locationd.setLongitude(latLng.longitude);
+
+            double distToCurr = locationc.distanceTo(locationd);
+            Log.d("distToCurr", ""+distToCurr+" Meters");
+
+            if (distToCurr >= FixedBetweenDistance){
+                viewModel.btnEnable.set(false);
+                viewModel.btnColor.set(activity.getResources().getColor(android.R.color.darker_gray));
+                viewModel.noteText.set("Users are restricted to select property within a range of "
+                        +FixedBetweenDistance+ " Meters from their current Location");
+                viewModel.isTextVisible.set(true);
+            } else {
+                viewModel.btnEnable.set(true);
+                viewModel.btnColor.set(activity.getResources().getColor(R.color.colorPrimary));
+                viewModel.noteText.set("");
+                viewModel.isTextVisible.set(false);
+            }
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }

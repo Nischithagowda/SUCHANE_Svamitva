@@ -22,6 +22,8 @@ public class Constant {
     public static final String MY_SHARED_PREF = "my_pref";
     public static final String LOGIN_STATUS = "login_status";
     public static final String USER_MOBILE = "useR_PH_MOB";
+    public static final String VersionCode = "VersionCode";
+    public static final String DistanceRange = "DistanceRange";
     public static final String SHOW_DATA_REQ = "show_data";
     public static final String SHOW_DATA_REQ_UPOR = "show_data_UPOR";
     public static final int IMAGE_CAPTURE_REQ = 77;
