@@ -53,16 +53,6 @@ public class ViewBinding {
     }
 
     @BindingAdapter("visibility")
-    public static void imageBinding(View view, boolean visibility) {
-        view.setVisibility(visibility ? View.VISIBLE : View.GONE);
-    }
-
-    @BindingAdapter("visibility")
-    public static void spinnerBinding(View view, boolean visibility) {
-        view.setVisibility(visibility ? View.VISIBLE : View.GONE);
-    }
-
-    @BindingAdapter("visibility")
     public static void LayoutBinding(View view, boolean visibility) {
         view.setVisibility(visibility ? View.VISIBLE : View.GONE);
     }

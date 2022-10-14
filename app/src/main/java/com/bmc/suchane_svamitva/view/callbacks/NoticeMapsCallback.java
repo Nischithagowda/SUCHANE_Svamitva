@@ -5,8 +5,6 @@ import static android.Manifest.permission.CAMERA;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -20,12 +18,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -34,14 +28,10 @@ import com.bmc.suchane_svamitva.api.APIClient_Suchane;
 import com.bmc.suchane_svamitva.api.API_Interface_Suchane;
 import com.bmc.suchane_svamitva.model.AddressCodeNoticeNoRequest;
 import com.bmc.suchane_svamitva.model.AddressCodeNoticeNoResponse;
-import com.bmc.suchane_svamitva.model.FnSVM_UploadDocumentResponse;
-import com.bmc.suchane_svamitva.model.SMS_Request;
-import com.bmc.suchane_svamitva.model.SMS_Response;
 import com.bmc.suchane_svamitva.model.TokenRes;
 import com.bmc.suchane_svamitva.model.UserLatLon;
 import com.bmc.suchane_svamitva.utils.Constant;
 import com.bmc.suchane_svamitva.view.interfaces.NoticeMapsInterface;
-import com.bmc.suchane_svamitva.view.ui.DPR_FPR_LaunchActivity;
 import com.bmc.suchane_svamitva.view.ui.NoticeActivity;
 import com.bmc.suchane_svamitva.view.ui.NoticeMapsFragment;
 import com.bmc.suchane_svamitva.view_model.NoticeMapsViewModel;
@@ -51,7 +41,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.util.List;
@@ -94,23 +83,33 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
     public void showMap(NoticeMapsViewModel viewModel) {
         try {
             if (checkLocationPermission()) {
+
+                LatLng latLng = new LatLng(12.9750189, 77.5873832);
+
                 LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
                 String locationProvider = LocationManager.NETWORK_PROVIDER;
-                if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
-                double userLat = lastKnownLocation.getLatitude();
-                double userLong = lastKnownLocation.getLongitude();
+                Location lastKnownLocation_Network = locationManager.getLastKnownLocation(locationProvider);
 
-                LatLng latLng = new LatLng(userLat, userLong);
+                String locationProvider_GPS = LocationManager.GPS_PROVIDER;
+                Location lastKnownLocation_GPS = locationManager.getLastKnownLocation(locationProvider_GPS);
+
+                double userLat = lastKnownLocation_GPS.getLatitude();
+                double userLong = lastKnownLocation_GPS.getLongitude();
+
+                if (userLat != 0.0 && userLong != 0.0) {
+                    latLng = new LatLng(userLat, userLong);
+                    Log.d("GPSLocation", ""+userLat+", "+userLong);
+                } else {
+                    userLat = lastKnownLocation_Network.getLatitude();
+                    userLong = lastKnownLocation_Network.getLongitude();
+                    if (userLat != 0.0 && userLong != 0.0) {
+                        latLng = new LatLng(userLat, userLong);
+                        Log.d("NetworkLocation", ""+userLat+", "+userLong);
+                    } else {
+                        Log.d("Location", "Could not get Current Location");
+                    }
+                }
+
                 viewModel.choosedLocationMarker.set(Objects.requireNonNull(viewModel.googleMap.get()).addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.mpin1))));
                 Objects.requireNonNull(viewModel.googleMap.get()).setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 Objects.requireNonNull(viewModel.googleMap.get()).moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -154,7 +153,6 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
             Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
             double userCurrLat = lastKnownLocation.getLatitude();
             double userCurrLong = lastKnownLocation.getLongitude();
-            double userCurrAcc = lastKnownLocation.getAccuracy();
 
             LatLng currLatLng = new LatLng(userCurrLat, userCurrLong);
             viewModel.OffCurrentLocationCoordinates.set(currLatLng);

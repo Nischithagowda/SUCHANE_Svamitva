@@ -665,7 +665,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((result) -> {
                     dialog.dismiss();
-                    if (result.getRESPONSE_CODE() == "200") {
+                    if (result.getRESPONSE_CODE().contains("200")) {
                         sendServingNoticeImageToServer(viewModel);
                     } else {
                         Toast.makeText(activity, result.getRESPONSE_MESSAGE(), Toast.LENGTH_LONG).show();
@@ -719,7 +719,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((result) -> {
                     dialog.dismiss();
-                    if (result.getRESPONSE_CODE() == "200") {
+                    if (result.getRESPONSE_CODE().contains("200")) {
                         activity.onBackPressed();
                         activity.finish();
                         Toast.makeText(activity, "Data uploaded successfully", Toast.LENGTH_LONG).show();

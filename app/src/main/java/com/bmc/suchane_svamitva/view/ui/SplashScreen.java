@@ -40,11 +40,6 @@ public class SplashScreen extends AppCompatActivity {
         getRefreshToken();
     }
 
-    private boolean checkLocationPermission() {
-        return ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED;
-    }
-
     public void checkLoginStatus() {
         SharedPreferences sharedPreferences = getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
         boolean status = sharedPreferences.getBoolean(Constant.LOGIN_STATUS, false);
@@ -75,11 +70,6 @@ public class SplashScreen extends AppCompatActivity {
                     editor.putString(getString(R.string.token_type),result.getTokenType());
                     editor.putString(getString(R.string.refresh_tkn), result.getRefreshToken());
                     editor.apply();
-
-                    if (!checkLocationPermission()){
-                        ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION, CAMERA},
-                                Constant.LOCATION_PERMISSION_REQUEST_CODE);
-                    }
 
                     VersionRequest versionRequest = new VersionRequest();
                     versionRequest.setVERSION_CODE(""+BuildConfig.VERSION_NAME);

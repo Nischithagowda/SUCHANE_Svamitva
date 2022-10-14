@@ -267,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe((result) -> {
                         dialog.dismiss();
-                        if (result.getRESPONSE_CODE() == "200") {
+                        if (result.getRESPONSE_CODE().contains("200")) {
                             Observable
                                     .fromCallable(() -> DBConnection.getConnection(this)
                                             .getDataBaseDao()

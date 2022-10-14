@@ -4,16 +4,22 @@ package com.bmc.suchane_svamitva.view.callbacks;
 // Copyright (c) 2022 BMC. All rights reserved.
 //
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.CAMERA;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.bmc.suchane_svamitva.R;
 import com.bmc.suchane_svamitva.api.APIClient_Suchane;
@@ -52,6 +58,15 @@ public class MainActivityCallback implements MainActivityInterface {
 
     public MainActivityCallback(MainActivity activity) {
         this.activity = activity;
+        if (!checkLocationPermission()){
+            ActivityCompat.requestPermissions(activity, new String[]{ACCESS_FINE_LOCATION, CAMERA},
+                    Constant.LOCATION_PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    private boolean checkLocationPermission() {
+        return ContextCompat.checkSelfPermission(activity, ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override

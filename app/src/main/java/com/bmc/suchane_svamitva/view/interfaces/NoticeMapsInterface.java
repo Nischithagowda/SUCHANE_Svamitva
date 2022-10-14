@@ -1,5 +1,7 @@
 package com.bmc.suchane_svamitva.view.interfaces;
 
+import android.location.Location;
+
 import com.bmc.suchane_svamitva.view_model.NoticeMapsViewModel;
 
 public interface NoticeMapsInterface {
