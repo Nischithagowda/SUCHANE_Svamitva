@@ -1,11 +1,7 @@
 package com.bmc.suchane_svamitva.view_model;
 
-import android.widget.ArrayAdapter;
-
-import androidx.databinding.ObservableArrayList;
-import androidx.databinding.ObservableBoolean;
+import android.view.View;
 import androidx.databinding.ObservableField;
-import androidx.databinding.ObservableList;
 
 import com.bmc.suchane_svamitva.view.interfaces.ProfileInterface;
 
@@ -22,5 +18,9 @@ public class ProfileViewModel {
 
     public ProfileViewModel(ProfileInterface profileInterface) {
         this.profileInterface = profileInterface;
+    }
+
+    public void onClickCancel(View view){
+        profileInterface.onClickCancel();
     }
 }

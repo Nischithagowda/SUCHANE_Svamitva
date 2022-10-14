@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.launcher_menu, menu);
         MenuItem item = menu.findItem(R.id.version);
-        item.setTitle("Version : " + BuildConfig.VERSION_CODE);
+        item.setTitle("Version : " + BuildConfig.VERSION_NAME);
         MenuBuilder menuBuilder = (MenuBuilder) menu;
         menuBuilder.setOptionalIconsVisible(true);
         return true;

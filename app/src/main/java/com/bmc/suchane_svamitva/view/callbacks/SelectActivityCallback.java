@@ -16,8 +16,6 @@ import androidx.core.content.ContextCompat;
 
 import com.bmc.suchane_svamitva.utils.Constant;
 import com.bmc.suchane_svamitva.view.interfaces.SelectActivityInterface;
-import com.bmc.suchane_svamitva.view.ui.DPR_FPR_LaunchActivity;
-import com.bmc.suchane_svamitva.view.ui.MainActivity;
 import com.bmc.suchane_svamitva.view.ui.NoticeMapsFragment;
 import com.bmc.suchane_svamitva.view.ui.SelectActivity;
 import com.bmc.suchane_svamitva.view_model.SelectActivityViewModel;

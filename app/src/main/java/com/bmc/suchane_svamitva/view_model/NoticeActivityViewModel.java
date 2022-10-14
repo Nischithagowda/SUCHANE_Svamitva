@@ -27,6 +27,10 @@ public class NoticeActivityViewModel {
     public final ObservableField<String> ownerLat = new ObservableField<>("");
     public final ObservableField<String> ownerLong = new ObservableField<>("");
     public ObservableBoolean fieldEnable = new ObservableBoolean(true);
+    public final ObservableField<String> nameError = new ObservableField<>();
+    public final ObservableField<String> name = new ObservableField<>("");
+    public final ObservableField<String> mobNumError = new ObservableField<>();
+    public final ObservableField<String> mobNum = new ObservableField<>("");
     public final ObservableField<String> doorNoError = new ObservableField<>();
     public final ObservableField<String> doorNo = new ObservableField<>("");
     public final ObservableField<String> buildingError = new ObservableField<>();
@@ -88,6 +92,14 @@ public class NoticeActivityViewModel {
 
     public void processImageServingNotice() {
         noticeActivityInterface.imageProcessServingNotice(this);
+    }
+    public void onContactNameTextChanged(CharSequence s, int start, int before, int count) {
+        name.set(s.toString());
+        nameError.set(null);
+    }
+    public void onContactMobNumTextChanged(CharSequence s, int start, int before, int count) {
+        mobNum.set(s.toString());
+        mobNumError.set(null);
     }
     public void onContactDoorNoTextChanged(CharSequence s, int start, int before, int count) {
         doorNo.set(s.toString());
@@ -161,6 +173,18 @@ public class NoticeActivityViewModel {
         } else if (imageDataServingNotice.get() == null) {
             Toast.makeText(view.getContext(), "Capture Serving Notice photo to proceed", Toast.LENGTH_LONG).show();
             status = true;
+        } else if (TextUtils.isEmpty(name.get()) || name.get() == null){
+            nameError.set("Enter Name");
+            Toast.makeText(view.getContext(), "Enter Name to proceed", Toast.LENGTH_LONG).show();
+            status = true;
+        } else if (TextUtils.isEmpty(mobNum.get()) || mobNum.get() == null){
+            mobNumError.set("Enter Mobile number");
+            Toast.makeText(view.getContext(), "Enter Mobile number to proceed", Toast.LENGTH_LONG).show();
+            status = true;
+        } else if (isMobileValid(mobNum.get())) {
+            mobNumError.set("Valid Mobile Number is required");
+            Toast.makeText(view.getContext(), "Valid Mobile Number is required", Toast.LENGTH_LONG).show();
+            status = true;
         } else if (TextUtils.isEmpty(doorNo.get()) || doorNo.get() == null){
             doorNoError.set("Enter door number");
             Toast.makeText(view.getContext(), "Enter door number to proceed", Toast.LENGTH_LONG).show();
@@ -184,6 +208,10 @@ public class NoticeActivityViewModel {
         }
     }
 
+    public boolean isMobileValid(String number) {
+        return android.util.Patterns.PHONE.matcher(number).matches() & number.length() == 10;
+    }
+
     public void onClickSaveAndNextData(View view) {
         boolean status = false;
 
@@ -192,6 +220,18 @@ public class NoticeActivityViewModel {
             status = true;
         } else if (imageDataServingNotice.get() == null) {
             Toast.makeText(view.getContext(), "Capture Serving Notice photo to proceed", Toast.LENGTH_LONG).show();
+            status = true;
+        } else if (TextUtils.isEmpty(name.get()) || name.get() == null){
+            nameError.set("Enter Name");
+            Toast.makeText(view.getContext(), "Enter Name to proceed", Toast.LENGTH_LONG).show();
+            status = true;
+        } else if (TextUtils.isEmpty(mobNum.get()) || mobNum.get() == null){
+            mobNumError.set("Enter Mobile number");
+            Toast.makeText(view.getContext(), "Enter Mobile number to proceed", Toast.LENGTH_LONG).show();
+            status = true;
+        } else if (isMobileValid(mobNum.get())) {
+            mobNumError.set("Valid Mobile Number is required");
+            Toast.makeText(view.getContext(), "Valid Mobile Number is required", Toast.LENGTH_LONG).show();
             status = true;
         } else if (TextUtils.isEmpty(doorNo.get()) || doorNo.get() == null){
             doorNoError.set("Enter door number");

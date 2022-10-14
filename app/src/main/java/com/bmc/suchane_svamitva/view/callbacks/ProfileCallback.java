@@ -25,4 +25,8 @@ public class ProfileCallback implements ProfileInterface {
     public ProfileCallback(ProfileActivity activity) {
         this.activity = activity;
     }
+
+    public void onClickCancel(){
+        activity.onBackPressed();
+    }
 }
