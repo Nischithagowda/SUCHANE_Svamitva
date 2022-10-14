@@ -39,7 +39,7 @@ public class OTPVerify extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, SignInCallback.class);
+        Intent intent = new Intent(this, SignIn.class);
         startActivity(intent);
         finish();
     }
