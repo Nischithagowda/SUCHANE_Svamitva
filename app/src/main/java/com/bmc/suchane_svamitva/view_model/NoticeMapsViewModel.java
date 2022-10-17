@@ -26,6 +26,7 @@ public class NoticeMapsViewModel implements OnMapReadyCallback, GoogleMap.OnCame
     public final ObservableField<String> hobliCode = new ObservableField<>();
     public final ObservableField<String> hobliName = new ObservableField<>("");
     public final ObservableField<String> villageCode = new ObservableField<>();
+    public final ObservableField<String> LGD_VILLAGE_CODE = new ObservableField<>();
     public final ObservableField<String> villageName = new ObservableField<>("");
     public final ObservableField<LatLng> OffCurrentLocationCoordinates = new ObservableField<>();
     public final ObservableField<Boolean> btnEnable = new ObservableField<>(true);

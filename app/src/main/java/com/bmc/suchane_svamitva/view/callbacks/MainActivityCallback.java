@@ -382,6 +382,7 @@ public class MainActivityCallback implements MainActivityInterface {
         intent.putExtra("hobliCode", ""+viewModel.hobliCode.get());
         intent.putExtra("hobliName", ""+viewModel.hobliName.get());
         intent.putExtra("villageCode", ""+viewModel.villageCode.get());
+        intent.putExtra("LGD_VILLAGE_CODE", ""+viewModel.LGD_VILLAGE_CODE.get());
         intent.putExtra("villageName", ""+viewModel.villageName.get());
         activity.startActivity(intent);
     }

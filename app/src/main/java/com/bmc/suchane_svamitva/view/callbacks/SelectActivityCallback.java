@@ -37,6 +37,7 @@ public class SelectActivityCallback implements SelectActivityInterface {
         viewModel.hobliCode.set(intent.getStringExtra("hobliCode"));
         viewModel.hobliName.set(intent.getStringExtra("hobliName"));
         viewModel.villageCode.set(intent.getStringExtra("villageCode"));
+        viewModel.LGD_VILLAGE_CODE.set(intent.getStringExtra("LGD_VILLAGE_CODE"));
         viewModel.villageName.set(intent.getStringExtra("villageName"));
     }
 
@@ -51,6 +52,7 @@ public class SelectActivityCallback implements SelectActivityInterface {
             intent.putExtra("hobliCode", ""+viewModel.hobliCode.get());
             intent.putExtra("hobliName", ""+viewModel.hobliName.get());
             intent.putExtra("villageCode", ""+viewModel.villageCode.get());
+            intent.putExtra("LGD_VILLAGE_CODE", ""+viewModel.LGD_VILLAGE_CODE.get());
             intent.putExtra("villageName", ""+viewModel.villageName.get());
             activity.startActivity(intent);
         }  else {

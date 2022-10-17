@@ -31,6 +31,10 @@ public class Village {
     @ColumnInfo(name = "VILLAGE_CODE")
     private String VILLAGE_CODE;
 
+    @SerializedName("LGD_VILLAGE_CODE")
+    @ColumnInfo(name = "LGD_VILLAGE_CODE")
+    private String LGD_VILLAGE_CODE;
+
     @SerializedName("VILLAGE_NAME")
     @ColumnInfo(name = "VILLAGE_NAME")
     private String VILLAGE_NAME;
@@ -65,6 +69,14 @@ public class Village {
 
     public void setHOBLI_CODE(String HOBLI_CODE) {
         this.HOBLI_CODE = HOBLI_CODE;
+    }
+
+    public String getLGD_VILLAGE_CODE() {
+        return LGD_VILLAGE_CODE;
+    }
+
+    public void setLGD_VILLAGE_CODE(String LGD_VILLAGE_CODE) {
+        this.LGD_VILLAGE_CODE = LGD_VILLAGE_CODE;
     }
 
     public String getVILLAGE_CODE() {

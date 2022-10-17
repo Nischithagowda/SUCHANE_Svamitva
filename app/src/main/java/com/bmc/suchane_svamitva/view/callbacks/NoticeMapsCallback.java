@@ -76,6 +76,7 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
         viewModel.hobliCode.set(intent.getStringExtra("hobliCode"));
         viewModel.hobliName.set(intent.getStringExtra("hobliName"));
         viewModel.villageCode.set(intent.getStringExtra("villageCode"));
+        viewModel.LGD_VILLAGE_CODE.set(intent.getStringExtra("LGD_VILLAGE_CODE"));
         viewModel.villageName.set(intent.getStringExtra("villageName"));
     }
 
@@ -235,9 +236,14 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
 
                         String accessToken = result.getTokenType() + " " + result.getAccessToken();
 
+                        SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
+                        String mobNum = sharedPreferences.getString(Constant.USER_MOBILE, null);
+
                         AddressCodeNoticeNoRequest addressCodeNoticeNoRequest = new AddressCodeNoticeNoRequest();
                         addressCodeNoticeNoRequest.setLAT(""+userLatLon.getLatitude());
                         addressCodeNoticeNoRequest.setLONG(""+userLatLon.getLongitude());
+                        addressCodeNoticeNoRequest.setLGD_VILLAGECODE(""+viewModel.LGD_VILLAGE_CODE.get());
+                        addressCodeNoticeNoRequest.setUSER_ID(""+mobNum);
 
                         Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
                         API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
@@ -246,9 +252,9 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe((result1) -> {
                                     dialog.dismiss();
-                                    if (result1.getRESPONSE_CODE().contains("200") && result1.getNOTICE_NO()!=null && result1.getADDRESS_CODE()!=null) {
+                                    if (result1.getRESPONSE_CODE().contains("200") && result1.getNOTICE_NO()!=null && result1.getGPLUS_ADDRESS_CODE()!=null) {
                                         userLatLon.setNoticeNo(result1.getNOTICE_NO());
-                                        userLatLon.setAddressCode(result1.getADDRESS_CODE());
+                                        userLatLon.setAddressCode(result1.getGPLUS_ADDRESS_CODE());
                                         userLatLon.setVirtualID(result1.getVIRTUAL_ID());
                                         onNavigateToSelectedAddress(viewModel, userLatLon);
                                     } else {
@@ -279,6 +285,7 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
         intent.putExtra("hobliCode", ""+viewModel.hobliCode.get());
         intent.putExtra("hobliName", ""+viewModel.hobliName.get());
         intent.putExtra("villageCode", ""+viewModel.villageCode.get());
+        intent.putExtra("LGD_VILLAGE_CODE", ""+viewModel.LGD_VILLAGE_CODE.get());
         intent.putExtra("villageName", ""+viewModel.villageName.get());
         activity.startActivity(intent);
         activity.finish();

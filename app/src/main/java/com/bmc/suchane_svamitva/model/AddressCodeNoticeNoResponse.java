@@ -17,9 +17,9 @@ public class AddressCodeNoticeNoResponse {
     @Expose
     private String NOTICE_NO;
 
-    @SerializedName("ADDRESS_CODE")
+    @SerializedName("GPLUS_ADDRESS_CODE")
     @Expose
-    private String ADDRESS_CODE;
+    private String GPLUS_ADDRESS_CODE;
 
     @SerializedName("VIRTUAL_ID")
     @Expose
@@ -49,12 +49,12 @@ public class AddressCodeNoticeNoResponse {
         this.NOTICE_NO = NOTICE_NO;
     }
 
-    public String getADDRESS_CODE() {
-        return ADDRESS_CODE;
+    public String getGPLUS_ADDRESS_CODE() {
+        return GPLUS_ADDRESS_CODE;
     }
 
-    public void setADDRESS_CODE(String ADDRESS_CODE) {
-        this.ADDRESS_CODE = ADDRESS_CODE;
+    public void setGPLUS_ADDRESS_CODE(String GPLUS_ADDRESS_CODE) {
+        this.GPLUS_ADDRESS_CODE = GPLUS_ADDRESS_CODE;
     }
 
     public String getVIRTUAL_ID() {

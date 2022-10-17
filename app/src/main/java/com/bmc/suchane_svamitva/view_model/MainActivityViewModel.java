@@ -41,6 +41,7 @@ public class MainActivityViewModel {
     public final ObservableField<String> villageName = new ObservableField<>("");
     public final ObservableField<String> villageError = new ObservableField<>();
     public final ObservableField<String> villageCode = new ObservableField<>("");
+    public final ObservableField<String> LGD_VILLAGE_CODE = new ObservableField<>("");
 
     public MainActivityViewModel(MainActivityInterface mainActivityInterface) {
         this.mainActivityInterface = mainActivityInterface;
@@ -57,6 +58,7 @@ public class MainActivityViewModel {
         this.hobliCode.set("");
         this.hobliName.set("");
         this.villageCode.set("");
+        this.LGD_VILLAGE_CODE.set("");
         this.villageName.set("");
         mainActivityInterface.getUserTaluk(this);
     }
@@ -69,6 +71,7 @@ public class MainActivityViewModel {
         this.hobliCode.set("");
         this.hobliName.set("");
         this.villageCode.set("");
+        this.LGD_VILLAGE_CODE.set("");
         this.villageName.set("");
         mainActivityInterface.getHobli(this);
     }
@@ -79,6 +82,7 @@ public class MainActivityViewModel {
         this.hobliCode.set(hobli.getHOBLI_CODE());
         hobliError.set(null);
         this.villageCode.set("");
+        this.LGD_VILLAGE_CODE.set("");
         this.villageName.set("");
         mainActivityInterface.getVillage(this);
     }
@@ -87,6 +91,7 @@ public class MainActivityViewModel {
         Village village = (Village) parent.getItemAtPosition(position);
         this.villageName.set(village.getVILLAGE_NAME());
         this.villageCode.set(village.getVILLAGE_CODE());
+        this.LGD_VILLAGE_CODE.set(village.getLGD_VILLAGE_CODE());
         villageError.set(null);
     }
 
