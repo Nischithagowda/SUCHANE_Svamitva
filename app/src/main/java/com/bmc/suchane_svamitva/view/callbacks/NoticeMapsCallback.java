@@ -85,33 +85,9 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
         try {
             if (checkLocationPermission()) {
 
-                LatLng latLng = new LatLng(12.9750189, 77.5873832);
+                LatLng latLng = new LatLng(viewModel.OffCurrentLocationCoordinates.get().latitude, viewModel.OffCurrentLocationCoordinates.get().longitude);
 
-                LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
-                String locationProvider = LocationManager.NETWORK_PROVIDER;
-                Location lastKnownLocation_Network = locationManager.getLastKnownLocation(locationProvider);
-
-                String locationProvider_GPS = LocationManager.GPS_PROVIDER;
-                Location lastKnownLocation_GPS = locationManager.getLastKnownLocation(locationProvider_GPS);
-
-                double userLat = lastKnownLocation_GPS.getLatitude();
-                double userLong = lastKnownLocation_GPS.getLongitude();
-
-                if (userLat != 0.0 && userLong != 0.0) {
-                    latLng = new LatLng(userLat, userLong);
-                    Log.d("GPSLocation", ""+userLat+", "+userLong);
-                } else {
-                    userLat = lastKnownLocation_Network.getLatitude();
-                    userLong = lastKnownLocation_Network.getLongitude();
-                    if (userLat != 0.0 && userLong != 0.0) {
-                        latLng = new LatLng(userLat, userLong);
-                        Log.d("NetworkLocation", ""+userLat+", "+userLong);
-                    } else {
-                        Log.d("Location", "Could not get Current Location");
-                    }
-                }
-
-                viewModel.choosedLocationMarker.set(Objects.requireNonNull(viewModel.googleMap.get()).addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.mpin1))));
+                viewModel.choosedLocationMarker.set(Objects.requireNonNull(viewModel.googleMap.get()).addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.gun_point_adjust))));
                 Objects.requireNonNull(viewModel.googleMap.get()).setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 Objects.requireNonNull(viewModel.googleMap.get()).moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 Objects.requireNonNull(viewModel.googleMap.get()).animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));

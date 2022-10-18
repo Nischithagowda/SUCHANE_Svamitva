@@ -79,7 +79,7 @@
 
                             <androidx.appcompat.widget.AppCompatEditText
                                 android:layout_width="match_parent"
-                                android:layout_height="54dp"
+                                android:layout_height="wrap_content"
                                 android:drawableEnd="@drawable/ic_phone_android_black"
                                 android:hint="@string/mobile_no_hint"
                                 android:inputType="phone"

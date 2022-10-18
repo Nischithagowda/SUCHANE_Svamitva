@@ -36,7 +36,7 @@ public class NoticeMapsViewModel implements OnMapReadyCallback, GoogleMap.OnCame
 
     public NoticeMapsViewModel(NoticeMapsInterface noticeMapsInterface) {
         this.noticeMapsInterface = noticeMapsInterface;
-        setUp();
+        this.OffCurrentLocationCoordinates.set(new LatLng(12.9750571, 77.5881314));
     }
 
     public void setUp() {
@@ -47,7 +47,6 @@ public class NoticeMapsViewModel implements OnMapReadyCallback, GoogleMap.OnCame
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.googleMap.set(googleMap);
         noticeMapsInterface.showMap(this);
-
     }
 
     @Override
