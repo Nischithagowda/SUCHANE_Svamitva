@@ -54,7 +54,7 @@
     <string name="click_photo_of_serving_of_notice">Click photo of Serving \nof Notice</string>
     <string name="click_photo_of_serving_of_dpr_fpr">Click photo of Serving \DPR/FPR</string>
     <string name="star">*</string>
-    <string name="enter_postal_address">Enter Owner Postal Address</string>
+    <string name="enter_postal_address">Enter Owner Postal Address and other Details</string>
     <string name="door_no">Door No</string>
     <string name="building">Building</string>
     <string name="street_or_area">Street / Area</string>
@@ -83,4 +83,9 @@
     <string name="send">Send</string>
     <string name="name">Name</string>
     <string name="close">Close</string>
+    <string name="zero">0</string>
+    <string name="validate">Validate</string>
+    <string name="cancel">Cancel</string>
+    <string name="enter_otp_sent_to_owner_number">Enter OTP sent to Owner Number</string>
+    <string name="please_enter_valid_otp">Please enter valid OTP</string>
 </resources>

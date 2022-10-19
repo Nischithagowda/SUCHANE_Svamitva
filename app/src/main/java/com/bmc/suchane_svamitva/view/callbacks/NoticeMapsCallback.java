@@ -87,7 +87,7 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
 
                 LatLng latLng = new LatLng(viewModel.OffCurrentLocationCoordinates.get().latitude, viewModel.OffCurrentLocationCoordinates.get().longitude);
 
-                viewModel.choosedLocationMarker.set(Objects.requireNonNull(viewModel.googleMap.get()).addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.gun_point_adjust))));
+                viewModel.choosedLocationMarker.set(Objects.requireNonNull(viewModel.googleMap.get()).addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.gunpoint_red))));
                 Objects.requireNonNull(viewModel.googleMap.get()).setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 Objects.requireNonNull(viewModel.googleMap.get()).moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 Objects.requireNonNull(viewModel.googleMap.get()).animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
@@ -228,9 +228,9 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe((result1) -> {
                                     dialog.dismiss();
-                                    if (result1.getRESPONSE_CODE().contains("200") && result1.getNOTICE_NO()!=null && result1.getGPLUS_ADDRESS_CODE()!=null) {
+                                    if (result1.getRESPONSE_CODE().contains("200") && result1.getNOTICE_NO()!=null && result1.getBHM_GPLUS_ADDRESS_CODE()!=null) {
                                         userLatLon.setNoticeNo(result1.getNOTICE_NO());
-                                        userLatLon.setAddressCode(result1.getGPLUS_ADDRESS_CODE());
+                                        userLatLon.setAddressCode(result1.getBHM_GPLUS_ADDRESS_CODE());
                                         userLatLon.setVirtualID(result1.getVIRTUAL_ID());
                                         onNavigateToSelectedAddress(viewModel, userLatLon);
                                     } else {

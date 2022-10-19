@@ -1,5 +1,7 @@
 package com.bmc.suchane_svamitva.view.interfaces;
 
+import android.view.View;
+
 import com.bmc.suchane_svamitva.view_model.NoticeActivityViewModel;
 
 public interface NoticeActivityInterface {
@@ -16,4 +18,7 @@ public interface NoticeActivityInterface {
     void goHome();
     void showImagePropertyOrLand(NoticeActivityViewModel viewModel);
     void showImageServingNotice(NoticeActivityViewModel viewModel);
+    void sendOtp_Public(NoticeActivityViewModel viewModel);
+    void verifyOtpWithServer(NoticeActivityViewModel viewModel);
+    void onClickCancel();
 }

@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
+import androidx.databinding.ObservableInt;
 import androidx.databinding.ObservableList;
 
 import com.bmc.suchane_svamitva.model.District;
@@ -64,6 +65,20 @@ public class NoticeActivityViewModel {
     public final ObservableField<byte[]> imageDataServingNotice = new ObservableField<>();
     public final ObservableField<File> imageFileServingNotice = new ObservableField<File>();
     public ObservableBoolean isImageVisible = new ObservableBoolean(false);
+    public final ObservableField<Boolean> requestFocus1 = new ObservableField<>(true);
+    public final ObservableField<Boolean> requestFocus2 = new ObservableField<>(false);
+    public final ObservableField<Boolean> requestFocus3 = new ObservableField<>(false);
+    public final ObservableField<Boolean> requestFocus4 = new ObservableField<>(false);
+    public final ObservableField<Boolean> requestFocus5 = new ObservableField<>(false);
+    public final ObservableField<Boolean> requestFocus6 = new ObservableField<>(false);
+    public final ObservableField<String> value1 = new ObservableField<>("");
+    public final ObservableField<String> value2 = new ObservableField<>("");
+    public final ObservableField<String> value3 = new ObservableField<>("");
+    public final ObservableField<String> value4 = new ObservableField<>("");
+    public final ObservableField<String> value5 = new ObservableField<>("");
+    public final ObservableField<String> value6 = new ObservableField<>("");
+    public final ObservableField<Boolean> isErrorTextVisible = new ObservableField<>(false);
+    public final ObservableInt otpNumber=new ObservableInt();
 
     public NoticeActivityViewModel(NoticeActivityInterface noticeActivityInterface) {
         this.noticeActivityInterface = noticeActivityInterface;
@@ -164,8 +179,86 @@ public class NoticeActivityViewModel {
         villageError.set(null);
     }
 
+    public void value1Watcher(CharSequence text, int start, int end, int count) {
+        requestFocus1.set(false);
+        value1.set(text.toString());
+        if (count == 1) {
+            requestFocus2.set(true);
+        } else if (count == 0) {
+            requestFocus2.set(false);
+        }
+    }
+
+    public void value2Watcher(CharSequence text, int start, int end, int count) {
+        requestFocus2.set(false);
+        value2.set(text.toString());
+        if (count == 1) {
+            requestFocus3.set(true);
+            requestFocus1.set(false);
+        } else if (count == 0) {
+            requestFocus1.set(true);
+            requestFocus3.set(false);
+        }
+    }
+
+    public void value3Watcher(CharSequence text, int start, int end, int count) {
+        requestFocus3.set(false);
+        value3.set(text.toString());
+        if (count == 1) {
+            requestFocus4.set(true);
+            requestFocus2.set(false);
+        } else if (count == 0) {
+            requestFocus2.set(true);
+            requestFocus4.set(false);
+        }
+    }
+
+    public void value4Watcher(CharSequence text, int start, int end, int count) {
+        requestFocus4.set(false);
+        value4.set(text.toString());
+        if (count == 1) {
+            requestFocus5.set(true);
+            requestFocus3.set(false);
+        } else if (count == 0) {
+            requestFocus3.set(true);
+            requestFocus5.set(false);
+        }
+    }
+
+    public void value5Watcher(CharSequence text, int start, int end, int count) {
+        requestFocus5.set(false);
+        value5.set(text.toString());
+        if (count == 1) {
+            requestFocus6.set(true);
+            requestFocus4.set(false);
+        } else if (count == 0) {
+            requestFocus4.set(true);
+            requestFocus6.set(false);
+        }
+    }
+
+    public void value6Watcher(CharSequence text, int start, int end, int count) {
+        requestFocus6.set(false);
+        value6.set(text.toString());
+        if (count == 0) {
+            requestFocus5.set(true);
+        } else if (count == 1) {
+            requestFocus5.set(false);
+        }
+    }
+
+    public void verifyOtpWithServer(View view) {
+        this.isErrorTextVisible.set(false);
+        noticeActivityInterface.verifyOtpWithServer(this);
+    }
+
+    public void onClickCancel(View view) {
+        noticeActivityInterface.onClickCancel();
+    }
+
     public void onClickSaveData(View view) {
         boolean status = false;
+        boolean isMobileNumEntered = false;
 
         if (imageDataPropertyOrLand.get() == null) {
             Toast.makeText(view.getContext(), "Capture Property Or Land photo to proceed", Toast.LENGTH_LONG).show();
@@ -182,12 +275,12 @@ public class NoticeActivityViewModel {
 //            mobNumError.set("Enter Mobile number");
 //            Toast.makeText(view.getContext(), "Enter Mobile number to proceed", Toast.LENGTH_LONG).show();
 //            status = true;
-//        } else if (isMobileValid(mobNum.get())) {
-//            mobNumError.set("Valid Mobile Number is required");
-//            Toast.makeText(view.getContext(), "Valid Mobile Number is required", Toast.LENGTH_LONG).show();
-//            status = true;
 //        }
-        else if (TextUtils.isEmpty(doorNo.get()) || doorNo.get() == null){
+        else if (!TextUtils.isEmpty(mobNum.get()) && !isMobileValid(mobNum.get())) {
+            mobNumError.set("Valid Mobile Number is required");
+            Toast.makeText(view.getContext(), "Valid Mobile Number is required", Toast.LENGTH_LONG).show();
+            status = true;
+        } else if (TextUtils.isEmpty(doorNo.get()) || doorNo.get() == null){
             doorNoError.set("Enter door number");
             Toast.makeText(view.getContext(), "Enter door number to proceed", Toast.LENGTH_LONG).show();
             status = true;
@@ -205,7 +298,13 @@ public class NoticeActivityViewModel {
             status = true;
         }
 
-        if (!status) {
+        if (!TextUtils.isEmpty(mobNum.get()) && isMobileValid(mobNum.get())){
+            isMobileNumEntered = true;
+        }
+
+        if (isMobileNumEntered && !status){
+            noticeActivityInterface.sendOtp_Public(this);
+        } else if (!status) {
             noticeActivityInterface.saveAndNext(this);
         }
     }
@@ -216,6 +315,7 @@ public class NoticeActivityViewModel {
 
     public void onClickSaveAndNextData(View view) {
         boolean status = false;
+        boolean isMobileNumEntered = false;
 
         if (imageDataPropertyOrLand.get() == null) {
             Toast.makeText(view.getContext(), "Capture Property Or Land photo to proceed", Toast.LENGTH_LONG).show();
@@ -232,12 +332,12 @@ public class NoticeActivityViewModel {
 //            mobNumError.set("Enter Mobile number");
 //            Toast.makeText(view.getContext(), "Enter Mobile number to proceed", Toast.LENGTH_LONG).show();
 //            status = true;
-//        } else if (isMobileValid(mobNum.get())) {
-//            mobNumError.set("Valid Mobile Number is required");
-//            Toast.makeText(view.getContext(), "Valid Mobile Number is required", Toast.LENGTH_LONG).show();
-//            status = true;
 //        }
-        else if (TextUtils.isEmpty(doorNo.get()) || doorNo.get() == null){
+        else if (!TextUtils.isEmpty(mobNum.get()) && !isMobileValid(mobNum.get())) {
+            mobNumError.set("Valid Mobile Number is required");
+            Toast.makeText(view.getContext(), "Valid Mobile Number is required", Toast.LENGTH_LONG).show();
+            status = true;
+        } else if (TextUtils.isEmpty(doorNo.get()) || doorNo.get() == null){
             doorNoError.set("Enter door number");
             Toast.makeText(view.getContext(), "Enter door number to proceed", Toast.LENGTH_LONG).show();
             status = true;
@@ -255,7 +355,13 @@ public class NoticeActivityViewModel {
             status = true;
         }
 
-        if (!status) {
+        if (!TextUtils.isEmpty(mobNum.get()) && isMobileValid(mobNum.get())){
+            isMobileNumEntered = true;
+        }
+
+        if (isMobileNumEntered && !status){
+            noticeActivityInterface.sendOtp_Public(this);
+        } else if (!status) {
             noticeActivityInterface.saveAndNext(this);
         }
     }

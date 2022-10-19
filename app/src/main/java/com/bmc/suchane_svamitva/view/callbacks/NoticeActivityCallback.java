@@ -17,6 +17,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+
+import androidx.databinding.DataBindingUtil;
 import androidx.exifinterface.media.ExifInterface;
 
 import android.graphics.drawable.ColorDrawable;
@@ -27,9 +29,13 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -37,12 +43,14 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.lifecycle.ViewModel;
 
 import com.bmc.suchane_svamitva.BuildConfig;
 import com.bmc.suchane_svamitva.R;
 import com.bmc.suchane_svamitva.api.APIClient_Suchane;
 import com.bmc.suchane_svamitva.api.API_Interface_Suchane;
 import com.bmc.suchane_svamitva.database.DBConnection;
+import com.bmc.suchane_svamitva.databinding.ValidateOtpDialogBinding;
 import com.bmc.suchane_svamitva.model.District;
 import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsRequest;
 import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsResponse;
@@ -50,13 +58,21 @@ import com.bmc.suchane_svamitva.model.Hobli;
 import com.bmc.suchane_svamitva.model.Image;
 import com.bmc.suchane_svamitva.model.MultipartImageResponse;
 import com.bmc.suchane_svamitva.model.NoticeDetailsTbl;
+import com.bmc.suchane_svamitva.model.SMS_Request;
+import com.bmc.suchane_svamitva.model.SMS_Response;
+import com.bmc.suchane_svamitva.model.SMS_Response_Public;
 import com.bmc.suchane_svamitva.model.Taluka;
+import com.bmc.suchane_svamitva.model.TokenRes;
 import com.bmc.suchane_svamitva.model.UserLatLon;
+import com.bmc.suchane_svamitva.model.ValidateOtpRequest;
 import com.bmc.suchane_svamitva.model.Village;
 import com.bmc.suchane_svamitva.utils.Constant;
 import com.bmc.suchane_svamitva.view.interfaces.NoticeActivityInterface;
+import com.bmc.suchane_svamitva.view.interfaces.NoticeMapsInterface;
 import com.bmc.suchane_svamitva.view.ui.NoticeActivity;
 import com.bmc.suchane_svamitva.view_model.NoticeActivityViewModel;
+import com.bmc.suchane_svamitva.view_model.NoticeMapsViewModel;
+import com.bmc.suchane_svamitva.view_model.OTPVerifyViewModel;
 import com.iceteck.silicompressorr.SiliCompressor;
 
 import java.io.ByteArrayOutputStream;
@@ -77,6 +93,9 @@ import retrofit2.Retrofit;
 
 public class NoticeActivityCallback implements NoticeActivityInterface {
     NoticeActivity activity;
+    AlertDialog.Builder builder;
+    AlertDialog alertDialog;
+    View view;
 
     public NoticeActivityCallback(NoticeActivity activity) {
         this.activity = activity;
@@ -533,6 +552,8 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         noticeDetailsTbl.setNTC_AREA_TYPE("2");
         noticeDetailsTbl.setNTC_NOTICE_NO(viewModel.noticeNumber.get());
         noticeDetailsTbl.setNTC_ADD_CODE(viewModel.addressCode.get());
+        noticeDetailsTbl.setNTC_OWNER_NAME(viewModel.name.get());
+        noticeDetailsTbl.setNTC_OWNER_MOBILE_NO(viewModel.mobNum.get());
         noticeDetailsTbl.setNTC_ADD_DOORNO(viewModel.doorNo.get());
         noticeDetailsTbl.setNTC_BUILDING(viewModel.building.get());
         noticeDetailsTbl.setNTC_STREET_AREA(viewModel.street.get());
@@ -588,6 +609,8 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         svmInsertNoticeDetailsRequest.setNTC_AREA_TYPE("2");
         svmInsertNoticeDetailsRequest.setNTC_NOTICE_NO(viewModel.noticeNumber.get());
         svmInsertNoticeDetailsRequest.setNTC_ADD_CODE(viewModel.addressCode.get());
+        svmInsertNoticeDetailsRequest.setNTC_OWNER_NAME(viewModel.name.get());
+        svmInsertNoticeDetailsRequest.setNTC_OWNER_MOBILE_NO(viewModel.mobNum.get());
         svmInsertNoticeDetailsRequest.setNTC_ADD_DOORNO(viewModel.doorNo.get());
         svmInsertNoticeDetailsRequest.setNTC_BUILDING(viewModel.building.get());
         svmInsertNoticeDetailsRequest.setNTC_STREET_AREA(viewModel.street.get());
@@ -804,6 +827,134 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
                     error.printStackTrace();
                 });
 
+    }
+
+    public void onEnterOTP(NoticeActivityViewModel viewModel){
+        ValidateOtpDialogBinding binding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.validate_otp_dialog, null, false);
+        binding.setViewModel(viewModel);
+        view = binding.getRoot();
+
+        builder = new AlertDialog.Builder(activity);
+        builder.setView(view)
+                .setCancelable(false);
+        alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    @Override
+    public void sendOtp_Public(NoticeActivityViewModel viewModel) {
+        if (isNetworkAvailable()) {
+            ProgressDialog dialog = new ProgressDialog(activity);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            dialog.setMessage("Checking Please Wait ..");
+            dialog.show();
+
+            Retrofit client = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
+            API_Interface_Suchane apiService = client.create(API_Interface_Suchane.class);
+            Observable<TokenRes> serviceToken = apiService.getToken(activity.getString(R.string.api_user_id), activity.getString(R.string.api_password), activity.getString(R.string.grant_type));
+            serviceToken.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe((result) -> {
+                        SharedPreferences.Editor editor = activity.getSharedPreferences(activity.getString(R.string.Auth), MODE_PRIVATE).edit();
+                        editor.putString(activity.getString(R.string.token), result.getAccessToken());
+                        editor.putString(activity.getString(R.string.token_type), result.getTokenType());
+                        editor.putString(activity.getString(R.string.refresh_tkn), result.getRefreshToken());
+                        editor.apply();
+
+                        String accessToken = result.getTokenType() + " " + result.getAccessToken();
+
+                        SMS_Request sms_request = new SMS_Request();
+                        sms_request.setMobileNumberToSendOTP(viewModel.mobNum.get());
+
+                        Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
+                        API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
+                        Observable<SMS_Response_Public> responseObservable = apiService1.FnSendOTP_Public(accessToken, sms_request);
+                        responseObservable.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe((result1) -> {
+                                    dialog.dismiss();
+                                    if (result1.getRESPONSE_CODE().contains("200")) {
+                                        onEnterOTP(viewModel);
+                                    } else {
+                                        Toast.makeText(activity, "" + result1.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }, (error) -> {
+                                    dialog.dismiss();
+                                    Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                });
+                    }, (error) -> {
+                        Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+                    });
+        } else {
+            Toast.makeText(activity, activity.getString(R.string.please_switch_on_the_internet), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void verifyOtpWithServer(NoticeActivityViewModel viewModel) {
+        String otp = viewModel.value1.get() + viewModel.value2.get() + viewModel.value3.get() + viewModel.value4.get() + viewModel.value5.get() + viewModel.value6.get();
+        boolean status = !(TextUtils.isEmpty(otp) | otp.length() != 6);
+        if (status) {
+            viewModel.otpNumber.set(Constant.convertToInt(otp));
+            if (isNetworkAvailable()) {
+                validateOTPWithServer(viewModel);
+            } else {
+                Toast.makeText(activity, activity.getString(R.string.please_switch_on_the_internet), Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            viewModel.isErrorTextVisible.set(true);
+            //Toast.makeText(activity, activity.getString(R.string.enter_valid_otp_to_proceed), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void validateOTPWithServer(NoticeActivityViewModel viewModel) {
+        ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Validating Please Wait ..");
+        dialog.show();
+
+        SharedPreferences sharedPreferences1 = activity.getSharedPreferences(activity.getString(R.string.Auth), MODE_PRIVATE);
+        String token = sharedPreferences1.getString(activity.getString(R.string.token), null);
+        String tokenType = sharedPreferences1.getString(activity.getString(R.string.token_type), null);
+        String accessToken = tokenType + " " + token;
+
+        ValidateOtpRequest validateOtp = new ValidateOtpRequest();
+        validateOtp.setMobileNumber(viewModel.mobNum.get());
+        validateOtp.setOTP(""+viewModel.otpNumber.get());
+
+        Retrofit client = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
+        API_Interface_Suchane apiService = client.create(API_Interface_Suchane.class);
+        Observable<SMS_Response_Public> responseObservable = apiService.FnValidateOTP_Public(accessToken, validateOtp);
+        responseObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((result) -> {
+                    dialog.dismiss();
+                    if (result.getRESPONSE_CODE().contains("200")) {
+                        alertDialog.dismiss();
+                        if (view.getParent() != null) {
+                            ((ViewGroup) view.getParent()).removeView(view);
+                        }
+                        saveAndNext(viewModel);
+                    } else {
+                        Toast.makeText(activity, "" + result.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
+                    }
+                }, (error) -> {
+                    dialog.dismiss();
+                    error.printStackTrace();
+                    Toast.makeText(activity, "Invalid OTP", Toast.LENGTH_LONG).show();
+                });
+
+    }
+
+    @Override
+    public void onClickCancel(){
+        alertDialog.dismiss();
+        if (view.getParent() != null) {
+            ((ViewGroup) view.getParent()).removeView(view);
+        }
     }
 
     @Override

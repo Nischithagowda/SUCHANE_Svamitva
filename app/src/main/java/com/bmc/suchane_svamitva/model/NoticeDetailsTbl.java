@@ -49,6 +49,16 @@ public class NoticeDetailsTbl {
     @Expose
     private String NTC_ADD_CODE;
 
+    @ColumnInfo(name = "NTC_OWNER_NAME")
+    @SerializedName("NTC_OWNER_NAME")
+    @Expose
+    private String NTC_OWNER_NAME;
+
+    @ColumnInfo(name = "NTC_OWNER_MOBILE_NO")
+    @SerializedName("NTC_OWNER_MOBILE_NO")
+    @Expose
+    private String NTC_OWNER_MOBILE_NO;
+
     @ColumnInfo(name = "NTC_ADD_DOORNO")
     @SerializedName("NTC_ADD_DOORNO")
     @Expose
@@ -166,6 +176,22 @@ public class NoticeDetailsTbl {
 
     public void setNTC_ADD_CODE(String NTC_ADD_CODE) {
         this.NTC_ADD_CODE = NTC_ADD_CODE;
+    }
+
+    public String getNTC_OWNER_NAME() {
+        return NTC_OWNER_NAME;
+    }
+
+    public void setNTC_OWNER_NAME(String NTC_OWNER_NAME) {
+        this.NTC_OWNER_NAME = NTC_OWNER_NAME;
+    }
+
+    public String getNTC_OWNER_MOBILE_NO() {
+        return NTC_OWNER_MOBILE_NO;
+    }
+
+    public void setNTC_OWNER_MOBILE_NO(String NTC_OWNER_MOBILE_NO) {
+        this.NTC_OWNER_MOBILE_NO = NTC_OWNER_MOBILE_NO;
     }
 
     public String getNTC_ADD_DOORNO() {
