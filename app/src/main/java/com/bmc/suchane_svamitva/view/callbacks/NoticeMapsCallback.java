@@ -85,7 +85,8 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
         try {
             if (checkLocationPermission()) {
 
-                LatLng latLng = new LatLng(viewModel.OffCurrentLocationCoordinates.get().latitude, viewModel.OffCurrentLocationCoordinates.get().longitude);
+                LatLng latLng = new LatLng(Objects.requireNonNull(viewModel.OffCurrentLocationCoordinates.get()).latitude,
+                        Objects.requireNonNull(viewModel.OffCurrentLocationCoordinates.get()).longitude);
 
                 viewModel.choosedLocationMarker.set(Objects.requireNonNull(viewModel.googleMap.get()).addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.gunpoint_red))));
                 Objects.requireNonNull(viewModel.googleMap.get()).setMapType(GoogleMap.MAP_TYPE_HYBRID);
@@ -263,6 +264,7 @@ public class NoticeMapsCallback implements NoticeMapsInterface {
         intent.putExtra("villageCode", ""+viewModel.villageCode.get());
         intent.putExtra("LGD_VILLAGE_CODE", ""+viewModel.LGD_VILLAGE_CODE.get());
         intent.putExtra("villageName", ""+viewModel.villageName.get());
+        intent.putExtra("accuracy", ""+viewModel.accuracy.get());
         activity.startActivity(intent);
         activity.finish();
     }

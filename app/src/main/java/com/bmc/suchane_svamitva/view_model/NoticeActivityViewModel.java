@@ -56,14 +56,15 @@ public class NoticeActivityViewModel {
     public final ObservableField<String> villageName = new ObservableField<>("");
     public final ObservableField<String> villageError = new ObservableField<>();
     public final ObservableField<String> villageCode = new ObservableField<>("");
+    public final ObservableField<String> accuracy = new ObservableField<>("");
     public ObservableField<Bitmap> imageBitMapPropertyOrLand = new ObservableField<>();
     public ObservableField<String> mCurrentPropertyOrLandPhotoPath = new ObservableField<>();
     public final ObservableField<byte[]> imageDataPropertyOrLand = new ObservableField<>();
-    public final ObservableField<File> imageFilePropertyOrLand = new ObservableField<File>();
+    public final ObservableField<File> imageFilePropertyOrLand = new ObservableField<>();
     public ObservableField<Bitmap> imageBitMapServingNotice = new ObservableField<>();
     public ObservableField<String> mCurrentServingNoticePhotoPath = new ObservableField<>();
     public final ObservableField<byte[]> imageDataServingNotice = new ObservableField<>();
-    public final ObservableField<File> imageFileServingNotice = new ObservableField<File>();
+    public final ObservableField<File> imageFileServingNotice = new ObservableField<>();
     public ObservableBoolean isImageVisible = new ObservableBoolean(false);
     public final ObservableField<Boolean> requestFocus1 = new ObservableField<>(true);
     public final ObservableField<Boolean> requestFocus2 = new ObservableField<>(false);

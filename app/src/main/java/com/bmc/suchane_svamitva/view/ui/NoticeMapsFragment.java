@@ -68,6 +68,7 @@ public class NoticeMapsFragment extends FragmentActivity implements LocationList
     public void onLocationChanged(@NonNull Location location) {
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             viewModel.OffCurrentLocationCoordinates.set(latLng);
+            viewModel.accuracy.set(""+location.getAccuracy());
             locationManager.removeUpdates(this);
             viewModel.setUp();
             dialog.dismiss();

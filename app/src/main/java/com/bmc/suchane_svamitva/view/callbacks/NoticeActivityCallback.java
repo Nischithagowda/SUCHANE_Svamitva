@@ -121,6 +121,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         viewModel.hobliName.set(intent.getStringExtra("hobliName"));
         viewModel.villageCode.set(intent.getStringExtra("villageCode"));
         viewModel.villageName.set(intent.getStringExtra("villageName"));
+        viewModel.accuracy.set(intent.getStringExtra("accuracy"));
         String adr=address.getAddress();
         String[] adrs =adr.split(",");
         if(adrs.length>0){
@@ -262,7 +263,6 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
                 Uri capturedUri = FileProvider.getUriForFile(activity, BuildConfig.APPLICATION_ID +".provider", photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, capturedUri);
                 activity.startActivityForResult(takePictureIntent, Constant.CAMERA_REQUEST_PropertyOrLand);
-
 
             }
         }
@@ -563,7 +563,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         noticeDetailsTbl.setNTC_DISTRICT(viewModel.districtName.get());
         noticeDetailsTbl.setNTC_LAT(viewModel.ownerLat.get());
         noticeDetailsTbl.setNTC_LONG(viewModel.ownerLong.get());
-        noticeDetailsTbl.setNTC_ACCURACY("0");
+        noticeDetailsTbl.setNTC_ACCURACY(viewModel.accuracy.get());
         noticeDetailsTbl.setNTC_CBY(mobNum);
 
         Observable
@@ -620,7 +620,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         svmInsertNoticeDetailsRequest.setNTC_DISTRICT(viewModel.districtName.get());
         svmInsertNoticeDetailsRequest.setNTC_LAT(viewModel.ownerLat.get());
         svmInsertNoticeDetailsRequest.setNTC_LONG(viewModel.ownerLong.get());
-        svmInsertNoticeDetailsRequest.setNTC_ACCURACY("0");
+        svmInsertNoticeDetailsRequest.setNTC_ACCURACY(viewModel.accuracy.get());
         svmInsertNoticeDetailsRequest.setNTC_CBY(mobNum);
 
         Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));

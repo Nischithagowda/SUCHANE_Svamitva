@@ -31,6 +31,7 @@ public class NoticeMapsViewModel implements OnMapReadyCallback, GoogleMap.OnCame
     public final ObservableField<LatLng> OffCurrentLocationCoordinates = new ObservableField<>();
     public final ObservableField<Boolean> btnEnable = new ObservableField<>(true);
     public final ObservableInt btnColor = new ObservableInt();
+    public final ObservableField<String> accuracy = new ObservableField<>("0");
     public final ObservableField<String> noteText = new ObservableField<>("");
     public final ObservableField<Boolean> isTextVisible = new ObservableField<>(false);
 
