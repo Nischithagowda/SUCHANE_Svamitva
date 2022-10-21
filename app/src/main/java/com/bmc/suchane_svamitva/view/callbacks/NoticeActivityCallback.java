@@ -10,7 +10,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -21,7 +20,6 @@ import android.graphics.Matrix;
 import androidx.databinding.DataBindingUtil;
 import androidx.exifinterface.media.ExifInterface;
 
-import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -35,15 +33,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.lifecycle.ViewModel;
 
 import com.bmc.suchane_svamitva.BuildConfig;
 import com.bmc.suchane_svamitva.R;
@@ -59,7 +54,6 @@ import com.bmc.suchane_svamitva.model.Image;
 import com.bmc.suchane_svamitva.model.MultipartImageResponse;
 import com.bmc.suchane_svamitva.model.NoticeDetailsTbl;
 import com.bmc.suchane_svamitva.model.SMS_Request;
-import com.bmc.suchane_svamitva.model.SMS_Response;
 import com.bmc.suchane_svamitva.model.SMS_Response_Public;
 import com.bmc.suchane_svamitva.model.Taluka;
 import com.bmc.suchane_svamitva.model.TokenRes;
@@ -68,11 +62,8 @@ import com.bmc.suchane_svamitva.model.ValidateOtpRequest;
 import com.bmc.suchane_svamitva.model.Village;
 import com.bmc.suchane_svamitva.utils.Constant;
 import com.bmc.suchane_svamitva.view.interfaces.NoticeActivityInterface;
-import com.bmc.suchane_svamitva.view.interfaces.NoticeMapsInterface;
 import com.bmc.suchane_svamitva.view.ui.NoticeActivity;
 import com.bmc.suchane_svamitva.view_model.NoticeActivityViewModel;
-import com.bmc.suchane_svamitva.view_model.NoticeMapsViewModel;
-import com.bmc.suchane_svamitva.view_model.OTPVerifyViewModel;
 import com.iceteck.silicompressorr.SiliCompressor;
 
 import java.io.ByteArrayOutputStream;
@@ -121,6 +112,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         viewModel.hobliName.set(intent.getStringExtra("hobliName"));
         viewModel.villageCode.set(intent.getStringExtra("villageCode"));
         viewModel.villageName.set(intent.getStringExtra("villageName"));
+        viewModel.LGD_VILLAGE_CODE.set(intent.getStringExtra("LGD_VILLAGE_CODE"));
         viewModel.accuracy.set(intent.getStringExtra("accuracy"));
         String adr=address.getAddress();
         String[] adrs =adr.split(",");
@@ -549,6 +541,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         noticeDetailsTbl.setNTC_DIST_CODE(viewModel.districtCode.get());
         noticeDetailsTbl.setNTC_TLK_TWN_CODE(viewModel.talukCode.get());
         noticeDetailsTbl.setNTC_WRD_VLG_CODE(viewModel.villageCode.get());
+        noticeDetailsTbl.setNTC_LGD_VLG_CODE(viewModel.LGD_VILLAGE_CODE.get());
         noticeDetailsTbl.setNTC_AREA_TYPE("2");
         noticeDetailsTbl.setNTC_NOTICE_NO(viewModel.noticeNumber.get());
         noticeDetailsTbl.setNTC_ADD_CODE(viewModel.addressCode.get());
@@ -606,6 +599,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         svmInsertNoticeDetailsRequest.setNTC_DIST_CODE(viewModel.districtCode.get());
         svmInsertNoticeDetailsRequest.setNTC_TLK_TWN_CODE(viewModel.talukCode.get());
         svmInsertNoticeDetailsRequest.setNTC_WRD_VLG_CODE(viewModel.villageCode.get());
+        svmInsertNoticeDetailsRequest.setNTC_LGD_VLG_CODE(viewModel.LGD_VILLAGE_CODE.get());
         svmInsertNoticeDetailsRequest.setNTC_AREA_TYPE("2");
         svmInsertNoticeDetailsRequest.setNTC_NOTICE_NO(viewModel.noticeNumber.get());
         svmInsertNoticeDetailsRequest.setNTC_ADD_CODE(viewModel.addressCode.get());
@@ -675,7 +669,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
         RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), viewModel.imageFilePropertyOrLand.get());
         MultipartBody.Part para9 = MultipartBody.Part.createFormData("File", viewModel.imageFilePropertyOrLand.get().getName(), requestBody);
-        MultipartBody.Part para1 = MultipartBody.Part.createFormData("VIRTUAL_ID", viewModel.virtualID.get());
+        MultipartBody.Part para1 = MultipartBody.Part.createFormData("NTC_PROPERTYCODE", viewModel.virtualID.get());
         MultipartBody.Part para2 = MultipartBody.Part.createFormData("NOTICE_NO", viewModel.noticeNumber.get());
         MultipartBody.Part para3 = MultipartBody.Part.createFormData("ADDRESS_CODE", viewModel.addressCode.get());
         MultipartBody.Part para4 = MultipartBody.Part.createFormData("DOC_TYPE_ID", "1");
@@ -729,7 +723,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
         RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), viewModel.imageFileServingNotice.get());
         MultipartBody.Part para9 = MultipartBody.Part.createFormData("File", viewModel.imageFileServingNotice.get().getName(), requestBody);
-        MultipartBody.Part para1 = MultipartBody.Part.createFormData("VIRTUAL_ID", viewModel.virtualID.get());
+        MultipartBody.Part para1 = MultipartBody.Part.createFormData("NTC_PROPERTYCODE", viewModel.virtualID.get());
         MultipartBody.Part para2 = MultipartBody.Part.createFormData("NOTICE_NO", viewModel.noticeNumber.get());
         MultipartBody.Part para3 = MultipartBody.Part.createFormData("ADDRESS_CODE", viewModel.addressCode.get());
         MultipartBody.Part para4 = MultipartBody.Part.createFormData("DOC_TYPE_ID", "2");
@@ -937,6 +931,13 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
                         if (view.getParent() != null) {
                             ((ViewGroup) view.getParent()).removeView(view);
                         }
+                        viewModel.value1.set("");
+                        viewModel.value2.set("");
+                        viewModel.value3.set("");
+                        viewModel.value4.set("");
+                        viewModel.value5.set("");
+                        viewModel.value6.set("");
+                        viewModel.isOwnerOTPValidationDone.set(true);
                         saveAndNext(viewModel);
                     } else {
                         Toast.makeText(activity, "" + result.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();

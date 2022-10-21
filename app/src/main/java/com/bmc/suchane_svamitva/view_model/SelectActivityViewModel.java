@@ -22,6 +22,8 @@ public class SelectActivityViewModel {
     public final ObservableField<String> villageCode = new ObservableField<>();
     public final ObservableField<String> LGD_VILLAGE_CODE = new ObservableField<>();
     public final ObservableField<String> villageName = new ObservableField<>("");
+    public final ObservableInt pendingItemsCount = new ObservableInt();
+    public final ObservableInt approvedItemsCount = new ObservableInt();
 
     public SelectActivityViewModel(SelectActivityInterface selectActivityInterface) {
         this.selectActivityInterface = selectActivityInterface;

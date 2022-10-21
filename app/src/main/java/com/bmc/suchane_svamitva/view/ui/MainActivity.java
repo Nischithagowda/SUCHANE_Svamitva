@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
             File file = new File(image.getDOC_PATH());
             RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
             MultipartBody.Part para9 = MultipartBody.Part.createFormData("File", images.get(i).getDOC_NAME(), requestBody);
-            MultipartBody.Part para1 = MultipartBody.Part.createFormData("VIRTUAL_ID",images.get(i).getVIRTUAL_ID());
+            MultipartBody.Part para1 = MultipartBody.Part.createFormData("NTC_PROPERTYCODE",images.get(i).getVIRTUAL_ID());
             MultipartBody.Part para2 = MultipartBody.Part.createFormData("NOTICE_NO", images.get(i).getNOTICE_NO());
             MultipartBody.Part para3 = MultipartBody.Part.createFormData("ADDRESS_CODE", images.get(i).getADDRESS_CODE());
             MultipartBody.Part para4 = MultipartBody.Part.createFormData("DOC_TYPE_ID", images.get(i).getDOC_TYPE_ID());

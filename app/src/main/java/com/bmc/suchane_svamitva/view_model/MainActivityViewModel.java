@@ -117,7 +117,7 @@ public class MainActivityViewModel {
         }
 
         if (!status) {
-            mainActivityInterface.onNavigateToNext(this);
+            mainActivityInterface.getPendingDPRDetails(this);
         }
 
     }

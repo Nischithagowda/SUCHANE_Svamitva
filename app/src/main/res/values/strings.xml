@@ -1,7 +1,7 @@
 <resources>
 
-    <string name="api_url">http://192.168.0.165/SuchaneSvamitvaAPI/</string>
-<!--    <string name="api_url">http://117.252.86.211/SuchaneSvamitvaAPI/</string>-->
+<!--    <string name="api_url">http://192.168.0.165/SuchaneSvamitvaAPI/</string>-->
+    <string name="api_url">http://117.252.86.211/SuchaneSvamitvaAPI/</string>
     <string name="api_user_id">56dhsuiejn83j9633ssgeu8dm9djs235dh965fhslopc098jd</string>
     <string name="api_password">2d87duikdmc673jsnlpa0245whjdkkfn63xmlopwq96auehsa</string>
 
@@ -88,4 +88,7 @@
     <string name="cancel">Cancel</string>
     <string name="enter_otp_sent_to_owner_number">Enter OTP sent to Owner Number</string>
     <string name="please_enter_valid_otp">Please enter valid OTP</string>
+    <string name="pending_count">Pending Count</string>
+    <string name="approved">Approved</string>
+    <string name="completed_count">Completed Count</string>
 </resources>

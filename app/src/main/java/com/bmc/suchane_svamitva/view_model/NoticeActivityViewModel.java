@@ -56,6 +56,7 @@ public class NoticeActivityViewModel {
     public final ObservableField<String> villageName = new ObservableField<>("");
     public final ObservableField<String> villageError = new ObservableField<>();
     public final ObservableField<String> villageCode = new ObservableField<>("");
+    public final ObservableField<String> LGD_VILLAGE_CODE = new ObservableField<>("");
     public final ObservableField<String> accuracy = new ObservableField<>("");
     public ObservableField<Bitmap> imageBitMapPropertyOrLand = new ObservableField<>();
     public ObservableField<String> mCurrentPropertyOrLandPhotoPath = new ObservableField<>();
@@ -66,6 +67,7 @@ public class NoticeActivityViewModel {
     public final ObservableField<byte[]> imageDataServingNotice = new ObservableField<>();
     public final ObservableField<File> imageFileServingNotice = new ObservableField<>();
     public ObservableBoolean isImageVisible = new ObservableBoolean(false);
+    public ObservableBoolean isOwnerOTPValidationDone = new ObservableBoolean(false);
     public final ObservableField<Boolean> requestFocus1 = new ObservableField<>(true);
     public final ObservableField<Boolean> requestFocus2 = new ObservableField<>(false);
     public final ObservableField<Boolean> requestFocus3 = new ObservableField<>(false);
@@ -177,6 +179,7 @@ public class NoticeActivityViewModel {
         Village village = (Village) parent.getItemAtPosition(position);
         this.villageName.set(village.getVILLAGE_NAME());
         this.villageCode.set(village.getVILLAGE_CODE());
+        this.LGD_VILLAGE_CODE.set(village.getLGD_VILLAGE_CODE());
         villageError.set(null);
     }
 
@@ -303,7 +306,7 @@ public class NoticeActivityViewModel {
             isMobileNumEntered = true;
         }
 
-        if (isMobileNumEntered && !status){
+        if (isMobileNumEntered && !status && !this.isOwnerOTPValidationDone.get()){
             noticeActivityInterface.sendOtp_Public(this);
         } else if (!status) {
             noticeActivityInterface.saveAndNext(this);
@@ -360,7 +363,7 @@ public class NoticeActivityViewModel {
             isMobileNumEntered = true;
         }
 
-        if (isMobileNumEntered && !status){
+        if (isMobileNumEntered && !status && !this.isOwnerOTPValidationDone.get()){
             noticeActivityInterface.sendOtp_Public(this);
         } else if (!status) {
             noticeActivityInterface.saveAndNext(this);

@@ -25,12 +25,17 @@ import com.bmc.suchane_svamitva.R;
 import com.bmc.suchane_svamitva.api.APIClient_Suchane;
 import com.bmc.suchane_svamitva.api.API_Interface_Suchane;
 import com.bmc.suchane_svamitva.database.DBConnection;
+import com.bmc.suchane_svamitva.model.ApprovedDPRTbl;
 import com.bmc.suchane_svamitva.model.District;
+import com.bmc.suchane_svamitva.model.FnGetApprovedDPRResponse;
+import com.bmc.suchane_svamitva.model.FnGetPendingDPRRequest;
+import com.bmc.suchane_svamitva.model.FnGetPendingDPRResponse;
 import com.bmc.suchane_svamitva.model.Hobli;
 import com.bmc.suchane_svamitva.model.HobliRequest;
 import com.bmc.suchane_svamitva.model.HobliResponse;
 import com.bmc.suchane_svamitva.model.LogoutRequest;
 import com.bmc.suchane_svamitva.model.LogoutResponse;
+import com.bmc.suchane_svamitva.model.PendingDPRTbl;
 import com.bmc.suchane_svamitva.model.Taluka;
 import com.bmc.suchane_svamitva.model.TokenRes;
 import com.bmc.suchane_svamitva.model.USER_DETAILS;
@@ -333,32 +338,27 @@ public class MainActivityCallback implements MainActivityInterface {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result ->
                 {
-                    Observable
-                            .fromCallable(() -> DBConnection.getConnection(activity)
-                                    .getDataBaseDao()
-                                    .deleteFullNoticeDetails())
-                            .subscribeOn(Schedulers.computation())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(result1 ->
-                            {
-                                dialog.dismiss();
-                                SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.clear();
-                                editor.apply();
+                    DBConnection.getConnection(activity).getDataBaseDao().deleteHobliDetails();
+                    DBConnection.getConnection(activity).getDataBaseDao().deleteFullVillageDetails();
+                    DBConnection.getConnection(activity).getDataBaseDao().deleteFullNoticeDetails();
+                    DBConnection.getConnection(activity).getDataBaseDao().deleteFullImageDetails();
+                    DBConnection.getConnection(activity).getDataBaseDao().deleteFullPendingDPRDetails();
+                    DBConnection.getConnection(activity).getDataBaseDao().deleteFullApprovedDPRDetails();
 
-                                SharedPreferences.Editor editor_Auth = activity.getSharedPreferences(activity.getString(R.string.Auth), MODE_PRIVATE).edit();
-                                editor_Auth.clear();
-                                editor_Auth.apply();
+                    dialog.dismiss();
+                    SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.clear();
+                    editor.apply();
 
-                                Intent intent = new Intent(activity, SignIn.class);
-                                activity.startActivity(intent);
-                                activity.finish();
-                                Toast.makeText(activity, "User Logout Successfully", Toast.LENGTH_SHORT).show();
-                            } , error ->{
-                                dialog.dismiss();
-                                error.printStackTrace();
-                            });
+                    SharedPreferences.Editor editor_Auth = activity.getSharedPreferences(activity.getString(R.string.Auth), MODE_PRIVATE).edit();
+                    editor_Auth.clear();
+                    editor_Auth.apply();
+
+                    Intent intent = new Intent(activity, SignIn.class);
+                    activity.startActivity(intent);
+                    activity.finish();
+                    Toast.makeText(activity, "User Logout Successfully", Toast.LENGTH_SHORT).show();
                 }, error -> {
                     dialog.dismiss();
                     error.printStackTrace();
@@ -373,6 +373,179 @@ public class MainActivityCallback implements MainActivityInterface {
     }
 
     @Override
+    public void getPendingDPRDetails(MainActivityViewModel viewModel){
+        if (isNetworkAvailable()) {
+            ProgressDialog dialog = new ProgressDialog(activity);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            dialog.setMessage("Fetching, Please Wait ..");
+            dialog.show();
+
+            Retrofit client = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
+            API_Interface_Suchane apiService = client.create(API_Interface_Suchane.class);
+            Observable<TokenRes> serviceToken = apiService.getToken(activity.getString(R.string.api_user_id), activity.getString(R.string.api_password), activity.getString(R.string.grant_type));
+            serviceToken.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe((result) -> {
+                        SharedPreferences.Editor editor = activity.getSharedPreferences(activity.getString(R.string.Auth), MODE_PRIVATE).edit();
+                        editor.putString(activity.getString(R.string.token), result.getAccessToken());
+                        editor.putString(activity.getString(R.string.token_type), result.getTokenType());
+                        editor.putString(activity.getString(R.string.refresh_tkn), result.getRefreshToken());
+                        editor.apply();
+
+                        FnGetPendingDPRRequest fnGetPendingDPRRequest = new FnGetPendingDPRRequest();
+                        fnGetPendingDPRRequest.setLGD_VILLAGECODE(viewModel.LGD_VILLAGE_CODE.get());
+
+                        String accessToken = result.getTokenType() + " " + result.getAccessToken();
+                        Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
+                        API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
+                        Observable<FnGetPendingDPRResponse> responseObservable = apiService1.FnGetPendingDPR(accessToken, fnGetPendingDPRRequest);
+                        responseObservable.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe((result1) -> {
+                                    dialog.dismiss();
+                                    if (result1.getRESPONSE_CODE().contains("200") && result1.getPendingDPRTblList().size() > 0) {
+                                        deletePendingDPRDetails(viewModel, result1.getPendingDPRTblList());
+                                    } else {
+                                        onNavigateToNext(viewModel);
+                                        Toast.makeText(activity, "" + result1.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }, (error) -> {
+                                    dialog.dismiss();
+                                    Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                });
+                    }, (error) -> {
+                        Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+                    });
+        } else {
+            Toast.makeText(activity, activity.getString(R.string.please_switch_on_the_internet), Toast.LENGTH_SHORT).show();
+            onNavigateToNext(viewModel);
+        }
+    }
+
+    public void deletePendingDPRDetails(MainActivityViewModel viewModel, List<PendingDPRTbl> pendingDPRTblList){
+        ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Loading Data Wait ..");
+        dialog.show();
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(activity)
+                        .getDataBaseDao()
+                        .deletePendingDPRDetails(viewModel.LGD_VILLAGE_CODE.get()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                            dialog.dismiss();
+                            InsertPendingDPRDetails(viewModel, pendingDPRTblList);
+                        }, error -> {
+                            error.printStackTrace();
+                            dialog.dismiss();
+                        }
+                );
+    }
+
+    public void InsertPendingDPRDetails(MainActivityViewModel viewModel, List<PendingDPRTbl> pendingDPRTblList){
+        ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Loading Data Wait ..");
+        dialog.show();
+
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(activity)
+                        .getDataBaseDao()
+                        .InsertPendingDPRDetails(pendingDPRTblList))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    dialog.dismiss();
+                    getApprovedDPRDetails(viewModel);
+                }, error -> {
+                    error.printStackTrace();
+                    dialog.dismiss();
+                });
+    }
+
+    public void getApprovedDPRDetails(MainActivityViewModel viewModel){
+        ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Fetching, Please Wait ..");
+        dialog.show();
+
+        FnGetPendingDPRRequest fnGetPendingDPRRequest = new FnGetPendingDPRRequest();
+        fnGetPendingDPRRequest.setLGD_VILLAGECODE(viewModel.LGD_VILLAGE_CODE.get());
+
+        SharedPreferences sharedPreferences1 = activity.getSharedPreferences(activity.getString(R.string.Auth), MODE_PRIVATE);
+        String token = sharedPreferences1.getString(activity.getString(R.string.token), null);
+        String tokenType = sharedPreferences1.getString(activity.getString(R.string.token_type), null);
+        String accessToken = tokenType + " " + token;
+
+        Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
+        API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
+        Observable<FnGetApprovedDPRResponse> responseObservable = apiService1.FnGetApprovedDPR(accessToken, fnGetPendingDPRRequest);
+        responseObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((result1) -> {
+                    dialog.dismiss();
+                    if (result1.getRESPONSE_CODE().contains("200") && result1.getApprovedDPRTblList().size()>0) {
+                        deleteApprovedDPRDetails(viewModel, result1.getApprovedDPRTblList());
+                    } else {
+                        onNavigateToNext(viewModel);
+                        Toast.makeText(activity, ""+result1.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
+                    }
+                }, (error) -> {
+                    dialog.dismiss();
+                    Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                });
+    }
+
+    public void deleteApprovedDPRDetails(MainActivityViewModel viewModel, List<ApprovedDPRTbl> approvedDPRTblList){
+        ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Loading Data Wait ..");
+        dialog.show();
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(activity)
+                        .getDataBaseDao()
+                        .deleteApprovedDPRDetails(viewModel.LGD_VILLAGE_CODE.get()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                            dialog.dismiss();
+                            InsertApprovedDPRDetails(viewModel, approvedDPRTblList);
+                        }, error -> {
+                            error.printStackTrace();
+                            dialog.dismiss();
+                        }
+                );
+    }
+
+    public void InsertApprovedDPRDetails(MainActivityViewModel viewModel, List<ApprovedDPRTbl> approvedDPRTblList){
+        ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Loading Data Wait ..");
+        dialog.show();
+
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(activity)
+                        .getDataBaseDao()
+                        .InsertApprovedDPRDetails(approvedDPRTblList))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    dialog.dismiss();
+                    onNavigateToNext(viewModel);
+                }, error -> {
+                    error.printStackTrace();
+                    dialog.dismiss();
+                });
+    }
+
     public void onNavigateToNext(MainActivityViewModel viewModel){
         Intent intent = new Intent(activity, SelectActivity.class);
         intent.putExtra("districtCode", ""+viewModel.districtCode.get());

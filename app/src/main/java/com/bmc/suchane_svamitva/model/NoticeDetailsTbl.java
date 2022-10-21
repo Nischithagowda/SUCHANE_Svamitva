@@ -34,6 +34,11 @@ public class NoticeDetailsTbl {
     @Expose
     private String NTC_WRD_VLG_CODE;
 
+    @ColumnInfo(name = "NTC_LGD_VLG_CODE")
+    @SerializedName("NTC_LGD_VLG_CODE")
+    @Expose
+    private String NTC_LGD_VLG_CODE;
+
     @ColumnInfo(name = "NTC_AREA_TYPE")
     @SerializedName("NTC_AREA_TYPE")
     @Expose
@@ -152,6 +157,14 @@ public class NoticeDetailsTbl {
 
     public void setNTC_WRD_VLG_CODE(String NTC_WRD_VLG_CODE) {
         this.NTC_WRD_VLG_CODE = NTC_WRD_VLG_CODE;
+    }
+
+    public String getNTC_LGD_VLG_CODE() {
+        return NTC_LGD_VLG_CODE;
+    }
+
+    public void setNTC_LGD_VLG_CODE(String NTC_LGD_VLG_CODE) {
+        this.NTC_LGD_VLG_CODE = NTC_LGD_VLG_CODE;
     }
 
     public String getNTC_AREA_TYPE() {

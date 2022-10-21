@@ -251,6 +251,96 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
+                            android:weightSum="2">
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_weight="1">
+
+                                <com.bmc.suchane_svamitva.utils.customfonts.MyTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="text"
+                                    android:maxLength="12"
+                                    android:padding="2sp"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="16sp"
+                                    android:text="@string/pending_count" />
+
+                                <com.bmc.suchane_svamitva.utils.customfonts.MyTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:padding="2sp"
+                                    android:text="@string/colon"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold"
+                                    android:textSize="16sp" />
+
+                                <com.bmc.suchane_svamitva.utils.customfonts.MyTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/pending"
+                                    android:inputType="text"
+                                    android:maxLength="12"
+                                    android:padding="2sp"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:text="@{viewModel.pendingItemsCount+``}" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_weight="1">
+
+                                <com.bmc.suchane_svamitva.utils.customfonts.MyTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="text"
+                                    android:maxLength="12"
+                                    android:padding="2sp"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="16sp"
+                                    android:text="@string/completed_count" />
+
+                                <com.bmc.suchane_svamitva.utils.customfonts.MyTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:padding="2sp"
+                                    android:text="@string/colon"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold"
+                                    android:textSize="16sp" />
+
+                                <com.bmc.suchane_svamitva.utils.customfonts.MyTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/approved"
+                                    android:inputType="text"
+                                    android:maxLength="12"
+                                    android:padding="2sp"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:text="@{viewModel.approvedItemsCount+``}" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
                             android:layout_marginTop="20dp">
                             <Button
                                 android:layout_weight="1"

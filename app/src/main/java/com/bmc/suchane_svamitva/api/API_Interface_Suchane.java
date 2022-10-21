@@ -4,8 +4,13 @@ import com.bmc.suchane_svamitva.model.AddressCodeNoticeNoRequest;
 import com.bmc.suchane_svamitva.model.AddressCodeNoticeNoResponse;
 import com.bmc.suchane_svamitva.model.DistrictRequest;
 import com.bmc.suchane_svamitva.model.DistrictResponse;
+import com.bmc.suchane_svamitva.model.FnGetApprovedDPRResponse;
+import com.bmc.suchane_svamitva.model.FnGetPendingDPRRequest;
+import com.bmc.suchane_svamitva.model.FnGetPendingDPRResponse;
 import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsRequest;
 import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsResponse;
+import com.bmc.suchane_svamitva.model.FnUpdateDRPServedRequest;
+import com.bmc.suchane_svamitva.model.FnUpdateDRPServedResponse;
 import com.bmc.suchane_svamitva.model.HobliRequest;
 import com.bmc.suchane_svamitva.model.HobliResponse;
 import com.bmc.suchane_svamitva.model.LogoutRequest;
@@ -126,10 +131,41 @@ public interface API_Interface_Suchane {
             @Body FnSvmInsertNoticeDetailsRequest svmInsertNoticeDetailsRequest
     );
 
+    @POST("api/values/FnGetPendingDPR/")
+    Observable<FnGetPendingDPRResponse> FnGetPendingDPR(
+            @Header("Authorization") String accessToken,
+            @Body FnGetPendingDPRRequest fnGetPendingDPRRequest
+    );
+
+    @POST("api/values/FnGetApprovedDPR/")
+    Observable<FnGetApprovedDPRResponse> FnGetApprovedDPR(
+            @Header("Authorization") String accessToken,
+            @Body FnGetPendingDPRRequest fnGetPendingDPRRequest
+    );
+
+    @POST("api/values/FnUpdateDRPServed/")
+    Observable<FnUpdateDRPServedResponse> FnUpdateDRPServed(
+            @Header("Authorization") String accessToken,
+            @Body FnUpdateDRPServedRequest fnUpdateDRPServedRequest
+    );
+
     @Multipart
     @POST("api/values/FnSVM_UploadDocument")
     Observable<MultipartImageResponse> FnSVM_UploadDocument(@Header("Authorization") String accessToken,
-                                                 @retrofit2.http.Part MultipartBody.Part VIRTUAL_ID,
+                                                 @retrofit2.http.Part MultipartBody.Part NTC_PROPERTYCODE,
+                                                 @retrofit2.http.Part MultipartBody.Part NOTICE_NO,
+                                                 @retrofit2.http.Part MultipartBody.Part ADDRESS_CODE,
+                                                 @retrofit2.http.Part MultipartBody.Part DOC_TYPE_ID,
+                                                 @retrofit2.http.Part MultipartBody.Part DOC_NAME,
+                                                 @retrofit2.http.Part MultipartBody.Part DOC_PATH,
+                                                 @retrofit2.http.Part MultipartBody.Part USER_ID,
+                                                 @retrofit2.http.Part MultipartBody.Part DOC_TIMESTAMP,
+                                                 @retrofit2.http.Part MultipartBody.Part file);
+
+    @Multipart
+    @POST("api/values/FnSVM_UploadDocument_DPR")
+    Observable<MultipartImageResponse> FnSVM_UploadDocument_DPR(@Header("Authorization") String accessToken,
+                                                 @retrofit2.http.Part MultipartBody.Part NTC_PROPERTYCODE,
                                                  @retrofit2.http.Part MultipartBody.Part NOTICE_NO,
                                                  @retrofit2.http.Part MultipartBody.Part ADDRESS_CODE,
                                                  @retrofit2.http.Part MultipartBody.Part DOC_TYPE_ID,
