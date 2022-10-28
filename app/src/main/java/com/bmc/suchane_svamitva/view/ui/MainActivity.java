@@ -13,6 +13,8 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -66,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         mainActivityInterface = new MainActivityCallback(this);
         MainActivityViewModel viewModel = new MainActivityViewModel(mainActivityInterface);
         binding.setViewModel(viewModel);
-
     }
 
     @Override

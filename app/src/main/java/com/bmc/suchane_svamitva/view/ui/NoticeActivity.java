@@ -2,6 +2,8 @@ package com.bmc.suchane_svamitva.view.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +34,14 @@ public class NoticeActivity extends AppCompatActivity {
         NoticeActivityInterface noticeActivityInterface = new NoticeActivityCallback(this);
         viewModel = new NoticeActivityViewModel(noticeActivityInterface);
         binding.setViewModel(viewModel);
+
+        try {
+            String androidId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+            viewModel.deviceID.set(androidId);
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+
     }
 
     @Override

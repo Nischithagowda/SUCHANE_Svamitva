@@ -17,6 +17,7 @@ import com.bmc.suchane_svamitva.model.LogoutRequest;
 import com.bmc.suchane_svamitva.model.LogoutResponse;
 import com.bmc.suchane_svamitva.model.MultipartImageResponse;
 import com.bmc.suchane_svamitva.model.SMS_Request;
+import com.bmc.suchane_svamitva.model.SMS_Request_Login;
 import com.bmc.suchane_svamitva.model.SMS_Response;
 import com.bmc.suchane_svamitva.model.SMS_Response_Public;
 import com.bmc.suchane_svamitva.model.TalukRequest;
@@ -62,7 +63,7 @@ public interface API_Interface_Suchane {
     @POST("api/values/FnSendOTP/")
     Observable<SMS_Response> FnSendOTP(
             @Header("Authorization") String accessToken,
-            @Body SMS_Request sms_request
+            @Body SMS_Request_Login sms_request
             );
 
     @POST("api/Values/FnSendOTP_Public")
@@ -81,6 +82,12 @@ public interface API_Interface_Suchane {
     Observable<VersionResponse> FnGetVersion(
             @Header("Authorization") String accessToken,
             @Body VersionRequest versionRequest
+            );
+
+    @POST("api/values/FnCheckUserLoggedIn/")
+    Observable<LogoutResponse> FnCheckUserLoggedIn(
+            @Header("Authorization") String accessToken,
+            @Body SMS_Request_Login sms_request_login
             );
 
     @POST("api/values/FnValidateOTP/")

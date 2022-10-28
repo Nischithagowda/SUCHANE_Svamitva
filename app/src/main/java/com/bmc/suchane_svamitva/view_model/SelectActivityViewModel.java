@@ -35,10 +35,10 @@ public class SelectActivityViewModel {
     }
 
     public void onClickDPR(View view) {
-        selectActivityInterface.onNavigateToDPR();
+        selectActivityInterface.onNavigateToDPR(this);
     }
 
     public void onClickFPR(View view) {
-        selectActivityInterface.onNavigateToFPR();
+        selectActivityInterface.onNavigateToFPR(this);
     }
 }

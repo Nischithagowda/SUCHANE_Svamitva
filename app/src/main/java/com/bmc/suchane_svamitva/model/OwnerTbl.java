@@ -4,41 +4,41 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 
 public class OwnerTbl {
-    @ColumnInfo(name = "owner_id")
-    private long owner_id;
+    @ColumnInfo(name = "NOTICE_NO")
+    private long NOTICE_NO;
 
-    @ColumnInfo(name = "chalta_No")
-    private String chalta_No;
+    @ColumnInfo(name = "property_no")
+    private String Property_no;
 
-    @ColumnInfo(name = "Municipal_GPFD")
-    private String Municipal_GPFD;
+//    @ColumnInfo(name = "Municipal_GPFD")
+//    private String Municipal_GPFD;
 
     @ColumnInfo(name = "Owner_Name")
     private String Owner_Name;
 
-    public long getOwner_id() {
-        return owner_id;
+    public long getNOTICE_NO() {
+        return NOTICE_NO;
     }
 
-    public void setOwner_id(long owner_id) {
-        this.owner_id = owner_id;
+    public void setNOTICE_NO(long NOTICE_NO) {
+        this.NOTICE_NO = NOTICE_NO;
     }
 
-    public String getChalta_No() {
-        return chalta_No;
+    public String getProperty_no() {
+        return Property_no;
     }
 
-    public void setChalta_No(String chalta_No) {
-        this.chalta_No = chalta_No;
+    public void setProperty_no(String property_no) {
+        Property_no = property_no;
     }
 
-    public String getMunicipal_GPFD() {
-        return Municipal_GPFD;
-    }
-
-    public void setMunicipal_GPFD(String municipal_GPFD) {
-        Municipal_GPFD = municipal_GPFD;
-    }
+//    public String getMunicipal_GPFD() {
+//        return Municipal_GPFD;
+//    }
+//
+//    public void setMunicipal_GPFD(String municipal_GPFD) {
+//        Municipal_GPFD = municipal_GPFD;
+//    }
 
     public String getOwner_Name() {
         return Owner_Name;
@@ -51,7 +51,7 @@ public class OwnerTbl {
     @NonNull
     @Override
     public String toString() {
-        return owner_id + " " + chalta_No + " " + Municipal_GPFD+" "+Owner_Name;
+        return NOTICE_NO + " " + Property_no + " " + Owner_Name;
     }
 
 }

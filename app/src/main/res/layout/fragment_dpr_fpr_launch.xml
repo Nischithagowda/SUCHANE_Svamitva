@@ -283,14 +283,14 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1.3"
-                        android:text="@string/chalta_no" />
+                        android:text="@string/property_no" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/text_list_header"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="@string/municipal_gpfd" />
+<!--                    <androidx.appcompat.widget.AppCompatTextView-->
+<!--                        style="@style/text_list_header"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:text="@string/municipal_gpfd" />-->
 
                     <androidx.appcompat.widget.AppCompatTextView
                         style="@style/text_list_header"

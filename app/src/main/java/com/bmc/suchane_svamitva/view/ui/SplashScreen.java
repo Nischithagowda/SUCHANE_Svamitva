@@ -4,16 +4,21 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.CAMERA;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.widget.Toast;
 
 import com.bmc.suchane_svamitva.BuildConfig;
 import com.bmc.suchane_svamitva.R;
 import com.bmc.suchane_svamitva.api.APIClient_Suchane;
 import com.bmc.suchane_svamitva.api.API_Interface_Suchane;
+import com.bmc.suchane_svamitva.database.DBConnection;
+import com.bmc.suchane_svamitva.model.LogoutResponse;
+import com.bmc.suchane_svamitva.model.SMS_Request_Login;
 import com.bmc.suchane_svamitva.model.TokenRes;
 import com.bmc.suchane_svamitva.model.VersionRequest;
 import com.bmc.suchane_svamitva.model.VersionResponse;
@@ -44,9 +49,7 @@ public class SplashScreen extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
         boolean status = sharedPreferences.getBoolean(Constant.LOGIN_STATUS, false);
         if (status) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            getUserLoggedInStatus();
         } else {
             Intent i = new Intent(this, SignIn.class);
             startActivity(i);
@@ -100,5 +103,90 @@ public class SplashScreen extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                     dialog.dismiss();
                 });
+    }
+
+    public void getUserLoggedInStatus(){
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Checking Please wait ..");
+        dialog.show();
+
+        SharedPreferences sharedPreferences1 = getSharedPreferences(getString(R.string.Auth), Context.MODE_PRIVATE);
+        String token = sharedPreferences1.getString(getString(R.string.token), null);
+        String tokenType = sharedPreferences1.getString(getString(R.string.token_type), null);
+        String accessToken=tokenType+" "+token;
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
+        String mobNum = sharedPreferences.getString(Constant.USER_MOBILE, null);
+        String androidId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        SMS_Request_Login sms_request_login = new SMS_Request_Login();
+        sms_request_login.setMobileNumberToSendOTP(mobNum);
+        sms_request_login.setDeviceId(androidId);
+
+        Retrofit client1 = APIClient_Suchane.getClient(getApplicationContext(), getString(R.string.api_url));
+        API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
+        Observable<LogoutResponse> responseObservable = apiService1.FnCheckUserLoggedIn(accessToken, sms_request_login);
+        responseObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((result1) -> {
+                    dialog.dismiss();
+                    if (result1.getRESPONSE_CODE().contains("200")) {
+                        Intent intent = new Intent(this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        clearLocalDataBase();
+                    }
+                }, (error) -> {
+                    dialog.dismiss();
+                    Toast.makeText(getApplicationContext(), error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                });
+
+    }
+
+    private void clearLocalDataBase() {
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Loading, Please Wait ..");
+        dialog.show();
+
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(this)
+                        .getDataBaseDao()
+                        .deleteUserDetails())
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result ->
+                {
+                    DBConnection.getConnection(this).getDataBaseDao().deleteHobliDetails();
+                    DBConnection.getConnection(this).getDataBaseDao().deleteFullVillageDetails();
+                    DBConnection.getConnection(this).getDataBaseDao().deleteFullNoticeDetails();
+                    DBConnection.getConnection(this).getDataBaseDao().deleteFullImageDetails();
+                    DBConnection.getConnection(this).getDataBaseDao().deleteFullPendingDPRDetails();
+                    DBConnection.getConnection(this).getDataBaseDao().deleteFullApprovedDPRDetails();
+
+                    dialog.dismiss();
+                }, error -> {
+                    dialog.dismiss();
+                    error.printStackTrace();
+                });
+
+        SharedPreferences sharedPreferences = this.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+
+        SharedPreferences.Editor editor_Auth = this.getSharedPreferences(this.getString(R.string.Auth), MODE_PRIVATE).edit();
+        editor_Auth.clear();
+        editor_Auth.apply();
+
+        Intent intent = new Intent(this, SignIn.class);
+        this.startActivity(intent);
+        this.finish();
+        Toast.makeText(this, "This User Logged In from another Device. Please Login again", Toast.LENGTH_SHORT).show();
+
     }
 }

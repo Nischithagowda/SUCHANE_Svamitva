@@ -5,6 +5,11 @@
     <string name="api_user_id">56dhsuiejn83j9633ssgeu8dm9djs235dh965fhslopc098jd</string>
     <string name="api_password">2d87duikdmc673jsnlpa0245whjdkkfn63xmlopwq96auehsa</string>
 
+    <string-array name="app_languages">
+        <item>Kannada</item>
+        <item>English</item>
+    </string-array>
+
     <string name="app_name">SUCHANE[Svamitva]</string>
     <string name="token">token</string>
     <string name="token_type">token_type</string>
@@ -63,7 +68,7 @@
     <string name="save_amp_next"><![CDATA[Save & Next]]></string>
     <string name="home">Home</string>
     <string name="sl_no">Sl.No.</string>
-    <string name="chalta_no">Chalta No.</string>
+    <string name="property_no">Property No.</string>
     <string name="municipal_gpfd">Municipal/GPFD</string>
     <string name="owner_name">Owner name</string>
     <string name="action">Action</string>
@@ -91,4 +96,6 @@
     <string name="pending_count">Pending Count</string>
     <string name="approved">Approved</string>
     <string name="completed_count">Completed Count</string>
+    <string name="zoom_in">Zoom In</string>
+    <string name="zoom_out">Zoom Out</string>
 </resources>

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import com.bmc.suchane_svamitva.model.Hobli;
 import com.bmc.suchane_svamitva.model.HobliRequest;
 import com.bmc.suchane_svamitva.model.HobliResponse;
 import com.bmc.suchane_svamitva.model.SMS_Request;
+import com.bmc.suchane_svamitva.model.SMS_Request_Login;
 import com.bmc.suchane_svamitva.model.SMS_Response;
 import com.bmc.suchane_svamitva.model.TokenRes;
 import com.bmc.suchane_svamitva.model.USER_DETAILS;
@@ -324,13 +326,16 @@ public class OTPVerifyCallback implements OTPVerifyInterface {
 
                     String accessToken = result.getTokenType() + " " + result.getAccessToken();
 
-                    SMS_Request sms_request = new SMS_Request();
-                    sms_request.setMobileNumberToSendOTP(viewModel.USER_MOBILE.get());
+                    String androidId = Settings.Secure.getString(activity.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+
+                    SMS_Request_Login sms_request_login = new SMS_Request_Login();
+                    sms_request_login.setMobileNumberToSendOTP(viewModel.USER_MOBILE.get());
+                    sms_request_login.setDeviceId(androidId);
 
                     Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
                     API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
 
-                    Observable<SMS_Response> responseObservable = apiService1.FnSendOTP(accessToken, sms_request);
+                    Observable<SMS_Response> responseObservable = apiService1.FnSendOTP(accessToken, sms_request_login);
                     responseObservable.subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe((result1) -> {

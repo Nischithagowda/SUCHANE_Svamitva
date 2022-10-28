@@ -9,7 +9,9 @@ import com.bmc.suchane_svamitva.model.District;
 import com.bmc.suchane_svamitva.model.Hobli;
 import com.bmc.suchane_svamitva.model.Image;
 import com.bmc.suchane_svamitva.model.NoticeDetailsTbl;
+import com.bmc.suchane_svamitva.model.OwnerTbl;
 import com.bmc.suchane_svamitva.model.PendingDPRTbl;
+import com.bmc.suchane_svamitva.model.PendingDPRTbl_Updated;
 import com.bmc.suchane_svamitva.model.Taluka;
 import com.bmc.suchane_svamitva.model.USER_DETAILS;
 import com.bmc.suchane_svamitva.model.Village;
@@ -96,8 +98,21 @@ public interface DatabaseDAO {
     @Query("Select count(NTC_NOTICE_NO) from PendingDPRTbl where NTC_WARD_VILLAGE = :NTC_WARD_VILLAGE")
     int getPendingDPRCount(String NTC_WARD_VILLAGE);
 
-    @Query("Select * from PendingDPRTbl where NTC_WARD_VILLAGE = :NTC_WARD_VILLAGE")
-    List<PendingDPRTbl> getPendingDPRDetails(String NTC_WARD_VILLAGE);
+    @Query("Select DPRFNL_NOTICE_NO as NOTICE_NO, DPRFNL_PROPERTYCODE as property_no, DPROWNFNL_OWNERNAME as Owner_Name from PendingDPRTbl where NTC_WARD_VILLAGE = :NTC_WARD_VILLAGE")
+    List<OwnerTbl> getPendingDPRDetails(String NTC_WARD_VILLAGE);
+
+    @Query("Select NTC_NOTICE_NO from PendingDPRTbl pp inner join PendingDPRTbl_Updated pu on pp.NTC_NOTICE_NO = pu.NTC_NOTICE_NO_UPD and pp.NTC_ADD_CODE = pu.NTC_ADD_CODE_UPD")
+    String[] getPendingDPRUpdatedDetails();
+
+    @Query("Select Count(*) from PendingDPRTbl pp inner join PendingDPRTbl_Updated pu on pp.NTC_NOTICE_NO = pu.NTC_NOTICE_NO_UPD and pp.NTC_ADD_CODE = pu.NTC_ADD_CODE_UPD")
+    int getPendingDPRUpdatedCountDetails();
+
+    // PendingDPRTbl_Updated
+    @Insert
+    Long[] InsertPendingDPRUpdatedDetails(List<PendingDPRTbl_Updated> pendingDPRTbl_updatedList);
+
+    @Query("delete from PendingDPRTbl_Updated where NTC_NOTICE_NO_UPD = :NTC_NOTICE_NO")
+    int deletePendingDPRUpdatedDetails(String NTC_NOTICE_NO);
 
     //ApprovedDPR Tbl
     @Insert

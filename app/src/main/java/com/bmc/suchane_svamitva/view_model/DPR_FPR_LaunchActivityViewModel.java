@@ -15,14 +15,15 @@ import com.bmc.suchane_svamitva.view.interfaces.OwnerListInterface;
 
 public class DPR_FPR_LaunchActivityViewModel implements OwnerListInterface, SearchView.OnQueryTextListener {
     DPR_FPR_LaunchActivityInterface dpr_fpr_launchActivityInterface;
-    public final ObservableInt districtCode = new ObservableInt(0);
-    public final ObservableField<String> districtName = new ObservableField<>("District Name");
-    public final ObservableField<String> talukCode = new ObservableField<>("");
-    public final ObservableField<String> talukName = new ObservableField<>("Taluk Name");
-    public final ObservableInt hobliCode = new ObservableInt(0);
-    public final ObservableField<String> hobliName = new ObservableField<>("Hobli Name");
-    public final ObservableField<String> villageCode = new ObservableField<>("");
-    public final ObservableField<String> villageName = new ObservableField<>("Village Name");
+    public final ObservableField<String> districtCode = new ObservableField<>();
+    public final ObservableField<String> districtName = new ObservableField<>("");
+    public final ObservableField<String> talukCode = new ObservableField<>();
+    public final ObservableField<String> talukName = new ObservableField<>("");
+    public final ObservableField<String> hobliCode = new ObservableField<>();
+    public final ObservableField<String> hobliName = new ObservableField<>("");
+    public final ObservableField<String> villageCode = new ObservableField<>();
+    public final ObservableField<String> LGD_VILLAGE_CODE = new ObservableField<>();
+    public final ObservableField<String> villageName = new ObservableField<>("");
     public final ObservableField<OwnerAdapter> ownerAdapter = new ObservableField<>();
     public final ObservableList<OwnerTbl> ownerList = new ObservableArrayList<>();
     public final ObservableField<SearchView.OnQueryTextListener> onQueryTextListener = new ObservableField<>();

@@ -32,6 +32,7 @@ public class NoticeActivityViewModel {
     public final ObservableField<String> name = new ObservableField<>("");
     public final ObservableField<String> mobNumError = new ObservableField<>();
     public final ObservableField<String> mobNum = new ObservableField<>("");
+    public final ObservableField<String> deviceID = new ObservableField<>("");
     public final ObservableField<String> doorNoError = new ObservableField<>();
     public final ObservableField<String> doorNo = new ObservableField<>("");
     public final ObservableField<String> buildingError = new ObservableField<>();

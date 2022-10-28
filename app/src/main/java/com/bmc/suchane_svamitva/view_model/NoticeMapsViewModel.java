@@ -7,6 +7,7 @@ import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
 
 import com.bmc.suchane_svamitva.view.interfaces.NoticeMapsInterface;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
@@ -69,5 +70,13 @@ public class NoticeMapsViewModel implements OnMapReadyCallback, GoogleMap.OnCame
 
     public void onConfirmLocation(View view){
         noticeMapsInterface.onConfirmLocation(this);
+    }
+
+    public void onClickZoomIn(View view){
+        Objects.requireNonNull(this.googleMap.get()).animateCamera(CameraUpdateFactory.zoomIn());
+    }
+
+    public void onClickZoomOut(View view){
+        Objects.requireNonNull(this.googleMap.get()).animateCamera(CameraUpdateFactory.zoomOut());
     }
 }

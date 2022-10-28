@@ -394,7 +394,8 @@ public class MainActivityCallback implements MainActivityInterface {
                         editor.apply();
 
                         FnGetPendingDPRRequest fnGetPendingDPRRequest = new FnGetPendingDPRRequest();
-                        fnGetPendingDPRRequest.setLGD_VILLAGECODE(viewModel.LGD_VILLAGE_CODE.get());
+//                        fnGetPendingDPRRequest.setLGD_VILLAGECODE(viewModel.LGD_VILLAGE_CODE.get());
+                        fnGetPendingDPRRequest.setLGD_VILLAGECODE("598473");
 
                         String accessToken = result.getTokenType() + " " + result.getAccessToken();
                         Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));

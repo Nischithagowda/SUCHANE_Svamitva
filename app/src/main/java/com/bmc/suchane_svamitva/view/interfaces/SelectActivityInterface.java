@@ -8,7 +8,7 @@ import com.bmc.suchane_svamitva.view_model.SelectActivityViewModel;
 
 public interface SelectActivityInterface {
     void onNavigateToNotice(SelectActivityViewModel viewModel);
-    void onNavigateToDPR();
-    void onNavigateToFPR();
+    void onNavigateToDPR(SelectActivityViewModel viewModel);
+    void onNavigateToFPR(SelectActivityViewModel viewModel);
     void loadJurisdiction(SelectActivityViewModel viewModel);
 }

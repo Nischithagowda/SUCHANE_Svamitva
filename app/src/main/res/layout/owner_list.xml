@@ -25,25 +25,25 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:text="@{dataVariable.owner_id+``}"
+                android:text="@{dataVariable.NOTICE_NO+``}"
                 style="@style/owner_list_tv_header"
                 />
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_weight="1.3"
                 android:layout_height="match_parent"
-                android:text="@{dataVariable.chalta_No}"
+                android:text="@{dataVariable.property_no}"
                 style="@style/owner_list_tv_header"
                 android:drawablePadding="8dp"
                 />
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:text="@{dataVariable.municipal_GPFD}"
-                style="@style/owner_list_tv_header"
-                android:drawablePadding="8dp"
-                />
+<!--            <androidx.appcompat.widget.AppCompatTextView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:text="@{dataVariable.municipal_GPFD}"-->
+<!--                style="@style/owner_list_tv_header"-->
+<!--                android:drawablePadding="8dp"-->
+<!--                />-->
             <androidx.appcompat.widget.AppCompatTextView
                 android:drawableEnd="@drawable/ic_navigate_next"
                 android:drawablePadding="8dp"
@@ -56,7 +56,7 @@
 
             <Button
                 android:layout_weight="1"
-                android:onClick="@{(v)->handler.onClickOwner(dataVariable,dataVariable.chalta_No)}"
+                android:onClick="@{(v)->handler.onClickOwner(dataVariable,dataVariable.property_no)}"
                 style="@style/btn"
                 android:textAllCaps="false"
                 android:layout_width="0dp"
