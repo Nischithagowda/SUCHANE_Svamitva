@@ -1,5 +1,6 @@
 package com.bmc.suchane_svamitva.view.callbacks;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 import com.bmc.suchane_svamitva.R;
 import com.bmc.suchane_svamitva.api.APIClient_Suchane;
 import com.bmc.suchane_svamitva.api.API_Interface_Suchane;
+import com.bmc.suchane_svamitva.model.LogoutRequest;
+import com.bmc.suchane_svamitva.model.LogoutResponse;
 import com.bmc.suchane_svamitva.model.SMS_Request;
 import com.bmc.suchane_svamitva.model.SMS_Request_Login;
 import com.bmc.suchane_svamitva.model.SMS_Response;
@@ -79,6 +82,8 @@ public class SignInCallback implements SignInInterface, ActivityCompat.OnRequest
                                     dialog.dismiss();
                                     if (result1.getRESPONSE_CODE().contains("200")) {
                                         onNavigateToOtpVerify(number);
+                                    } else if(result1.getRESPONSE_CODE().contains("600")) {
+                                        logout(number);
                                     } else {
                                         Toast.makeText(activity, "" + result1.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
                                     }
@@ -93,6 +98,61 @@ public class SignInCallback implements SignInInterface, ActivityCompat.OnRequest
         } else {
             Toast.makeText(activity, activity.getString(R.string.please_switch_on_the_internet), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void logout(String number) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage("This user is already active in another device. Do you want logout from that device?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", (dialog, id) -> {
+                    logoutFromServer(number);
+                })
+                .setNegativeButton("No", (dialog, id) -> dialog.cancel());
+        AlertDialog alert = builder.create();
+        alert.setTitle("Confirmation");
+        alert.show();
+
+    }
+
+    public void logoutFromServer(String number){
+        ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Loading, Please Wait ..");
+        dialog.show();
+
+        Retrofit client = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
+        API_Interface_Suchane apiService = client.create(API_Interface_Suchane.class);
+        Observable<TokenRes> serviceToken = apiService.getToken(activity.getString(R.string.api_user_id), activity.getString(R.string.api_password), activity.getString(R.string.grant_type));
+        serviceToken.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((result) -> {
+                    SharedPreferences.Editor editor = activity.getSharedPreferences(activity.getString(R.string.Auth), MODE_PRIVATE).edit();
+                    editor.putString(activity.getString(R.string.token), result.getAccessToken());
+                    editor.putString(activity.getString(R.string.token_type),result.getTokenType());
+                    editor.putString(activity.getString(R.string.refresh_tkn), result.getRefreshToken());
+                    editor.apply();
+
+                    LogoutRequest logoutRequest = new LogoutRequest();
+                    logoutRequest.setMOBILE_NO(number);
+
+                    String accessToken = result.getTokenType() + " " + result.getAccessToken();
+                    Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
+                    API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
+                    Observable<LogoutResponse> responseObservable = apiService1.FnLogout(accessToken, logoutRequest);
+                    responseObservable.subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe((result1) -> {
+                                dialog.dismiss();
+                                Toast.makeText(activity, ""+result1.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
+                            }, (error) -> {
+                                dialog.dismiss();
+                                Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                            });
+                }, (error) -> {
+                    Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                });
     }
 
     public void onNavigateToOtpVerify(String number) {

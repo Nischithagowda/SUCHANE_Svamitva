@@ -92,14 +92,14 @@ public interface DatabaseDAO {
     @Insert
     Long[] InsertPendingDPRDetails(List<PendingDPRTbl> pendingDPRTblList);
 
-    @Query("delete from PendingDPRTbl where NTC_WARD_VILLAGE = :NTC_WARD_VILLAGE")
-    int deletePendingDPRDetails(String NTC_WARD_VILLAGE);
+    @Query("delete from PendingDPRTbl where DPROWNFNL_VLGDCODE = :DPROWNFNL_VLGDCODE")
+    int deletePendingDPRDetails(String DPROWNFNL_VLGDCODE);
 
-    @Query("Select count(NTC_NOTICE_NO) from PendingDPRTbl where NTC_WARD_VILLAGE = :NTC_WARD_VILLAGE")
-    int getPendingDPRCount(String NTC_WARD_VILLAGE);
+    @Query("Select count(NTC_NOTICE_NO) from PendingDPRTbl where DPROWNFNL_VLGDCODE = :DPROWNFNL_VLGDCODE")
+    int getPendingDPRCount(String DPROWNFNL_VLGDCODE);
 
-    @Query("Select DPRFNL_NOTICE_NO as NOTICE_NO, DPRFNL_PROPERTYCODE as property_no, DPROWNFNL_OWNERNAME as Owner_Name from PendingDPRTbl where NTC_WARD_VILLAGE = :NTC_WARD_VILLAGE")
-    List<OwnerTbl> getPendingDPRDetails(String NTC_WARD_VILLAGE);
+    @Query("Select DPRFNL_NOTICE_NO as NOTICE_NO, DPRFNL_PROPERTYCODE as property_no, DPROWNFNL_OWNERNAME as Owner_Name from PendingDPRTbl where DPROWNFNL_VLGDCODE = :DPROWNFNL_VLGDCODE")
+    List<OwnerTbl> getPendingDPRDetails(String DPROWNFNL_VLGDCODE);
 
     @Query("Select NTC_NOTICE_NO from PendingDPRTbl pp inner join PendingDPRTbl_Updated pu on pp.NTC_NOTICE_NO = pu.NTC_NOTICE_NO_UPD and pp.NTC_ADD_CODE = pu.NTC_ADD_CODE_UPD")
     String[] getPendingDPRUpdatedDetails();
@@ -118,14 +118,14 @@ public interface DatabaseDAO {
     @Insert
     Long[] InsertApprovedDPRDetails(List<ApprovedDPRTbl> approvedDPRTblList);
 
-    @Query("delete from ApprovedDPRTbl where NTC_WARD_VILLAGE = :NTC_WARD_VILLAGE")
-    int deleteApprovedDPRDetails(String NTC_WARD_VILLAGE);
+    @Query("delete from ApprovedDPRTbl where DPROWNFNL_VLGDCODE = :DPROWNFNL_VLGDCODE")
+    int deleteApprovedDPRDetails(String DPROWNFNL_VLGDCODE);
 
-    @Query("Select count(NTC_NOTICE_NO) from ApprovedDPRTbl where NTC_WARD_VILLAGE = :NTC_WARD_VILLAGE")
-    int getApprovedDPRCount(String NTC_WARD_VILLAGE);
+    @Query("Select count(NTC_NOTICE_NO) from ApprovedDPRTbl where DPROWNFNL_VLGDCODE = :DPROWNFNL_VLGDCODE")
+    int getApprovedDPRCount(String DPROWNFNL_VLGDCODE);
 
-    @Query("Select * from ApprovedDPRTbl where NTC_WARD_VILLAGE = :NTC_WARD_VILLAGE")
-    List<ApprovedDPRTbl> getApprovedDPRDetails(String NTC_WARD_VILLAGE);
+    @Query("Select DPRFNL_NOTICE_NO as NOTICE_NO, DPRFNL_PROPERTYCODE as property_no, DPROWNFNL_OWNERNAME as Owner_Name from ApprovedDPRTbl where DPROWNFNL_VLGDCODE = :DPROWNFNL_VLGDCODE")
+    List<OwnerTbl> getApprovedDPRDetails(String DPROWNFNL_VLGDCODE);
 
     //1.Delete USER_DETAILS
 

@@ -17,6 +17,7 @@ import com.bmc.suchane_svamitva.R;
 import com.bmc.suchane_svamitva.api.APIClient_Suchane;
 import com.bmc.suchane_svamitva.api.API_Interface_Suchane;
 import com.bmc.suchane_svamitva.database.DBConnection;
+import com.bmc.suchane_svamitva.model.FnCheckUserLoggedInRequest;
 import com.bmc.suchane_svamitva.model.LogoutResponse;
 import com.bmc.suchane_svamitva.model.SMS_Request_Login;
 import com.bmc.suchane_svamitva.model.TokenRes;
@@ -49,6 +50,9 @@ public class SplashScreen extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
         boolean status = sharedPreferences.getBoolean(Constant.LOGIN_STATUS, false);
         if (status) {
+//            Intent intent = new Intent(this, MainActivity.class);
+//            startActivity(intent);
+//            finish();
             getUserLoggedInStatus();
         } else {
             Intent i = new Intent(this, SignIn.class);
@@ -121,18 +125,18 @@ public class SplashScreen extends AppCompatActivity {
         String mobNum = sharedPreferences.getString(Constant.USER_MOBILE, null);
         String androidId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        SMS_Request_Login sms_request_login = new SMS_Request_Login();
-        sms_request_login.setMobileNumberToSendOTP(mobNum);
-        sms_request_login.setDeviceId(androidId);
+        FnCheckUserLoggedInRequest fnCheckUserLoggedInRequest = new FnCheckUserLoggedInRequest();
+        fnCheckUserLoggedInRequest.setMOBILE_NO(mobNum);
+        fnCheckUserLoggedInRequest.setDEVICE_ID(androidId);
 
         Retrofit client1 = APIClient_Suchane.getClient(getApplicationContext(), getString(R.string.api_url));
         API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
-        Observable<LogoutResponse> responseObservable = apiService1.FnCheckUserLoggedIn(accessToken, sms_request_login);
+        Observable<LogoutResponse> responseObservable = apiService1.FnCheckUserLoggedIn(accessToken, fnCheckUserLoggedInRequest);
         responseObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((result1) -> {
                     dialog.dismiss();
-                    if (result1.getRESPONSE_CODE().contains("200")) {
+                    if (result1.getRESPONSE_CODE().contains("201")) {
                         Intent intent = new Intent(this, MainActivity.class);
                         startActivity(intent);
                         finish();

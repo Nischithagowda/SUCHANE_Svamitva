@@ -4,6 +4,7 @@ import com.bmc.suchane_svamitva.model.AddressCodeNoticeNoRequest;
 import com.bmc.suchane_svamitva.model.AddressCodeNoticeNoResponse;
 import com.bmc.suchane_svamitva.model.DistrictRequest;
 import com.bmc.suchane_svamitva.model.DistrictResponse;
+import com.bmc.suchane_svamitva.model.FnCheckUserLoggedInRequest;
 import com.bmc.suchane_svamitva.model.FnGetApprovedDPRResponse;
 import com.bmc.suchane_svamitva.model.FnGetPendingDPRRequest;
 import com.bmc.suchane_svamitva.model.FnGetPendingDPRResponse;
@@ -87,7 +88,7 @@ public interface API_Interface_Suchane {
     @POST("api/values/FnCheckUserLoggedIn/")
     Observable<LogoutResponse> FnCheckUserLoggedIn(
             @Header("Authorization") String accessToken,
-            @Body SMS_Request_Login sms_request_login
+            @Body FnCheckUserLoggedInRequest sms_request_login
             );
 
     @POST("api/values/FnValidateOTP/")

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.bmc.suchane_svamitva.view_model.DPR_FPR_LaunchActivityViewModel" />
+    </data>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="2dp"
+            app:cardCornerRadius="4dp">
+
+            <androidx.appcompat.widget.SearchView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:onQueryTextListener="@{viewModel.onQueryTextListenerApproved}"
+                app:iconifiedByDefault="false"
+                app:queryHint="Search Name/ID/Chalta No" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="2dp"
+            app:cardCornerRadius="4dp"
+            android:backgroundTint="@color/colorPrimary">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/text_list_header"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:text="@string/sl_no" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/text_list_header"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.3"
+                    android:text="@string/chalta_number" />
+
+                <!--                    <androidx.appcompat.widget.AppCompatTextView-->
+                <!--                        style="@style/text_list_header"-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="match_parent"-->
+                <!--                        android:layout_weight="1"-->
+                <!--                        android:text="@string/municipal_gpfd" />-->
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/text_list_header"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/owner_name"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/text_list_header"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/action"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:adapter="@{viewModel.ownerApprovedAdapter}"
+            app:data="@{viewModel.ownerApprovedList}"
+            android:layout_margin="2dp"/>
+    </LinearLayout>
+</layout>

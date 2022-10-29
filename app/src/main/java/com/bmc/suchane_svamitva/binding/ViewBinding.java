@@ -1,26 +1,22 @@
 package com.bmc.suchane_svamitva.binding;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.text.InputType;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.bmc.suchane_svamitva.model.District;
 import com.bmc.suchane_svamitva.model.Hobli;
 import com.bmc.suchane_svamitva.model.OwnerTbl;
 import com.bmc.suchane_svamitva.model.Taluka;
 import com.bmc.suchane_svamitva.model.Village;
-import com.bmc.suchane_svamitva.view.adapter.OwnerAdapter;
+import com.bmc.suchane_svamitva.view.adapter.OwnerAdapterApproved;
+import com.bmc.suchane_svamitva.view.adapter.OwnerAdapterPending;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -116,10 +112,16 @@ public class ViewBinding {
     }
 
     @BindingAdapter({"data", "adapter"})
-    public static void ownerAdapter(RecyclerView recyclerView, List<OwnerTbl> ownerTblList, OwnerAdapter adapter) {
+    public static void ownerPendingAdapter(RecyclerView recyclerView, List<OwnerTbl> ownerTblList, OwnerAdapterPending adapter) {
         adapter.addData(ownerTblList);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
+    }
 
+    @BindingAdapter({"data", "adapter"})
+    public static void ownerApprovedAdapter(RecyclerView recyclerView, List<OwnerTbl> ownerTblList, OwnerAdapterApproved adapter) {
+        adapter.addData(ownerTblList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
     }
 }

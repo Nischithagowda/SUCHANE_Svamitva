@@ -14,12 +14,17 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.bmc.suchane_svamitva.database.DBConnection;
 import com.bmc.suchane_svamitva.utils.Constant;
 import com.bmc.suchane_svamitva.view.interfaces.SelectActivityInterface;
 import com.bmc.suchane_svamitva.view.ui.DPR_FPR_LaunchActivity;
 import com.bmc.suchane_svamitva.view.ui.NoticeMapsFragment;
 import com.bmc.suchane_svamitva.view.ui.SelectActivity;
 import com.bmc.suchane_svamitva.view_model.SelectActivityViewModel;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class SelectActivityCallback implements SelectActivityInterface {
     SelectActivity activity;
@@ -40,6 +45,22 @@ public class SelectActivityCallback implements SelectActivityInterface {
         viewModel.villageCode.set(intent.getStringExtra("villageCode"));
         viewModel.LGD_VILLAGE_CODE.set(intent.getStringExtra("LGD_VILLAGE_CODE"));
         viewModel.villageName.set(intent.getStringExtra("villageName"));
+
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(activity)
+                        .getDataBaseDao()
+                        .getPendingDPRCount(viewModel.LGD_VILLAGE_CODE.get()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(viewModel.pendingItemsCount::set, Throwable::printStackTrace);
+
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(activity)
+                        .getDataBaseDao()
+                        .getApprovedDPRCount(viewModel.LGD_VILLAGE_CODE.get()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(viewModel.approvedItemsCount::set, Throwable::printStackTrace);
     }
 
     @Override

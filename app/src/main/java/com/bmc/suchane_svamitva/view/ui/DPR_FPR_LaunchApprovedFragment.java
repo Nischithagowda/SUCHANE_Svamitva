@@ -10,20 +10,23 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.bmc.suchane_svamitva.R;
-import com.bmc.suchane_svamitva.databinding.FragmentDprFprLaunchBinding;
+import com.bmc.suchane_svamitva.databinding.FragmentDprFprApprovedLaunchBinding;
 import com.bmc.suchane_svamitva.view.callbacks.DPR_FPR_LaunchActivityCallback;
 import com.bmc.suchane_svamitva.view.interfaces.DPR_FPR_LaunchActivityInterface;
 import com.bmc.suchane_svamitva.view_model.DPR_FPR_LaunchActivityViewModel;
 
-public class DPR_FPR_LaunchFragment extends Fragment {
+public class DPR_FPR_LaunchApprovedFragment extends Fragment {
 
     DPR_FPR_LaunchActivityViewModel viewModel;
+
+    public DPR_FPR_LaunchApprovedFragment() {
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        FragmentDprFprLaunchBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dpr_fpr_launch, container, false);
+        FragmentDprFprApprovedLaunchBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dpr_fpr_approved_launch, container, false);
         DPR_FPR_LaunchActivityInterface dpr_fpr_launchActivityInterface = new DPR_FPR_LaunchActivityCallback(getActivity());
         viewModel = new DPR_FPR_LaunchActivityViewModel(dpr_fpr_launchActivityInterface);
         binding.setViewModel(viewModel);

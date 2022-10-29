@@ -122,6 +122,35 @@
                         app:imageBitMap="@{viewModel.imageBitMapServingNotice}"
                         android:onClick="@{viewModel::onClickShowImageServingNotice}"/>
                 </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/star"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="16sp"
+                    android:layout_marginEnd="5dp"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:error="@{viewModel.chaltaNoError}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/chalta_number">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:text="@{viewModel.chaltaNo}"
+                        android:onTextChanged="@{viewModel::onContactChaltaNoTextChanged}"
+                        style="@style/edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

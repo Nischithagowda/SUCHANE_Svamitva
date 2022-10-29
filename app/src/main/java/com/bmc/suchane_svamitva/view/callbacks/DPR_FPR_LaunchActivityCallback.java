@@ -6,11 +6,12 @@ import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 
+import com.bmc.suchane_svamitva.R;
 import com.bmc.suchane_svamitva.database.DBConnection;
-import com.bmc.suchane_svamitva.model.OwnerTbl;
 import com.bmc.suchane_svamitva.view.interfaces.DPR_FPR_LaunchActivityInterface;
 import com.bmc.suchane_svamitva.view.ui.DPR_FPR_FinalActivity;
-import com.bmc.suchane_svamitva.view.ui.NoticeActivity;
+import com.bmc.suchane_svamitva.view.ui.DPR_FPR_LaunchApprovedFragment;
+import com.bmc.suchane_svamitva.view.ui.DPR_FPR_LaunchPendingFragment;
 import com.bmc.suchane_svamitva.view_model.DPR_FPR_LaunchActivityViewModel;
 
 import io.reactivex.Observable;
@@ -52,8 +53,24 @@ public class DPR_FPR_LaunchActivityCallback implements DPR_FPR_LaunchActivityInt
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(result -> {
                                 dialog.dismiss();
-                                viewModel.ownerList.clear();
-                                viewModel.ownerList.addAll(result);
+                                viewModel.ownerPendingList.clear();
+                                viewModel.ownerPendingList.addAll(result);
+                            }, error -> {
+                                error.printStackTrace();
+                                dialog.dismiss();
+                            }
+                    );
+
+            Observable
+                    .fromCallable(() -> DBConnection.getConnection(activity)
+                            .getDataBaseDao()
+                            .getApprovedDPRDetails(viewModel.LGD_VILLAGE_CODE.get()))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(result -> {
+                                dialog.dismiss();
+                                viewModel.ownerApprovedList.clear();
+                                viewModel.ownerApprovedList.addAll(result);
                             }, error -> {
                                 error.printStackTrace();
                                 dialog.dismiss();
@@ -61,10 +78,47 @@ public class DPR_FPR_LaunchActivityCallback implements DPR_FPR_LaunchActivityInt
                     );
 
 
-        } catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             Toast.makeText(activity, ""+ex.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void loadDefaultFragment() {
+        androidx.fragment.app.FragmentTransaction fragmentTransaction =
+                activity.getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.dpr_fpr_frame_layout, new DPR_FPR_LaunchPendingFragment());
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onTypeCheckChanged(int checkedId) {
+        if (checkedId == R.id.pending){
+            androidx.fragment.app.FragmentTransaction fragmentTransaction1 =
+                    activity.getSupportFragmentManager().beginTransaction();
+            fragmentTransaction1.replace(R.id.dpr_fpr_frame_layout, new DPR_FPR_LaunchPendingFragment());
+            fragmentTransaction1.commit();
+        } else if (checkedId == R.id.completed){
+            androidx.fragment.app.FragmentTransaction fragmentTransaction2 =
+                    activity.getSupportFragmentManager().beginTransaction();
+            fragmentTransaction2.replace(R.id.dpr_fpr_frame_layout, new DPR_FPR_LaunchApprovedFragment());
+            fragmentTransaction2.commit();
+        }
+//        switch (checkedId) {
+//            case R.id.pending:
+//                androidx.fragment.app.FragmentTransaction fragmentTransaction1 =
+//                        activity.getSupportFragmentManager().beginTransaction();
+//                fragmentTransaction1.replace(R.id.dpr_fpr_frame_layout, new DPR_FPR_LaunchPendingFragment());
+//                fragmentTransaction1.commit();
+//                break;
+//            case R.id.completed:
+//                androidx.fragment.app.FragmentTransaction fragmentTransaction2 =
+//                        activity.getSupportFragmentManager().beginTransaction();
+//                fragmentTransaction2.replace(R.id.dpr_fpr_frame_layout, new DPR_FPR_LaunchApprovedFragment());
+//                fragmentTransaction2.commit();
+//                break;
+//        }
     }
 
     @Override

@@ -7,8 +7,8 @@
 
     <fragment
         android:id="@+id/ShowDPR_FPR_LaunchFragment"
-        android:name="com.bmc.suchane_svamitva.view.ui.DPR_FPR_LaunchFragment"
-        tools:layout="@layout/fragment_dpr_fpr_launch">
+        android:name="com.bmc.suchane_svamitva.view.ui.DPR_FPR_LaunchPendingFragment"
+        tools:layout="@layout/fragment_dpr_fpr_pending_launch">
 
         <action
             android:id="@+id/action_ShowDPR_FPR_LaunchFragment_to_NoticeMapsFragment"

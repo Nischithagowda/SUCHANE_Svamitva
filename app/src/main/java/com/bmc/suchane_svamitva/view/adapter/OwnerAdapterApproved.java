@@ -20,14 +20,14 @@ import com.bmc.suchane_svamitva.view.interfaces.OwnerListInterface;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OwnerAdapter  extends RecyclerView.Adapter<OwnerAdapter.DataViewHolder> implements Filterable {
+public class OwnerAdapterApproved extends RecyclerView.Adapter<OwnerAdapterApproved.DataViewHolder> implements Filterable {
     private List<OwnerTbl> data;
     List<OwnerTbl> mOwnerDisplayFilterList;
-    private ValueFilter valueFilter;
+    private OwnerAdapterApproved.ValueFilter valueFilter;
     OwnerListInterface ownerListInterface;
 
 
-    public OwnerAdapter(OwnerListInterface ownerListInterface) {
+    public OwnerAdapterApproved(OwnerListInterface ownerListInterface) {
         this.ownerListInterface = ownerListInterface;
         this.data = new ArrayList<>();
         this.mOwnerDisplayFilterList = new ArrayList<>();
@@ -35,14 +35,14 @@ public class OwnerAdapter  extends RecyclerView.Adapter<OwnerAdapter.DataViewHol
 
     @NonNull
     @Override
-    public OwnerAdapter.DataViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public OwnerAdapterApproved.DataViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.owner_list,
                 new FrameLayout(parent.getContext()), false);
-        return new OwnerAdapter.DataViewHolder(itemView);
+        return new OwnerAdapterApproved.DataViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(OwnerAdapter.DataViewHolder holder, int position) {
+    public void onBindViewHolder(OwnerAdapterApproved.DataViewHolder holder, int position) {
         OwnerTbl citizenData = data.get(position);
         holder.setVDataVariable(citizenData);
         holder.setHandler(ownerListInterface
@@ -55,13 +55,13 @@ public class OwnerAdapter  extends RecyclerView.Adapter<OwnerAdapter.DataViewHol
     }
 
     @Override
-    public void onViewAttachedToWindow(@NonNull OwnerAdapter.DataViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull OwnerAdapterApproved.DataViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         holder.bind();
     }
 
     @Override
-    public void onViewDetachedFromWindow(@NonNull OwnerAdapter.DataViewHolder holder) {
+    public void onViewDetachedFromWindow(@NonNull OwnerAdapterApproved.DataViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
         holder.unbind();
     }
@@ -125,7 +125,7 @@ public class OwnerAdapter  extends RecyclerView.Adapter<OwnerAdapter.DataViewHol
     @Override
     public Filter getFilter() {
         if (valueFilter == null) {
-            valueFilter = new OwnerAdapter.ValueFilter();
+            valueFilter = new OwnerAdapterApproved.ValueFilter();
         }
         return valueFilter;
     }

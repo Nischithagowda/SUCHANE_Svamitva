@@ -346,24 +346,24 @@ public class MainActivityCallback implements MainActivityInterface {
                     DBConnection.getConnection(activity).getDataBaseDao().deleteFullApprovedDPRDetails();
 
                     dialog.dismiss();
-                    SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.clear();
-                    editor.apply();
-
-                    SharedPreferences.Editor editor_Auth = activity.getSharedPreferences(activity.getString(R.string.Auth), MODE_PRIVATE).edit();
-                    editor_Auth.clear();
-                    editor_Auth.apply();
-
-                    Intent intent = new Intent(activity, SignIn.class);
-                    activity.startActivity(intent);
-                    activity.finish();
-                    Toast.makeText(activity, "User Logout Successfully", Toast.LENGTH_SHORT).show();
                 }, error -> {
                     dialog.dismiss();
                     error.printStackTrace();
                 });
 
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+
+        SharedPreferences.Editor editor_Auth = activity.getSharedPreferences(activity.getString(R.string.Auth), MODE_PRIVATE).edit();
+        editor_Auth.clear();
+        editor_Auth.apply();
+
+        Intent intent = new Intent(activity, SignIn.class);
+        activity.startActivity(intent);
+        activity.finish();
+        Toast.makeText(activity, "User Logout Successfully", Toast.LENGTH_SHORT).show();
     }
 
     private boolean isNetworkAvailable() {
@@ -394,8 +394,8 @@ public class MainActivityCallback implements MainActivityInterface {
                         editor.apply();
 
                         FnGetPendingDPRRequest fnGetPendingDPRRequest = new FnGetPendingDPRRequest();
-//                        fnGetPendingDPRRequest.setLGD_VILLAGECODE(viewModel.LGD_VILLAGE_CODE.get());
-                        fnGetPendingDPRRequest.setLGD_VILLAGECODE("598473");
+                        fnGetPendingDPRRequest.setLGD_VILLAGECODE(viewModel.LGD_VILLAGE_CODE.get());
+//                        fnGetPendingDPRRequest.setLGD_VILLAGECODE("598473");
 
                         String accessToken = result.getTokenType() + " " + result.getAccessToken();
                         Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
@@ -495,7 +495,7 @@ public class MainActivityCallback implements MainActivityInterface {
                         deleteApprovedDPRDetails(viewModel, result1.getApprovedDPRTblList());
                     } else {
                         onNavigateToNext(viewModel);
-                        Toast.makeText(activity, ""+result1.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, ""+result1.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
                     }
                 }, (error) -> {
                     dialog.dismiss();

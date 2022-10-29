@@ -2,6 +2,7 @@ package com.bmc.suchane_svamitva.view.callbacks;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -304,6 +305,7 @@ public class OTPVerifyCallback implements OTPVerifyInterface {
                 );
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onClickResendOtp(OTPVerifyViewModel viewModel) {
         ProgressDialog dialog = new ProgressDialog(activity);
@@ -340,7 +342,7 @@ public class OTPVerifyCallback implements OTPVerifyInterface {
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe((result1) -> {
                                 dialog.dismiss();
-                                if (result1.getRESPONSE_STATUS().contains("Sent")) {
+                                if (result1.getRESPONSE_CODE().contains("200")) {
                                     viewModel.resendEnable.set(false);
                                 } else {
                                     Toast.makeText(activity, ""+result1.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();

@@ -134,6 +134,11 @@ public class ApprovedDPRTbl {
     @Expose
     private String DPROWNFNL_MOBILENO;
 
+    @ColumnInfo(name = "DPROWNFNL_VLGDCODE")
+    @SerializedName("DPROWNFNL_VLGDCODE")
+    @Expose
+    private String DPROWNFNL_VLGDCODE;
+
     public int getId() {
         return id;
     }
@@ -332,5 +337,13 @@ public class ApprovedDPRTbl {
 
     public void setDPROWNFNL_MOBILENO(String DPROWNFNL_MOBILENO) {
         this.DPROWNFNL_MOBILENO = DPROWNFNL_MOBILENO;
+    }
+
+    public String getDPROWNFNL_VLGDCODE() {
+        return DPROWNFNL_VLGDCODE;
+    }
+
+    public void setDPROWNFNL_VLGDCODE(String DPROWNFNL_VLGDCODE) {
+        this.DPROWNFNL_VLGDCODE = DPROWNFNL_VLGDCODE;
     }
 }
