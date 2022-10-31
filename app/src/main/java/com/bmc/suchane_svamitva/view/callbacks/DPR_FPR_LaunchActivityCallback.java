@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.bmc.suchane_svamitva.R;
 import com.bmc.suchane_svamitva.database.DBConnection;
+import com.bmc.suchane_svamitva.model.OwnerTbl;
 import com.bmc.suchane_svamitva.view.interfaces.DPR_FPR_LaunchActivityInterface;
 import com.bmc.suchane_svamitva.view.ui.DPR_FPR_FinalActivity;
 import com.bmc.suchane_svamitva.view.ui.DPR_FPR_LaunchApprovedFragment;
@@ -48,13 +49,18 @@ public class DPR_FPR_LaunchActivityCallback implements DPR_FPR_LaunchActivityInt
             Observable
                     .fromCallable(() -> DBConnection.getConnection(activity)
                             .getDataBaseDao()
-                            .getPendingDPRDetails(viewModel.LGD_VILLAGE_CODE.get()))
+                            .getPendingDPRList(viewModel.LGD_VILLAGE_CODE.get()))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(result -> {
                                 dialog.dismiss();
                                 viewModel.ownerPendingList.clear();
                                 viewModel.ownerPendingList.addAll(result);
+                                if (result.size()<=0){
+                                    viewModel.isNoPendingDataAvailable.set(true);
+                                } else {
+                                    viewModel.isNoPendingDataAvailable.set(false);
+                                }
                             }, error -> {
                                 error.printStackTrace();
                                 dialog.dismiss();
@@ -71,6 +77,11 @@ public class DPR_FPR_LaunchActivityCallback implements DPR_FPR_LaunchActivityInt
                                 dialog.dismiss();
                                 viewModel.ownerApprovedList.clear();
                                 viewModel.ownerApprovedList.addAll(result);
+                                if (result.size()<=0){
+                                    viewModel.isNoApprovedDataAvailable.set(true);
+                                } else {
+                                    viewModel.isNoApprovedDataAvailable.set(false);
+                                }
                             }, error -> {
                                 error.printStackTrace();
                                 dialog.dismiss();
@@ -105,25 +116,21 @@ public class DPR_FPR_LaunchActivityCallback implements DPR_FPR_LaunchActivityInt
             fragmentTransaction2.replace(R.id.dpr_fpr_frame_layout, new DPR_FPR_LaunchApprovedFragment());
             fragmentTransaction2.commit();
         }
-//        switch (checkedId) {
-//            case R.id.pending:
-//                androidx.fragment.app.FragmentTransaction fragmentTransaction1 =
-//                        activity.getSupportFragmentManager().beginTransaction();
-//                fragmentTransaction1.replace(R.id.dpr_fpr_frame_layout, new DPR_FPR_LaunchPendingFragment());
-//                fragmentTransaction1.commit();
-//                break;
-//            case R.id.completed:
-//                androidx.fragment.app.FragmentTransaction fragmentTransaction2 =
-//                        activity.getSupportFragmentManager().beginTransaction();
-//                fragmentTransaction2.replace(R.id.dpr_fpr_frame_layout, new DPR_FPR_LaunchApprovedFragment());
-//                fragmentTransaction2.commit();
-//                break;
-//        }
     }
 
     @Override
-    public void onNavigateToDPR_FPR_Final(){
+    public void onNavigateToDPR_FPR_Final(DPR_FPR_LaunchActivityViewModel viewModel, OwnerTbl ownerTbl, String NoticeNo){
         Intent intent = new Intent(activity, DPR_FPR_FinalActivity.class);
+        intent.putExtra("districtCode", ""+viewModel.districtCode.get());
+        intent.putExtra("districtName", ""+viewModel.districtName.get());
+        intent.putExtra("talukCode", ""+viewModel.talukCode.get());
+        intent.putExtra("talukName", ""+viewModel.talukName.get());
+        intent.putExtra("hobliCode", ""+viewModel.hobliCode.get());
+        intent.putExtra("hobliName", ""+viewModel.hobliName.get());
+        intent.putExtra("villageCode", ""+viewModel.villageCode.get());
+        intent.putExtra("LGD_VILLAGE_CODE", ""+viewModel.LGD_VILLAGE_CODE.get());
+        intent.putExtra("villageName", ""+viewModel.villageName.get());
+        intent.putExtra("NoticeNo", ""+NoticeNo);
         activity.startActivity(intent);
     }
 }

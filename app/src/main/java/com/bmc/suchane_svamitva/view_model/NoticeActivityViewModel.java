@@ -39,8 +39,8 @@ public class NoticeActivityViewModel {
     public final ObservableField<String> building = new ObservableField<>("");
     public final ObservableField<String> streetError = new ObservableField<>();
     public final ObservableField<String> street = new ObservableField<>("");
-    public final ObservableField<String> chaltaNoError = new ObservableField<>();
-    public final ObservableField<String> chaltaNo = new ObservableField<>("");
+    public final ObservableField<String> propertyNoError = new ObservableField<>();
+    public final ObservableField<String> propertyNo = new ObservableField<>("");
     public final ObservableField<String> landmarkError = new ObservableField<>();
     public final ObservableField<String> landmark = new ObservableField<>("");
     public final ObservableList<District> districtNameList = new ObservableArrayList<>();
@@ -115,9 +115,9 @@ public class NoticeActivityViewModel {
         noticeActivityInterface.imageProcessServingNotice(this);
     }
 
-    public void onContactChaltaNoTextChanged(CharSequence s, int start, int before, int count) {
-        chaltaNo.set(s.toString());
-        chaltaNoError.set(null);
+    public void onContactPropertyNoTextChanged(CharSequence s, int start, int before, int count) {
+        propertyNo.set(s.toString());
+        propertyNoError.set(null);
     }
 
     public void onContactNameTextChanged(CharSequence s, int start, int before, int count) {
@@ -279,8 +279,8 @@ public class NoticeActivityViewModel {
         } else if (imageDataServingNotice.get() == null) {
             Toast.makeText(view.getContext(), "Capture Serving Notice photo to proceed", Toast.LENGTH_LONG).show();
             status = true;
-        } else if (TextUtils.isEmpty(chaltaNo.get()) || chaltaNo.get() == null){
-            chaltaNoError.set("Enter Chalta No");
+        } else if (TextUtils.isEmpty(propertyNo.get()) || propertyNo.get() == null){
+            propertyNoError.set("Enter Chalta No");
             Toast.makeText(view.getContext(), "Enter Chalta No to proceed", Toast.LENGTH_LONG).show();
             status = true;
         }
@@ -340,8 +340,8 @@ public class NoticeActivityViewModel {
         } else if (imageDataServingNotice.get() == null) {
             Toast.makeText(view.getContext(), "Capture Serving Notice photo to proceed", Toast.LENGTH_LONG).show();
             status = true;
-        }  else if (TextUtils.isEmpty(chaltaNo.get()) || chaltaNo.get() == null){
-            chaltaNoError.set("Enter Chalta No");
+        }  else if (TextUtils.isEmpty(propertyNo.get()) || propertyNo.get() == null){
+            propertyNoError.set("Enter Chalta No");
             Toast.makeText(view.getContext(), "Enter Chalta No to proceed", Toast.LENGTH_LONG).show();
             status = true;
         }

@@ -98,5 +98,7 @@
     <string name="completed_count">Completed Count</string>
     <string name="zoom_in">Zoom In</string>
     <string name="zoom_out">Zoom Out</string>
-    <string name="chalta_number">Chalta No.</string>
+    <string name="property_number">Property No.</string>
+    <string name="no_pending_data">No Pending data</string>
+    <string name="no_approved_data">No Approved data</string>
 </resources>

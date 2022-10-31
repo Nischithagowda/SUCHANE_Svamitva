@@ -5,22 +5,19 @@ import androidx.room.ColumnInfo;
 
 public class OwnerTbl {
     @ColumnInfo(name = "NOTICE_NO")
-    private long NOTICE_NO;
+    private String NOTICE_NO;
 
     @ColumnInfo(name = "property_no")
     private String Property_no;
 
-//    @ColumnInfo(name = "Municipal_GPFD")
-//    private String Municipal_GPFD;
-
     @ColumnInfo(name = "Owner_Name")
     private String Owner_Name;
 
-    public long getNOTICE_NO() {
+    public String getNOTICE_NO() {
         return NOTICE_NO;
     }
 
-    public void setNOTICE_NO(long NOTICE_NO) {
+    public void setNOTICE_NO(String NOTICE_NO) {
         this.NOTICE_NO = NOTICE_NO;
     }
 
@@ -31,14 +28,6 @@ public class OwnerTbl {
     public void setProperty_no(String property_no) {
         Property_no = property_no;
     }
-
-//    public String getMunicipal_GPFD() {
-//        return Municipal_GPFD;
-//    }
-//
-//    public void setMunicipal_GPFD(String municipal_GPFD) {
-//        Municipal_GPFD = municipal_GPFD;
-//    }
 
     public String getOwner_Name() {
         return Owner_Name;

@@ -97,4 +97,12 @@
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:background">@android:color/white</item>
     </style>
+
+    <style name="owner_list_tv_value" parent="@android:style/Widget.TextView">
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
 </resources>

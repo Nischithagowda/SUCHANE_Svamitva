@@ -99,7 +99,10 @@ public interface DatabaseDAO {
     int getPendingDPRCount(String DPROWNFNL_VLGDCODE);
 
     @Query("Select DPRFNL_NOTICE_NO as NOTICE_NO, DPRFNL_PROPERTYCODE as property_no, DPROWNFNL_OWNERNAME as Owner_Name from PendingDPRTbl where DPROWNFNL_VLGDCODE = :DPROWNFNL_VLGDCODE")
-    List<OwnerTbl> getPendingDPRDetails(String DPROWNFNL_VLGDCODE);
+    List<OwnerTbl> getPendingDPRList(String DPROWNFNL_VLGDCODE);
+
+    @Query("Select * from PendingDPRTbl where DPRFNL_NOTICE_NO = :NoticeNo")
+    List<PendingDPRTbl> getPendingDPRDetailsByNoticeNo(String NoticeNo);
 
     @Query("Select NTC_NOTICE_NO from PendingDPRTbl pp inner join PendingDPRTbl_Updated pu on pp.NTC_NOTICE_NO = pu.NTC_NOTICE_NO_UPD and pp.NTC_ADD_CODE = pu.NTC_ADD_CODE_UPD")
     String[] getPendingDPRUpdatedDetails();

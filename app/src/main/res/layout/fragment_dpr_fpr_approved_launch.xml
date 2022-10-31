@@ -24,7 +24,7 @@
                 android:layout_weight="8"
                 android:onQueryTextListener="@{viewModel.onQueryTextListenerApproved}"
                 app:iconifiedByDefault="false"
-                app:queryHint="Search Name/ID/Chalta No" />
+                app:queryHint="Search Name/ID/Property No" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -44,15 +44,15 @@
                     style="@style/text_list_header"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:text="@string/sl_no" />
+                    android:layout_weight="1.1"
+                    android:text="@string/notice_number" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/text_list_header"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.3"
-                    android:text="@string/chalta_number" />
+                    android:layout_weight="0.9"
+                    android:text="@string/property_number" />
 
                 <!--                    <androidx.appcompat.widget.AppCompatTextView-->
                 <!--                        style="@style/text_list_header"-->
@@ -70,10 +70,30 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/text_list_header"
-                    android:layout_width="0dp"
+                    android:layout_width="70dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:text="@string/action"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            app:cardCornerRadius="4dp"
+            app:visibility="@{viewModel.isNoApprovedDataAvailable}">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/text_view_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/no_approved_data"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

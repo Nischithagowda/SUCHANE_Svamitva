@@ -4,6 +4,7 @@ import android.widget.RadioGroup;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.databinding.ObservableArrayList;
+import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableList;
 
@@ -30,6 +31,8 @@ public class DPR_FPR_LaunchActivityViewModel implements OwnerListInterface, Sear
     public final ObservableList<OwnerTbl> ownerApprovedList = new ObservableArrayList<>();
     public final ObservableField<SearchView.OnQueryTextListener> onQueryTextListenerPending = new ObservableField<>();
     public final ObservableField<SearchView.OnQueryTextListener> onQueryTextListenerApproved = new ObservableField<>();
+    public ObservableBoolean isNoPendingDataAvailable = new ObservableBoolean(false);
+    public ObservableBoolean isNoApprovedDataAvailable = new ObservableBoolean(false);
 
     public DPR_FPR_LaunchActivityViewModel(DPR_FPR_LaunchActivityInterface dpr_fpr_launchActivityInterface) {
         this.dpr_fpr_launchActivityInterface = dpr_fpr_launchActivityInterface;
@@ -62,7 +65,7 @@ public class DPR_FPR_LaunchActivityViewModel implements OwnerListInterface, Sear
     }
 
     @Override
-    public void onClickOwner(OwnerTbl ownerTbl, String chalta_No) {
-        dpr_fpr_launchActivityInterface.onNavigateToDPR_FPR_Final();
+    public void onClickOwner(OwnerTbl ownerTbl, String NoticeNo) {
+        dpr_fpr_launchActivityInterface.onNavigateToDPR_FPR_Final(this, ownerTbl, NoticeNo);
     }
 }

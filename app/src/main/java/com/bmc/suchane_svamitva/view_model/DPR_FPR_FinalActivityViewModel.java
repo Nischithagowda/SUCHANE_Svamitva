@@ -1,5 +1,6 @@
 package com.bmc.suchane_svamitva.view_model;
 
+import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -14,12 +15,14 @@ import com.bmc.suchane_svamitva.model.Taluka;
 import com.bmc.suchane_svamitva.model.Village;
 import com.bmc.suchane_svamitva.view.interfaces.DPR_FPR_FinalActivityInterface;
 
+import java.io.File;
+
 public class DPR_FPR_FinalActivityViewModel {
     DPR_FPR_FinalActivityInterface dpr_fpr_finalActivityInterface;
-    public final ObservableField<String> noticeNumber = new ObservableField<>("1234");
-    public final ObservableField<String> addressCode = new ObservableField<>("34567");
-    public final ObservableField<String> Lat = new ObservableField<>("12.567");
-    public final ObservableField<String> Long = new ObservableField<>("77.567");
+    public final ObservableField<String> noticeNumber = new ObservableField<>("");
+    public final ObservableField<String> addressCode = new ObservableField<>("");
+    public final ObservableField<String> Lat = new ObservableField<>("");
+    public final ObservableField<String> Long = new ObservableField<>("");
     public ObservableBoolean fieldEnable = new ObservableBoolean(true);
     public final ObservableField<String> doorNoError = new ObservableField<>();
     public final ObservableField<String> doorNo = new ObservableField<>("");
@@ -45,19 +48,47 @@ public class DPR_FPR_FinalActivityViewModel {
     public final ObservableField<String> villageName = new ObservableField<>("");
     public final ObservableField<String> villageError = new ObservableField<>();
     public final ObservableField<String> villageCode = new ObservableField<>("");
-    public final ObservableField<String> mobileNumber = new ObservableField<>("7894561230");
-    public final ObservableField<String> ownerName = new ObservableField<>("Test");
+    public final ObservableField<String> LGD_VILLAGE_CODE = new ObservableField<>();
+    public final ObservableField<String> mobileNumber = new ObservableField<>("0000000000");
+    public final ObservableField<String> propertyNo = new ObservableField<>("");
+    public final ObservableField<String> ownerName = new ObservableField<>("");
+    public ObservableField<Bitmap> imageBitMapPropertyOrLand = new ObservableField<>();
+    public ObservableField<String> mCurrentPropertyOrLandPhotoPath = new ObservableField<>();
+    public final ObservableField<byte[]> imageDataPropertyOrLand = new ObservableField<>();
+    public final ObservableField<File> imageFilePropertyOrLand = new ObservableField<>();
+    public ObservableField<Bitmap> imageBitMapServingNotice = new ObservableField<>();
+    public ObservableField<String> mCurrentServingNoticePhotoPath = new ObservableField<>();
+    public final ObservableField<byte[]> imageDataServingNotice = new ObservableField<>();
+    public final ObservableField<File> imageFileServingNotice = new ObservableField<>();
+    public ObservableBoolean isImageVisible = new ObservableBoolean(false);
 
     public DPR_FPR_FinalActivityViewModel(DPR_FPR_FinalActivityInterface dpr_fpr_finalActivityInterface) {
         this.dpr_fpr_finalActivityInterface = dpr_fpr_finalActivityInterface;
+        dpr_fpr_finalActivityInterface.loadData(this);
     }
 
     public void capturePropertyPicture(View view){
-
+        dpr_fpr_finalActivityInterface.capturePropertyOrLandPhoto(this);
     }
 
     public void captureNoticePicture(View view){
+        dpr_fpr_finalActivityInterface.captureServingNoticePhoto(this);
+    }
 
+    public void onClickShowImagePropertyOrLand(View view){
+        dpr_fpr_finalActivityInterface.showImagePropertyOrLand(this);
+    }
+
+    public void onClickShowImageServingNotice(View view){
+        dpr_fpr_finalActivityInterface.showImageServingNotice(this);
+    }
+
+    public void processImagePropertyOrLand() {
+        dpr_fpr_finalActivityInterface.imageProcessPropertyOrLand(this);
+    }
+
+    public void processImageServingNotice() {
+        dpr_fpr_finalActivityInterface.imageProcessServingNotice(this);
     }
 
     public void onContactDoorNoTextChanged(CharSequence s, int start, int before, int count) {
