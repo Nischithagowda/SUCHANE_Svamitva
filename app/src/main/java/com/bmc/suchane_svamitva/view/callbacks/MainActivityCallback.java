@@ -547,6 +547,7 @@ public class MainActivityCallback implements MainActivityInterface {
                 });
     }
 
+    @Override
     public void onNavigateToNext(MainActivityViewModel viewModel){
         Intent intent = new Intent(activity, SelectActivity.class);
         intent.putExtra("districtCode", ""+viewModel.districtCode.get());

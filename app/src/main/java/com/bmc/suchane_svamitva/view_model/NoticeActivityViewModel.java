@@ -283,6 +283,10 @@ public class NoticeActivityViewModel {
             propertyNoError.set("Enter Chalta No");
             Toast.makeText(view.getContext(), "Enter Chalta No to proceed", Toast.LENGTH_LONG).show();
             status = true;
+        } else if (propertyNo.get().length() < 5){
+            propertyNoError.set("Invalid Chalta No");
+            Toast.makeText(view.getContext(), "Enter valid Chalta No to proceed", Toast.LENGTH_LONG).show();
+            status = true;
         }
 //        else if (TextUtils.isEmpty(name.get()) || name.get() == null){
 //            nameError.set("Enter Name");
@@ -343,6 +347,10 @@ public class NoticeActivityViewModel {
         }  else if (TextUtils.isEmpty(propertyNo.get()) || propertyNo.get() == null){
             propertyNoError.set("Enter Chalta No");
             Toast.makeText(view.getContext(), "Enter Chalta No to proceed", Toast.LENGTH_LONG).show();
+            status = true;
+        }  else if (propertyNo.get().length() < 5){
+            propertyNoError.set("Invalid Chalta No");
+            Toast.makeText(view.getContext(), "Enter valid Chalta No to proceed", Toast.LENGTH_LONG).show();
             status = true;
         }
 //        else if (TextUtils.isEmpty(name.get()) || name.get() == null){

@@ -13,8 +13,9 @@ public class DBConnection {
     public static AppDatabase getConnection(Context context) {
         if (db == null) {
             db = Room.databaseBuilder(context,
-                    AppDatabase.class, "SvamitvaDB")
+                    AppDatabase.class, "SuchaneDB")
                     .fallbackToDestructiveMigration()
+                    .allowMainThreadQueries()
                     .build();
         }
         return db;

@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="32dp"
-                    card_view:cardBackgroundColor="@color/white"
+                    card_view:cardBackgroundColor="@android:color/white"
                     card_view:cardCornerRadius="4dp">
 
                     <LinearLayout
@@ -91,12 +91,13 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <ImageButton
+                            android:layout_margin="8dp"
                             android:layout_width="55dp"
                             android:layout_height="55dp"
                             android:id="@+id/button"
                             android:src="@drawable/ic_navigate_next"
                             android:background="@drawable/button_shape"
-                            app:backgroundTint="@color/yellow"
+                            app:backgroundTint="@color/colorPrimary"
                             android:layout_gravity="center|bottom"
                             android:onClick="@{viewModel::onClickNext}"
                             android:contentDescription="@string/next"/>

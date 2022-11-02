@@ -13,4 +13,5 @@ public interface MainActivityInterface {
     void getHobli(MainActivityViewModel viewModel);
     void getVillage(MainActivityViewModel viewModel);
     void logoutFromServer();
+    void onNavigateToNext(MainActivityViewModel viewModel);
 }

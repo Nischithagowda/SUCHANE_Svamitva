@@ -18,7 +18,7 @@
 
     <application
         android:allowBackup="false"
-        android:hardwareAccelerated="false"
+        android:hardwareAccelerated="true"
         tools:replace="android:allowBackup"
         android:fullBackupContent="false"
         android:dataExtractionRules="@xml/data_extraction_rules"

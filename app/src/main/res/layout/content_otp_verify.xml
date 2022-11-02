@@ -137,15 +137,16 @@
                         />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:onClick="@{viewModel::verifyOtpWithServer}"
+                <ImageButton
                     android:layout_margin="8dp"
-                    app:backgroundTint="@color/colorPrimary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:id="@+id/button"
                     android:src="@drawable/ic_navigate_next"
+                    android:background="@drawable/button_shape"
+                    app:backgroundTint="@color/colorPrimary"
                     android:layout_gravity="center|bottom"
+                    android:onClick="@{viewModel::verifyOtpWithServer}"
                     android:contentDescription="@string/next"/>
                 <LinearLayout
                     android:layout_width="match_parent"
