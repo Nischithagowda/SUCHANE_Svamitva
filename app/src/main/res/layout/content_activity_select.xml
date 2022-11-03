@@ -248,7 +248,6 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:weightSum="2"
-                            android:visibility="gone"
                             android:baselineAligned="false">
                             <LinearLayout
                                 android:layout_width="0dp"

@@ -1,8 +1,10 @@
 package com.bmc.suchane_svamitva.view_model;
 
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableBoolean;
@@ -155,6 +157,35 @@ public class DPR_FPR_FinalActivityViewModel {
     }
 
     public void onClickSaveData(View view) {
+        boolean status = false;
+
+        if (imageDataPropertyOrLand.get() == null) {
+            Toast.makeText(view.getContext(), "Capture Property Or Land photo to proceed", Toast.LENGTH_LONG).show();
+            status = true;
+        } else if (imageDataServingNotice.get() == null) {
+            Toast.makeText(view.getContext(), "Capture Serving DPR photo to proceed", Toast.LENGTH_LONG).show();
+            status = true;
+        } else if (TextUtils.isEmpty(doorNo.get()) || doorNo.get() == null){
+            doorNoError.set("Enter door number");
+            Toast.makeText(view.getContext(), "Enter door number to proceed", Toast.LENGTH_LONG).show();
+            status = true;
+        } else if (TextUtils.isEmpty(building.get()) || building.get() == null){
+            buildingError.set("Enter building name");
+            Toast.makeText(view.getContext(), "Enter building name to proceed", Toast.LENGTH_LONG).show();
+            status = true;
+        } else if (TextUtils.isEmpty(street.get()) || street.get() == null){
+            streetError.set("Enter Street/Area");
+            Toast.makeText(view.getContext(), "Enter Street/Area to proceed", Toast.LENGTH_LONG).show();
+            status = true;
+        } else if (TextUtils.isEmpty(landmark.get()) || landmark.get() == null){
+            landmarkError.set("Enter Landmark");
+            Toast.makeText(view.getContext(), "Enter landmark to proceed", Toast.LENGTH_LONG).show();
+            status = true;
+        }
+
+        if (!status) {
+            dpr_fpr_finalActivityInterface.saveAndNext(this);
+        }
 
     }
 

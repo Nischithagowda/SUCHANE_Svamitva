@@ -6,12 +6,16 @@ import static com.bmc.suchane_svamitva.utils.Constant.IMAGE_CAPTURE_REQ;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -19,6 +23,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
@@ -27,15 +32,23 @@ import androidx.exifinterface.media.ExifInterface;
 
 import com.bmc.suchane_svamitva.BuildConfig;
 import com.bmc.suchane_svamitva.R;
+import com.bmc.suchane_svamitva.api.APIClient_Suchane;
+import com.bmc.suchane_svamitva.api.API_Interface_Suchane;
 import com.bmc.suchane_svamitva.database.DBConnection;
 import com.bmc.suchane_svamitva.model.District;
+import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsRequest;
+import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsResponse;
+import com.bmc.suchane_svamitva.model.FnUpdateDRPServedRequest;
+import com.bmc.suchane_svamitva.model.FnUpdateDRPServedResponse;
 import com.bmc.suchane_svamitva.model.Hobli;
+import com.bmc.suchane_svamitva.model.PendingDPRTbl_Updated;
 import com.bmc.suchane_svamitva.model.Taluka;
 import com.bmc.suchane_svamitva.model.Village;
 import com.bmc.suchane_svamitva.utils.Constant;
 import com.bmc.suchane_svamitva.view.interfaces.DPR_FPR_FinalActivityInterface;
 import com.bmc.suchane_svamitva.view.ui.DPR_FPR_FinalActivity;
 import com.bmc.suchane_svamitva.view_model.DPR_FPR_FinalActivityViewModel;
+import com.bmc.suchane_svamitva.view_model.NoticeActivityViewModel;
 import com.iceteck.silicompressorr.SiliCompressor;
 
 import java.io.ByteArrayOutputStream;
@@ -49,6 +62,7 @@ import java.util.Locale;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
 
 public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInterface {
     DPR_FPR_FinalActivity activity;
@@ -95,7 +109,7 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
                             viewModel.landmark.set(result.get(0).getNTC_LANDMARK());
                         }
                     }, error -> error.printStackTrace());
-            getUserDistrict(viewModel);
+            //getUserDistrict(viewModel);
         } catch (Exception ex){
             ex.printStackTrace();
         }
@@ -488,5 +502,129 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
         ImageView imageView = settingsDialog.findViewById(R.id.showImg);
         imageView.setImageBitmap(viewModel.imageBitMapServingNotice.get());
         settingsDialog.show();
+    }
+
+    @Override
+    public void saveAndNext(DPR_FPR_FinalActivityViewModel viewModel) {
+        updatePendingDPRData(viewModel);
+    }
+
+    private void updatePendingDPRData(DPR_FPR_FinalActivityViewModel viewModel) {
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(activity)
+                        .getDataBaseDao()
+                        .isPendingDPRUpdatedAvailable(viewModel.noticeNumber.get(), viewModel.propertyNo.get()))
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result ->
+                {
+                    if (result){
+                        Observable
+                                .fromCallable(() -> DBConnection.getConnection(activity)
+                                        .getDataBaseDao()
+                                        .deletePendingDPRUpdatedDetails(viewModel.noticeNumber.get(), viewModel.propertyNo.get()))
+                                .subscribeOn(Schedulers.computation())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(result1 ->
+                                {
+                                    InsertPendingDPRUpdatedDetailsLocally(viewModel);
+                                }, error -> {
+                                    error.printStackTrace();
+                                });
+                    } else {
+                        InsertPendingDPRUpdatedDetailsLocally(viewModel);
+                    }
+                }, error -> {
+                    error.printStackTrace();
+                });
+    }
+
+    public void InsertPendingDPRUpdatedDetailsLocally(DPR_FPR_FinalActivityViewModel viewModel){
+
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
+        String mobNum = sharedPreferences.getString(Constant.USER_MOBILE, null);
+
+        PendingDPRTbl_Updated pendingDPRTbl_updated = new PendingDPRTbl_Updated();
+        pendingDPRTbl_updated.setNOTICE_NO(viewModel.noticeNumber.get());
+        pendingDPRTbl_updated.setADDRESS_CODE(viewModel.addressCode.get());
+        pendingDPRTbl_updated.setPROPERTY_CODE(viewModel.propertyNo.get());
+        pendingDPRTbl_updated.setUSER_ID(mobNum);
+        pendingDPRTbl_updated.setUPD_FLAG(1);
+
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(activity)
+                        .getDataBaseDao()
+                        .InsertPendingDPRUpdatedDetails(pendingDPRTbl_updated))
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result ->
+                {
+                    if (isNetworkAvailable()) {
+                        SendPendingDPRUpdatedDetailsToServer(viewModel);
+                    } else {
+                        savePropertyOrLandImageLocal(viewModel);
+                        Toast.makeText(activity, activity.getString(R.string.please_switch_on_the_internet), Toast.LENGTH_LONG).show();
+                    }
+                }, error -> {
+                    error.printStackTrace();
+                });
+    }
+
+    public void SendPendingDPRUpdatedDetailsToServer(DPR_FPR_FinalActivityViewModel viewModel){
+
+        ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Sending Wait ..");
+        dialog.show();
+
+        SharedPreferences sharedPreferences1 = activity.getSharedPreferences(activity.getString(R.string.Auth), Context.MODE_PRIVATE);
+        String token = sharedPreferences1.getString(activity.getString(R.string.token), null);
+        String tokenType = sharedPreferences1.getString(activity.getString(R.string.token_type), null);
+        String accessToken=tokenType+" "+token;
+
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
+        String mobNum = sharedPreferences.getString(Constant.USER_MOBILE, null);
+
+        FnUpdateDRPServedRequest fnUpdateDRPServedRequest = new FnUpdateDRPServedRequest();
+        fnUpdateDRPServedRequest.setNOTICE_NO(viewModel.noticeNumber.get());
+        fnUpdateDRPServedRequest.setADDRESS_CODE(viewModel.addressCode.get());
+        fnUpdateDRPServedRequest.setPROPERTY_CODE(viewModel.propertyNo.get());
+        fnUpdateDRPServedRequest.setUSER_ID(mobNum);
+
+        Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
+        API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
+        Observable<FnUpdateDRPServedResponse> responseObservable = apiService1.FnUpdateDRPServed(accessToken, fnUpdateDRPServedRequest);
+        responseObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((result1) -> {
+                    dialog.dismiss();
+                    if (result1.getRESPONSE_CODE().contains("200")) {
+                        Observable
+                                .fromCallable(() -> DBConnection.getConnection(activity)
+                                        .getDataBaseDao()
+                                        .deletePendingDPRUpdatedDetails(viewModel.noticeNumber.get(), viewModel.propertyNo.get()))
+                                .subscribeOn(Schedulers.computation())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(result2 ->
+                                {
+                                    sendPropertyOrLandImageToServer(viewModel);
+                                }, error -> {
+                                    error.printStackTrace();
+                                });
+                    } else {
+                        Toast.makeText(activity, "" + result1.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
+                    }
+                }, (error) -> {
+                    dialog.dismiss();
+                    Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                });
+
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 }

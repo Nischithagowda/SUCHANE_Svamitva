@@ -134,6 +134,7 @@
                             android:inputType="text" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
+
                 <androidx.appcompat.widget.AppCompatEditText
                     android:text="@string/district"
                     style="@style/text_view"

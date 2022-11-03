@@ -14,20 +14,30 @@ public class PendingDPRTbl_Updated {
     @ColumnInfo(name = "id_UPD")
     private int id_UPD;
 
-    @ColumnInfo(name = "NTC_NOTICE_NO_UPD")
-    @SerializedName("NTC_NOTICE_NO_UPD")
+    @ColumnInfo(name = "NOTICE_NO")
+    @SerializedName("NOTICE_NO")
     @Expose
-    private String NTC_NOTICE_NO_UPD;
+    private String NOTICE_NO;
 
-    @ColumnInfo(name = "NTC_ADD_CODE_UPD")
-    @SerializedName("NTC_ADD_CODE_UPD")
+    @ColumnInfo(name = "PROPERTY_CODE")
+    @SerializedName("PROPERTY_CODE")
     @Expose
-    private String NTC_ADD_CODE_UPD;
+    private String PROPERTY_CODE;
 
-    @ColumnInfo(name = "NTC_UPD_FLAG")
-    @SerializedName("NTC_UPD_FLAG")
+    @ColumnInfo(name = "ADDRESS_CODE")
+    @SerializedName("ADDRESS_CODE")
     @Expose
-    private int NTC_UPD_FLAG;
+    private String ADDRESS_CODE;
+
+    @ColumnInfo(name = "USER_ID")
+    @SerializedName("USER_ID")
+    @Expose
+    private String USER_ID;
+
+    @ColumnInfo(name = "UPD_FLAG")
+    @SerializedName("UPD_FLAG")
+    @Expose
+    private int UPD_FLAG;
 
     public int getId_UPD() {
         return id_UPD;
@@ -37,27 +47,43 @@ public class PendingDPRTbl_Updated {
         this.id_UPD = id_UPD;
     }
 
-    public String getNTC_NOTICE_NO_UPD() {
-        return NTC_NOTICE_NO_UPD;
+    public String getNOTICE_NO() {
+        return NOTICE_NO;
     }
 
-    public void setNTC_NOTICE_NO_UPD(String NTC_NOTICE_NO_UPD) {
-        this.NTC_NOTICE_NO_UPD = NTC_NOTICE_NO_UPD;
+    public void setNOTICE_NO(String NOTICE_NO) {
+        this.NOTICE_NO = NOTICE_NO;
     }
 
-    public String getNTC_ADD_CODE_UPD() {
-        return NTC_ADD_CODE_UPD;
+    public String getPROPERTY_CODE() {
+        return PROPERTY_CODE;
     }
 
-    public void setNTC_ADD_CODE_UPD(String NTC_ADD_CODE_UPD) {
-        this.NTC_ADD_CODE_UPD = NTC_ADD_CODE_UPD;
+    public void setPROPERTY_CODE(String PROPERTY_CODE) {
+        this.PROPERTY_CODE = PROPERTY_CODE;
     }
 
-    public int getNTC_UPD_FLAG() {
-        return NTC_UPD_FLAG;
+    public String getADDRESS_CODE() {
+        return ADDRESS_CODE;
     }
 
-    public void setNTC_UPD_FLAG(int NTC_UPD_FLAG) {
-        this.NTC_UPD_FLAG = NTC_UPD_FLAG;
+    public void setADDRESS_CODE(String ADDRESS_CODE) {
+        this.ADDRESS_CODE = ADDRESS_CODE;
+    }
+
+    public String getUSER_ID() {
+        return USER_ID;
+    }
+
+    public void setUSER_ID(String USER_ID) {
+        this.USER_ID = USER_ID;
+    }
+
+    public int getUPD_FLAG() {
+        return UPD_FLAG;
+    }
+
+    public void setUPD_FLAG(int UPD_FLAG) {
+        this.UPD_FLAG = UPD_FLAG;
     }
 }
