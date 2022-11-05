@@ -279,13 +279,9 @@ public class NoticeActivityViewModel {
         } else if (imageDataServingNotice.get() == null) {
             Toast.makeText(view.getContext(), "Capture Serving Notice photo to proceed", Toast.LENGTH_LONG).show();
             status = true;
-        } else if (TextUtils.isEmpty(propertyNo.get()) || propertyNo.get() == null){
-            propertyNoError.set("Enter Chalta No");
-            Toast.makeText(view.getContext(), "Enter Chalta No to proceed", Toast.LENGTH_LONG).show();
-            status = true;
-        } else if (propertyNo.get().length() < 5){
-            propertyNoError.set("Invalid Chalta No");
-            Toast.makeText(view.getContext(), "Enter valid Chalta No to proceed", Toast.LENGTH_LONG).show();
+        } else if (TextUtils.isEmpty(propertyNo.get()) || propertyNo.get() == null || propertyNo.get().equals("0")){
+            propertyNoError.set("Enter Property No");
+            Toast.makeText(view.getContext(), "Enter Property No to proceed", Toast.LENGTH_LONG).show();
             status = true;
         }
 //        else if (TextUtils.isEmpty(name.get()) || name.get() == null){
@@ -344,13 +340,9 @@ public class NoticeActivityViewModel {
         } else if (imageDataServingNotice.get() == null) {
             Toast.makeText(view.getContext(), "Capture Serving Notice photo to proceed", Toast.LENGTH_LONG).show();
             status = true;
-        }  else if (TextUtils.isEmpty(propertyNo.get()) || propertyNo.get() == null){
-            propertyNoError.set("Enter Chalta No");
-            Toast.makeText(view.getContext(), "Enter Chalta No to proceed", Toast.LENGTH_LONG).show();
-            status = true;
-        }  else if (propertyNo.get().length() < 5){
-            propertyNoError.set("Invalid Chalta No");
-            Toast.makeText(view.getContext(), "Enter valid Chalta No to proceed", Toast.LENGTH_LONG).show();
+        }  else if (TextUtils.isEmpty(propertyNo.get()) || propertyNo.get() == null || propertyNo.get().equals("0")){
+            propertyNoError.set("Enter Property No");
+            Toast.makeText(view.getContext(), "Enter Property No to proceed", Toast.LENGTH_LONG).show();
             status = true;
         }
 //        else if (TextUtils.isEmpty(name.get()) || name.get() == null){

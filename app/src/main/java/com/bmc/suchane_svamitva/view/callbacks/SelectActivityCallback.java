@@ -85,18 +85,18 @@ public class SelectActivityCallback implements SelectActivityInterface {
 
     @Override
     public void onNavigateToDPR(SelectActivityViewModel viewModel){
-        Intent intent = new Intent(activity, DPR_FPR_LaunchActivity.class);
-        intent.putExtra("districtCode", ""+viewModel.districtCode.get());
-        intent.putExtra("districtName", ""+viewModel.districtName.get());
-        intent.putExtra("talukCode", ""+viewModel.talukCode.get());
-        intent.putExtra("talukName", ""+viewModel.talukName.get());
-        intent.putExtra("hobliCode", ""+viewModel.hobliCode.get());
-        intent.putExtra("hobliName", ""+viewModel.hobliName.get());
-        intent.putExtra("villageCode", ""+viewModel.villageCode.get());
-        intent.putExtra("LGD_VILLAGE_CODE", ""+viewModel.LGD_VILLAGE_CODE.get());
-        intent.putExtra("villageName", ""+viewModel.villageName.get());
-        activity.startActivity(intent);
-//        Toast.makeText(activity, "Service Not available", Toast.LENGTH_SHORT).show();
+//        Intent intent = new Intent(activity, DPR_FPR_LaunchActivity.class);
+//        intent.putExtra("districtCode", ""+viewModel.districtCode.get());
+//        intent.putExtra("districtName", ""+viewModel.districtName.get());
+//        intent.putExtra("talukCode", ""+viewModel.talukCode.get());
+//        intent.putExtra("talukName", ""+viewModel.talukName.get());
+//        intent.putExtra("hobliCode", ""+viewModel.hobliCode.get());
+//        intent.putExtra("hobliName", ""+viewModel.hobliName.get());
+//        intent.putExtra("villageCode", ""+viewModel.villageCode.get());
+//        intent.putExtra("LGD_VILLAGE_CODE", ""+viewModel.LGD_VILLAGE_CODE.get());
+//        intent.putExtra("villageName", ""+viewModel.villageName.get());
+//        activity.startActivity(intent);
+        Toast.makeText(activity, "Service Not available", Toast.LENGTH_SHORT).show();
     }
 
     @Override

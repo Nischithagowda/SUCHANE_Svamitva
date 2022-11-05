@@ -562,7 +562,7 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
                     if (isNetworkAvailable()) {
                         SendPendingDPRUpdatedDetailsToServer(viewModel);
                     } else {
-                        savePropertyOrLandImageLocal(viewModel);
+                        //savePropertyOrLandImageLocal(viewModel);
                         Toast.makeText(activity, activity.getString(R.string.please_switch_on_the_internet), Toast.LENGTH_LONG).show();
                     }
                 }, error -> {
@@ -608,7 +608,7 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(result2 ->
                                 {
-                                    sendPropertyOrLandImageToServer(viewModel);
+                                    //sendPropertyOrLandImageToServer(viewModel);
                                 }, error -> {
                                     error.printStackTrace();
                                 });

@@ -257,6 +257,8 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
                 activity.startActivityForResult(takePictureIntent, Constant.CAMERA_REQUEST_PropertyOrLand);
 
             }
+        } else {
+
         }
     }
 
@@ -642,7 +644,13 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
                     }
                 }, (error) -> {
                     dialog.dismiss();
-                    Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    error.printStackTrace();
+                    String errMsg = error.getLocalizedMessage();
+                    if (errMsg.contains("401")) {
+                        new Constant(activity).getRefreshToken();
+                    } else {
+                        Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    }
                 });
 
     }

@@ -227,9 +227,7 @@ public class OTPVerifyCallback implements OTPVerifyInterface {
                     if (result.getRESPONSE_CODE().contains("200")) {
                         if (result.getHobliList().size() > 0) {
                             List<Hobli> hobliList;
-                            Log.d("result.getHobliListsize", ""+result.getHobliList().size());
                             for (int i = 0; i<result.getHobliList().size();i++){
-                                Log.d("result.i", ""+i);
                                 result.getHobliList().get(i).setDISTRICT_CODE(distCode);
                                 result.getHobliList().get(i).setTALUKA_CODE(talukCode);
                                 if (i==result.getHobliList().size()-1){

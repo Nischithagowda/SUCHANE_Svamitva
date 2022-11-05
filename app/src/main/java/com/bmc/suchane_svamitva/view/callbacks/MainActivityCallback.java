@@ -202,7 +202,6 @@ public class MainActivityCallback implements MainActivityInterface {
                             if (result.getVillageList().size() > 0) {
                                 List<Village> villageList;
                                 for (int i = 0; i < result.getVillageList().size(); i++) {
-                                    Log.d("result.i", "" + i);
                                     result.getVillageList().get(i).setDISTRICT_CODE(distCode);
                                     result.getVillageList().get(i).setTALUK_CODE(talukCode);
                                     result.getVillageList().get(i).setHOBLI_CODE(hobliCode);
