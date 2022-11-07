@@ -175,7 +175,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="15dp"
-                        android:onClick="@{viewModel::captureNoticePicture}"
+                        android:onClick="@{viewModel::captureServingDPRPicture}"
                         card_view:cardCornerRadius="4dp">
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -224,8 +224,8 @@
                         android:layout_gravity="center"
                         android:src="@{@drawable/img_png}"
                         android:layout_marginStart="15dp"
-                        app:imageBitMap="@{viewModel.imageBitMapServingNotice}"
-                        android:onClick="@{viewModel::onClickShowImageServingNotice}"/>
+                        app:imageBitMap="@{viewModel.imageBitMapServingDPR}"
+                        android:onClick="@{viewModel::onClickShowImageServingDPR}"/>
                 </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatTextView

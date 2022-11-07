@@ -44,7 +44,7 @@
                         android:hint="@string/door_no">
 
                         <androidx.appcompat.widget.AppCompatEditText
-                            android:text="@{viewModel.doorNo}"
+                            android:text="@{viewModel.doorNo_UPD}"
                             android:onTextChanged="@{viewModel::onContactDoorNoTextChanged}"
                             style="@style/edit_text"
                             android:layout_width="match_parent"
@@ -69,7 +69,7 @@
                         android:hint="@string/building">
 
                         <androidx.appcompat.widget.AppCompatEditText
-                            android:text="@{viewModel.building}"
+                            android:text="@{viewModel.building_UPD}"
                             android:onTextChanged="@{viewModel::onContactBuildingTextChanged}"
                             style="@style/edit_text"
                             android:layout_width="match_parent"
@@ -100,7 +100,7 @@
                         android:hint="@string/street_or_area">
 
                         <androidx.appcompat.widget.AppCompatEditText
-                            android:text="@{viewModel.street}"
+                            android:text="@{viewModel.street_UPD}"
                             android:onTextChanged="@{viewModel::onContactStreetTextChanged}"
                             style="@style/edit_text"
                             android:layout_width="match_parent"
@@ -126,7 +126,7 @@
                         android:hint="@string/landmark">
 
                         <androidx.appcompat.widget.AppCompatEditText
-                            android:text="@{viewModel.landmark}"
+                            android:text="@{viewModel.landmark_UPD}"
                             android:onTextChanged="@{viewModel::onContactLandmarkTextChanged}"
                             style="@style/edit_text"
                             android:layout_width="match_parent"
@@ -216,14 +216,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="10dp">
-                    <Button
-                        android:layout_weight="1"
-                        android:onClick="@{viewModel::onClickSaveData}"
-                        style="@style/btn"
-                        android:textAllCaps="false"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/save"/>
                     <Button
                         android:layout_weight="1"
                         android:onClick="@{viewModel::onClickSaveAndNextData}"

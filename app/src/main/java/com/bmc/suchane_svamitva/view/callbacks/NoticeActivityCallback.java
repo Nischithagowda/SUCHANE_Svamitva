@@ -638,6 +638,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
                                     sendPropertyOrLandImageToServer(viewModel);
                                 }, error -> {
                                     error.printStackTrace();
+                                    Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                                 });
                     } else {
                         Toast.makeText(activity, "" + result1.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
@@ -773,7 +774,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         String todayDate = new SimpleDateFormat(Constant.DATE_TIME_FORMAT, Locale.ENGLISH).format(date);
 
         Image image = new Image();
-        image.setVIRTUAL_ID(viewModel.virtualID.get());
+        image.setNTC_PROPERTYCODE(viewModel.virtualID.get());
         image.setNOTICE_NO(viewModel.noticeNumber.get());
         image.setADDRESS_CODE(viewModel.addressCode.get());
         image.setDOC_TYPE_ID("1");
@@ -805,7 +806,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         String todayDate = new SimpleDateFormat(Constant.DATE_TIME_FORMAT, Locale.ENGLISH).format(date);
 
         Image image = new Image();
-        image.setVIRTUAL_ID(viewModel.virtualID.get());
+        image.setNTC_PROPERTYCODE(viewModel.virtualID.get());
         image.setNOTICE_NO(viewModel.noticeNumber.get());
         image.setADDRESS_CODE(viewModel.addressCode.get());
         image.setDOC_TYPE_ID("2");

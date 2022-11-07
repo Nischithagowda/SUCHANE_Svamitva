@@ -13,8 +13,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,18 +29,13 @@ import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsResponse;
 import com.bmc.suchane_svamitva.model.Image;
 import com.bmc.suchane_svamitva.model.MultipartImageResponse;
 import com.bmc.suchane_svamitva.model.NoticeDetailsTbl;
-import com.bmc.suchane_svamitva.model.VillageResponse;
 import com.bmc.suchane_svamitva.utils.Constant;
 import com.bmc.suchane_svamitva.view.callbacks.MainActivityCallback;
 import com.bmc.suchane_svamitva.view.interfaces.MainActivityInterface;
 import com.bmc.suchane_svamitva.view_model.MainActivityViewModel;
-import com.bmc.suchane_svamitva.view_model.NoticeActivityViewModel;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 import io.reactivex.Observable;
@@ -255,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
             File file = new File(image.getDOC_PATH());
             RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
             MultipartBody.Part para9 = MultipartBody.Part.createFormData("File", images.get(i).getDOC_NAME(), requestBody);
-            MultipartBody.Part para1 = MultipartBody.Part.createFormData("NTC_PROPERTYCODE",images.get(i).getVIRTUAL_ID());
+            MultipartBody.Part para1 = MultipartBody.Part.createFormData("NTC_PROPERTYCODE",images.get(i).getNTC_PROPERTYCODE());
             MultipartBody.Part para2 = MultipartBody.Part.createFormData("NOTICE_NO", images.get(i).getNOTICE_NO());
             MultipartBody.Part para3 = MultipartBody.Part.createFormData("ADDRESS_CODE", images.get(i).getADDRESS_CODE());
             MultipartBody.Part para4 = MultipartBody.Part.createFormData("DOC_TYPE_ID", images.get(i).getDOC_TYPE_ID());

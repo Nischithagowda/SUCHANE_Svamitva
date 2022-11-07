@@ -18,6 +18,7 @@ import com.bmc.suchane_svamitva.model.Village;
 import com.bmc.suchane_svamitva.view.interfaces.DPR_FPR_FinalActivityInterface;
 
 import java.io.File;
+import java.util.Objects;
 
 public class DPR_FPR_FinalActivityViewModel {
     DPR_FPR_FinalActivityInterface dpr_fpr_finalActivityInterface;
@@ -28,12 +29,16 @@ public class DPR_FPR_FinalActivityViewModel {
     public ObservableBoolean fieldEnable = new ObservableBoolean(true);
     public final ObservableField<String> doorNoError = new ObservableField<>();
     public final ObservableField<String> doorNo = new ObservableField<>("");
+    public final ObservableField<String> doorNo_UPD = new ObservableField<>("");
     public final ObservableField<String> buildingError = new ObservableField<>();
     public final ObservableField<String> building = new ObservableField<>("");
+    public final ObservableField<String> building_UPD = new ObservableField<>("");
     public final ObservableField<String> streetError = new ObservableField<>();
     public final ObservableField<String> street = new ObservableField<>("");
+    public final ObservableField<String> street_UPD = new ObservableField<>("");
     public final ObservableField<String> landmarkError = new ObservableField<>();
     public final ObservableField<String> landmark = new ObservableField<>("");
+    public final ObservableField<String> landmark_UPD = new ObservableField<>("");
     public final ObservableList<District> districtNameList = new ObservableArrayList<>();
     public final ObservableField<String> districtCode = new ObservableField<>();
     public final ObservableField<String> districtError = new ObservableField<>();
@@ -58,11 +63,12 @@ public class DPR_FPR_FinalActivityViewModel {
     public ObservableField<String> mCurrentPropertyOrLandPhotoPath = new ObservableField<>();
     public final ObservableField<byte[]> imageDataPropertyOrLand = new ObservableField<>();
     public final ObservableField<File> imageFilePropertyOrLand = new ObservableField<>();
-    public ObservableField<Bitmap> imageBitMapServingNotice = new ObservableField<>();
-    public ObservableField<String> mCurrentServingNoticePhotoPath = new ObservableField<>();
-    public final ObservableField<byte[]> imageDataServingNotice = new ObservableField<>();
-    public final ObservableField<File> imageFileServingNotice = new ObservableField<>();
+    public ObservableField<Bitmap> imageBitMapServingDPR = new ObservableField<>();
+    public ObservableField<String> mCurrentServingDPRPhotoPath = new ObservableField<>();
+    public final ObservableField<byte[]> imageDataServingDPR = new ObservableField<>();
+    public final ObservableField<File> imageFileServingDPR = new ObservableField<>();
     public ObservableBoolean isImageVisible = new ObservableBoolean(false);
+    public ObservableBoolean isChangesDone = new ObservableBoolean(false);
 
     public DPR_FPR_FinalActivityViewModel(DPR_FPR_FinalActivityInterface dpr_fpr_finalActivityInterface) {
         this.dpr_fpr_finalActivityInterface = dpr_fpr_finalActivityInterface;
@@ -73,43 +79,43 @@ public class DPR_FPR_FinalActivityViewModel {
         dpr_fpr_finalActivityInterface.capturePropertyOrLandPhoto(this);
     }
 
-    public void captureNoticePicture(View view){
-        dpr_fpr_finalActivityInterface.captureServingNoticePhoto(this);
+    public void captureServingDPRPicture(View view){
+        dpr_fpr_finalActivityInterface.captureServingDPRPhoto(this);
     }
 
     public void onClickShowImagePropertyOrLand(View view){
         dpr_fpr_finalActivityInterface.showImagePropertyOrLand(this);
     }
 
-    public void onClickShowImageServingNotice(View view){
-        dpr_fpr_finalActivityInterface.showImageServingNotice(this);
+    public void onClickShowImageServingDPR(View view){
+        dpr_fpr_finalActivityInterface.showImageServingDPR(this);
     }
 
     public void processImagePropertyOrLand() {
         dpr_fpr_finalActivityInterface.imageProcessPropertyOrLand(this);
     }
 
-    public void processImageServingNotice() {
-        dpr_fpr_finalActivityInterface.imageProcessServingNotice(this);
+    public void processImageServingDPR() {
+        dpr_fpr_finalActivityInterface.imageProcessServingDPR(this);
     }
 
     public void onContactDoorNoTextChanged(CharSequence s, int start, int before, int count) {
-        doorNo.set(s.toString());
+        doorNo_UPD.set(s.toString());
         doorNoError.set(null);
     }
 
     public void onContactBuildingTextChanged(CharSequence s, int start, int before, int count) {
-        building.set(s.toString());
+        building_UPD.set(s.toString());
         buildingError.set(null);
     }
 
     public void onContactStreetTextChanged(CharSequence s, int start, int before, int count) {
-        street.set(s.toString());
+        street_UPD.set(s.toString());
         streetError.set(null);
     }
 
     public void onContactLandmarkTextChanged(CharSequence s, int start, int before, int count) {
-        landmark.set(s.toString());
+        landmark_UPD.set(s.toString());
         landmarkError.set(null);
     }
 
@@ -156,44 +162,43 @@ public class DPR_FPR_FinalActivityViewModel {
         villageError.set(null);
     }
 
-    public void onClickSaveData(View view) {
+    public void onClickSaveAndNextData(View view) {
         boolean status = false;
 
         if (imageDataPropertyOrLand.get() == null) {
             Toast.makeText(view.getContext(), "Capture Property Or Land photo to proceed", Toast.LENGTH_LONG).show();
             status = true;
-        } else if (imageDataServingNotice.get() == null) {
+        } else if (imageDataServingDPR.get() == null) {
             Toast.makeText(view.getContext(), "Capture Serving DPR photo to proceed", Toast.LENGTH_LONG).show();
             status = true;
-        } else if (TextUtils.isEmpty(doorNo.get()) || doorNo.get() == null){
+        } else if (TextUtils.isEmpty(doorNo_UPD.get()) || doorNo_UPD.get() == null){
             doorNoError.set("Enter door number");
             Toast.makeText(view.getContext(), "Enter door number to proceed", Toast.LENGTH_LONG).show();
             status = true;
-        } else if (TextUtils.isEmpty(building.get()) || building.get() == null){
+        } else if (TextUtils.isEmpty(building_UPD.get()) || building_UPD.get() == null){
             buildingError.set("Enter building name");
             Toast.makeText(view.getContext(), "Enter building name to proceed", Toast.LENGTH_LONG).show();
             status = true;
-        } else if (TextUtils.isEmpty(street.get()) || street.get() == null){
+        } else if (TextUtils.isEmpty(street_UPD.get()) || street_UPD.get() == null){
             streetError.set("Enter Street/Area");
             Toast.makeText(view.getContext(), "Enter Street/Area to proceed", Toast.LENGTH_LONG).show();
             status = true;
-        } else if (TextUtils.isEmpty(landmark.get()) || landmark.get() == null){
+        } else if (TextUtils.isEmpty(landmark_UPD.get()) || landmark_UPD.get() == null){
             landmarkError.set("Enter Landmark");
             Toast.makeText(view.getContext(), "Enter landmark to proceed", Toast.LENGTH_LONG).show();
             status = true;
         }
 
         if (!status) {
+            this.isChangesDone.set(!Objects.requireNonNull(this.doorNo.get()).equalsIgnoreCase(this.doorNo_UPD.get()) ||
+                    !Objects.requireNonNull(this.building.get()).equalsIgnoreCase(this.building_UPD.get()) ||
+                    !Objects.requireNonNull(this.street.get()).equalsIgnoreCase(this.street_UPD.get()) ||
+                    !Objects.requireNonNull(this.landmark.get()).equalsIgnoreCase(this.landmark_UPD.get()));
             dpr_fpr_finalActivityInterface.saveAndNext(this);
         }
-
-    }
-
-    public void onClickSaveAndNextData(View view) {
-
     }
 
     public void onClickHomeData(View view) {
-
+        dpr_fpr_finalActivityInterface.goHome();
     }
 }

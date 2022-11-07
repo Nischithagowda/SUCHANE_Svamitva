@@ -269,63 +269,6 @@ public class NoticeActivityViewModel {
         noticeActivityInterface.onClickCancel();
     }
 
-    public void onClickSaveData(View view) {
-        boolean status = false;
-        boolean isMobileNumEntered = false;
-
-        if (imageDataPropertyOrLand.get() == null) {
-            Toast.makeText(view.getContext(), "Capture Property Or Land photo to proceed", Toast.LENGTH_LONG).show();
-            status = true;
-        } else if (imageDataServingNotice.get() == null) {
-            Toast.makeText(view.getContext(), "Capture Serving Notice photo to proceed", Toast.LENGTH_LONG).show();
-            status = true;
-        } else if (TextUtils.isEmpty(propertyNo.get()) || propertyNo.get() == null || propertyNo.get().equals("0")){
-            propertyNoError.set("Enter Property No");
-            Toast.makeText(view.getContext(), "Enter Property No to proceed", Toast.LENGTH_LONG).show();
-            status = true;
-        }
-//        else if (TextUtils.isEmpty(name.get()) || name.get() == null){
-//            nameError.set("Enter Name");
-//            Toast.makeText(view.getContext(), "Enter Name to proceed", Toast.LENGTH_LONG).show();
-//            status = true;
-//        } else if (TextUtils.isEmpty(mobNum.get()) || mobNum.get() == null){
-//            mobNumError.set("Enter Mobile number");
-//            Toast.makeText(view.getContext(), "Enter Mobile number to proceed", Toast.LENGTH_LONG).show();
-//            status = true;
-//        }
-        else if (!TextUtils.isEmpty(mobNum.get()) && !isMobileValid(mobNum.get())) {
-            mobNumError.set("Valid Mobile Number is required");
-            Toast.makeText(view.getContext(), "Valid Mobile Number is required", Toast.LENGTH_LONG).show();
-            status = true;
-        } else if (TextUtils.isEmpty(doorNo.get()) || doorNo.get() == null){
-            doorNoError.set("Enter door number");
-            Toast.makeText(view.getContext(), "Enter door number to proceed", Toast.LENGTH_LONG).show();
-            status = true;
-        } else if (TextUtils.isEmpty(building.get()) || building.get() == null){
-            buildingError.set("Enter building name");
-            Toast.makeText(view.getContext(), "Enter building name to proceed", Toast.LENGTH_LONG).show();
-            status = true;
-        } else if (TextUtils.isEmpty(street.get()) || street.get() == null){
-            streetError.set("Enter Street/Area");
-            Toast.makeText(view.getContext(), "Enter Street/Area to proceed", Toast.LENGTH_LONG).show();
-            status = true;
-        } else if (TextUtils.isEmpty(landmark.get()) || landmark.get() == null){
-            landmarkError.set("Enter Landmark");
-            Toast.makeText(view.getContext(), "Enter landmark to proceed", Toast.LENGTH_LONG).show();
-            status = true;
-        }
-
-        if (!TextUtils.isEmpty(mobNum.get()) && isMobileValid(mobNum.get())){
-            isMobileNumEntered = true;
-        }
-
-        if (isMobileNumEntered && !status && !this.isOwnerOTPValidationDone.get()){
-            noticeActivityInterface.sendOtp_Public(this);
-        } else if (!status) {
-            noticeActivityInterface.saveAndNext(this);
-        }
-    }
-
     public boolean isMobileValid(String number) {
         return android.util.Patterns.PHONE.matcher(number).matches() & number.length() == 10;
     }
@@ -340,7 +283,7 @@ public class NoticeActivityViewModel {
         } else if (imageDataServingNotice.get() == null) {
             Toast.makeText(view.getContext(), "Capture Serving Notice photo to proceed", Toast.LENGTH_LONG).show();
             status = true;
-        }  else if (TextUtils.isEmpty(propertyNo.get()) || propertyNo.get() == null || propertyNo.get().equals("0")){
+        } else if (TextUtils.isEmpty(propertyNo.get()) || propertyNo.get() == null || propertyNo.get().equals("0")){
             propertyNoError.set("Enter Property No");
             Toast.makeText(view.getContext(), "Enter Property No to proceed", Toast.LENGTH_LONG).show();
             status = true;

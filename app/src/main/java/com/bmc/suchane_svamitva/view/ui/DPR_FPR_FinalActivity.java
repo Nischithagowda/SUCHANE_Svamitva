@@ -43,7 +43,7 @@ public class DPR_FPR_FinalActivity extends AppCompatActivity {
             }
         } else if (requestCode == Constant.CAMERA_REQUEST_ServingNotice) {
             if (resultCode == RESULT_OK) {
-                viewModel.processImageServingNotice();
+                viewModel.processImageServingDPR();
             }
         }
     }

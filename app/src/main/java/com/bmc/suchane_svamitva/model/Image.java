@@ -4,15 +4,13 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import okhttp3.MultipartBody;
-
 @Entity
 public class Image {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @ColumnInfo(name = "VIRTUAL_ID")
-    private String VIRTUAL_ID;
+    @ColumnInfo(name = "NTC_PROPERTYCODE")
+    private String NTC_PROPERTYCODE;
 
     @ColumnInfo(name = "NOTICE_NO")
     private String NOTICE_NO;
@@ -46,12 +44,12 @@ public class Image {
         this.id = id;
     }
 
-    public String getVIRTUAL_ID() {
-        return VIRTUAL_ID;
+    public String getNTC_PROPERTYCODE() {
+        return NTC_PROPERTYCODE;
     }
 
-    public void setVIRTUAL_ID(String VIRTUAL_ID) {
-        this.VIRTUAL_ID = VIRTUAL_ID;
+    public void setNTC_PROPERTYCODE(String NTC_PROPERTYCODE) {
+        this.NTC_PROPERTYCODE = NTC_PROPERTYCODE;
     }
 
     public String getNOTICE_NO() {

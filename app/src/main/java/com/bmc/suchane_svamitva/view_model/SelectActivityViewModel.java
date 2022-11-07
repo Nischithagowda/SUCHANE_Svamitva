@@ -34,6 +34,10 @@ public class SelectActivityViewModel {
         selectActivityInterface.onNavigateToNotice(this);
     }
 
+    public void onClickDok(View view) {
+        selectActivityInterface.onNavigateToDocUpload(this);
+    }
+
     public void onClickDPR(View view) {
         selectActivityInterface.onNavigateToDPR(this);
     }

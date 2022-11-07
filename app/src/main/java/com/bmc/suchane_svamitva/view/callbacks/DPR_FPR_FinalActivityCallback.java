@@ -5,6 +5,7 @@ import static androidx.core.app.ActivityCompat.requestPermissions;
 import static com.bmc.suchane_svamitva.utils.Constant.IMAGE_CAPTURE_REQ;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -36,11 +37,11 @@ import com.bmc.suchane_svamitva.api.APIClient_Suchane;
 import com.bmc.suchane_svamitva.api.API_Interface_Suchane;
 import com.bmc.suchane_svamitva.database.DBConnection;
 import com.bmc.suchane_svamitva.model.District;
-import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsRequest;
-import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsResponse;
 import com.bmc.suchane_svamitva.model.FnUpdateDRPServedRequest;
 import com.bmc.suchane_svamitva.model.FnUpdateDRPServedResponse;
 import com.bmc.suchane_svamitva.model.Hobli;
+import com.bmc.suchane_svamitva.model.Image;
+import com.bmc.suchane_svamitva.model.MultipartImageResponse;
 import com.bmc.suchane_svamitva.model.PendingDPRTbl_Updated;
 import com.bmc.suchane_svamitva.model.Taluka;
 import com.bmc.suchane_svamitva.model.Village;
@@ -48,7 +49,6 @@ import com.bmc.suchane_svamitva.utils.Constant;
 import com.bmc.suchane_svamitva.view.interfaces.DPR_FPR_FinalActivityInterface;
 import com.bmc.suchane_svamitva.view.ui.DPR_FPR_FinalActivity;
 import com.bmc.suchane_svamitva.view_model.DPR_FPR_FinalActivityViewModel;
-import com.bmc.suchane_svamitva.view_model.NoticeActivityViewModel;
 import com.iceteck.silicompressorr.SiliCompressor;
 
 import java.io.ByteArrayOutputStream;
@@ -62,6 +62,9 @@ import java.util.Locale;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 
 public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInterface {
@@ -104,9 +107,13 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
                             viewModel.mobileNumber.set(result.get(0).getDPROWNFNL_MOBILENO());
                             viewModel.propertyNo.set(result.get(0).getDPRFNL_PROPERTYNO());
                             viewModel.doorNo.set(result.get(0).getNTC_ADD_DOORNO());
+                            viewModel.doorNo_UPD.set(result.get(0).getNTC_ADD_DOORNO());
                             viewModel.building.set(result.get(0).getNTC_BUILDING());
+                            viewModel.building_UPD.set(result.get(0).getNTC_BUILDING());
                             viewModel.street.set(result.get(0).getNTC_STREET_AREA());
+                            viewModel.street_UPD.set(result.get(0).getNTC_STREET_AREA());
                             viewModel.landmark.set(result.get(0).getNTC_LANDMARK());
+                            viewModel.landmark_UPD.set(result.get(0).getNTC_LANDMARK());
                         }
                     }, error -> error.printStackTrace());
             //getUserDistrict(viewModel);
@@ -115,6 +122,23 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
         }
 
     }
+
+    @Override
+    public void goHome() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage("Are you sure, Do you want to Discard the Changes?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", (dialog, id) -> {
+                    activity.onBackPressed();
+                    activity.finish();
+                })
+                .setNegativeButton("No", (dialog, id) -> dialog.cancel());
+        AlertDialog alert = builder.create();
+        alert.setTitle("Confirmation");
+        alert.show();
+
+    }
+
     @Override
     public void getUserDistrict(DPR_FPR_FinalActivityViewModel viewModel){
 
@@ -220,7 +244,7 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
     }
 
     @Override
-    public void captureServingNoticePhoto(DPR_FPR_FinalActivityViewModel viewModel) {
+    public void captureServingDPRPhoto(DPR_FPR_FinalActivityViewModel viewModel) {
         if (checkPermission_API30()){
             requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, IMAGE_CAPTURE_REQ);
         } else {
@@ -288,7 +312,7 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
         File mydir = activity.getDir( folder_main, MODE_PRIVATE); //Creating an internal dir;
         File file = File.createTempFile(fileName, ".jpg", mydir); //Getting a file within the dir.
         // Get the path of the file created
-        viewModel.mCurrentServingNoticePhotoPath.set(file.getAbsolutePath());
+        viewModel.mCurrentServingDPRPhotoPath.set(file.getAbsolutePath());
         return file;
     }
 
@@ -313,15 +337,15 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
     }
 
     @Override
-    public void imageProcessServingNotice(DPR_FPR_FinalActivityViewModel viewModel) {
+    public void imageProcessServingDPR(DPR_FPR_FinalActivityViewModel viewModel) {
         try {
-            Bitmap bitmap = scaleDownAndRotatePic(viewModel.mCurrentServingNoticePhotoPath.get());
-            viewModel.imageBitMapServingNotice.set(bitmap);
+            Bitmap bitmap = scaleDownAndRotatePic(viewModel.mCurrentServingDPRPhotoPath.get());
+            viewModel.imageBitMapServingDPR.set(bitmap);
             viewModel.isImageVisible.set(true);
             ImageCompressionAsyncTaskServingNotice imagetask = new ImageCompressionAsyncTaskServingNotice(activity, viewModel);
             String folder_main = "ServingNoticePictures";
             File myDir = activity.getDir( folder_main, MODE_PRIVATE);
-            imagetask.execute(viewModel.mCurrentServingNoticePhotoPath.get(), myDir + "/" + Constant.APP_IMAGE);
+            imagetask.execute(viewModel.mCurrentServingDPRPhotoPath.get(), myDir + "/" + Constant.APP_IMAGE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -480,8 +504,8 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
         Bitmap bitmapObject = BitmapFactory.decodeFile(String.valueOf(imageFile));
         bitmapObject.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] imageBytes = baos.toByteArray();
-        viewModel.imageDataServingNotice.set(imageBytes);
-        viewModel.imageFileServingNotice.set(imageFile);
+        viewModel.imageDataServingDPR.set(imageBytes);
+        viewModel.imageFileServingDPR.set(imageFile);
     }
 
     @Override
@@ -495,18 +519,22 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
     }
 
     @Override
-    public void showImageServingNotice(DPR_FPR_FinalActivityViewModel viewModel){
+    public void showImageServingDPR(DPR_FPR_FinalActivityViewModel viewModel){
         Dialog settingsDialog = new Dialog(activity);
         settingsDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         settingsDialog.setContentView(R.layout.image_popup);
         ImageView imageView = settingsDialog.findViewById(R.id.showImg);
-        imageView.setImageBitmap(viewModel.imageBitMapServingNotice.get());
+        imageView.setImageBitmap(viewModel.imageBitMapServingDPR.get());
         settingsDialog.show();
     }
 
     @Override
     public void saveAndNext(DPR_FPR_FinalActivityViewModel viewModel) {
-        updatePendingDPRData(viewModel);
+        if (viewModel.isChangesDone.get()) {
+
+        } else {
+            updatePendingDPRData(viewModel);
+        }
     }
 
     private void updatePendingDPRData(DPR_FPR_FinalActivityViewModel viewModel) {
@@ -562,7 +590,7 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
                     if (isNetworkAvailable()) {
                         SendPendingDPRUpdatedDetailsToServer(viewModel);
                     } else {
-                        //savePropertyOrLandImageLocal(viewModel);
+                        savePropertyOrLandImageLocal(viewModel);
                         Toast.makeText(activity, activity.getString(R.string.please_switch_on_the_internet), Toast.LENGTH_LONG).show();
                     }
                 }, error -> {
@@ -608,18 +636,201 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(result2 ->
                                 {
-                                    //sendPropertyOrLandImageToServer(viewModel);
+                                    sendPropertyOrLandImageToServer(viewModel);
                                 }, error -> {
                                     error.printStackTrace();
+                                    Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                                 });
                     } else {
                         Toast.makeText(activity, "" + result1.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
                     }
                 }, (error) -> {
                     dialog.dismiss();
-                    Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    error.printStackTrace();
+                    String errMsg = error.getLocalizedMessage();
+                    if (errMsg.contains("401")) {
+                        new Constant(activity).getRefreshToken();
+                    } else {
+                        Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    }
                 });
 
+    }
+
+    private void savePropertyOrLandImageLocal(DPR_FPR_FinalActivityViewModel viewModel) {
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
+        String mobNum = sharedPreferences.getString(Constant.USER_MOBILE, null);
+
+        Date date = new Date();
+        String todayDate = new SimpleDateFormat(Constant.DATE_TIME_FORMAT, Locale.ENGLISH).format(date);
+
+        Image image = new Image();
+        image.setNTC_PROPERTYCODE(viewModel.propertyNo.get());
+        image.setNOTICE_NO(viewModel.noticeNumber.get());
+        image.setADDRESS_CODE(viewModel.addressCode.get());
+        image.setDOC_TYPE_ID("1");
+        image.setDOC_NAME(viewModel.imageFilePropertyOrLand.get().getName());
+        image.setDOC_PATH(viewModel.imageFilePropertyOrLand.get().getAbsolutePath());
+        image.setUSER_ID(mobNum);
+        image.setDOC_TIMESTAMP(todayDate);
+        image.setNotSent(true);
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(activity)
+                        .getDataBaseDao()
+                        .InsertImage(image))
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result ->
+                {
+                    saveServingDPRImageLocal(viewModel);
+                }, error -> {
+                    error.printStackTrace();
+                });
+
+    }
+
+    private void saveServingDPRImageLocal(DPR_FPR_FinalActivityViewModel viewModel) {
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
+        String mobNum = sharedPreferences.getString(Constant.USER_MOBILE, null);
+
+        Date date = new Date();
+        String todayDate = new SimpleDateFormat(Constant.DATE_TIME_FORMAT, Locale.ENGLISH).format(date);
+
+        Image image = new Image();
+        image.setNTC_PROPERTYCODE(viewModel.propertyNo.get());
+        image.setNOTICE_NO(viewModel.noticeNumber.get());
+        image.setADDRESS_CODE(viewModel.addressCode.get());
+        image.setDOC_TYPE_ID("2");
+        image.setDOC_NAME(viewModel.imageFileServingDPR.get().getName());
+        image.setDOC_PATH(viewModel.imageFileServingDPR.get().getAbsolutePath());
+        image.setUSER_ID(mobNum);
+        image.setDOC_TIMESTAMP(todayDate);
+        image.setNotSent(true);
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(activity)
+                        .getDataBaseDao()
+                        .InsertImage(image))
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result ->
+                {
+                    activity.onBackPressed();
+                    activity.finish();
+                    Toast.makeText(activity, "Data Saved in Local", Toast.LENGTH_SHORT).show();
+                }, error -> {
+                    error.printStackTrace();
+                });
+
+    }
+
+    public void sendPropertyOrLandImageToServer(DPR_FPR_FinalActivityViewModel viewModel){
+        ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Sending Wait ..");
+        dialog.show();
+
+        SharedPreferences sharedPreferences1 = activity.getSharedPreferences(activity.getString(R.string.Auth), Context.MODE_PRIVATE);
+        String token = sharedPreferences1.getString(activity.getString(R.string.token), null);
+        String tokenType = sharedPreferences1.getString(activity.getString(R.string.token_type), null);
+        String accessToken=tokenType+" "+token;
+
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
+        String mobNum = sharedPreferences.getString(Constant.USER_MOBILE, null);
+
+        Date date = new Date();
+        String todayDate = new SimpleDateFormat(Constant.DATE_TIME_FORMAT, Locale.ENGLISH).format(date);
+
+        Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
+        API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), viewModel.imageFilePropertyOrLand.get());
+        MultipartBody.Part para9 = MultipartBody.Part.createFormData("File", viewModel.imageFilePropertyOrLand.get().getName(), requestBody);
+        MultipartBody.Part para1 = MultipartBody.Part.createFormData("NTC_PROPERTYCODE", viewModel.propertyNo.get());
+        MultipartBody.Part para2 = MultipartBody.Part.createFormData("NOTICE_NO", viewModel.noticeNumber.get());
+        MultipartBody.Part para3 = MultipartBody.Part.createFormData("ADDRESS_CODE", viewModel.addressCode.get());
+        MultipartBody.Part para4 = MultipartBody.Part.createFormData("DOC_TYPE_ID", "1");
+        MultipartBody.Part para5 = MultipartBody.Part.createFormData("DOC_NAME", viewModel.imageFilePropertyOrLand.get().getName());
+        MultipartBody.Part para6 = MultipartBody.Part.createFormData("DOC_PATH", viewModel.imageFilePropertyOrLand.get().getAbsolutePath());
+        MultipartBody.Part para7 = MultipartBody.Part.createFormData("USER_ID", mobNum);
+        MultipartBody.Part para8 = MultipartBody.Part.createFormData("DOC_TIMESTAMP", todayDate);
+        Observable<MultipartImageResponse> imageResponseObservable = apiService1.FnSVM_UploadDocument_DPR(accessToken, para1, para2, para3, para4, para5, para6, para7, para8, para9);
+        imageResponseObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((result) -> {
+                    dialog.dismiss();
+                    if (result.getRESPONSE_CODE().contains("200")) {
+                        sendServingDPRImageToServer(viewModel);
+                    } else {
+                        Toast.makeText(activity, result.getRESPONSE_MESSAGE(), Toast.LENGTH_LONG).show();
+                        savePropertyOrLandImageLocal(viewModel);
+                    }
+                }, (error) -> {
+                    error.printStackTrace();
+                    dialog.dismiss();
+                    String errMsg = error.getLocalizedMessage();
+                    if (errMsg.contains("401")) {
+                        new Constant(activity).getRefreshToken();
+                    } else {
+                        Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+
+                    }
+                });
+    }
+
+    public void sendServingDPRImageToServer(DPR_FPR_FinalActivityViewModel viewModel){
+        ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Sending Wait ..");
+        dialog.show();
+
+        SharedPreferences sharedPreferences1 = activity.getSharedPreferences(activity.getString(R.string.Auth), Context.MODE_PRIVATE);
+        String token = sharedPreferences1.getString(activity.getString(R.string.token), null);
+        String tokenType = sharedPreferences1.getString(activity.getString(R.string.token_type), null);
+        String accessToken=tokenType+" "+token;
+
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
+        String mobNum = sharedPreferences.getString(Constant.USER_MOBILE, null);
+
+        Date date = new Date();
+        String todayDate = new SimpleDateFormat(Constant.DATE_TIME_FORMAT, Locale.ENGLISH).format(date);
+
+        Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
+        API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), viewModel.imageFileServingDPR.get());
+        MultipartBody.Part para9 = MultipartBody.Part.createFormData("File", viewModel.imageFileServingDPR.get().getName(), requestBody);
+        MultipartBody.Part para1 = MultipartBody.Part.createFormData("NTC_PROPERTYCODE", viewModel.propertyNo.get());
+        MultipartBody.Part para2 = MultipartBody.Part.createFormData("NOTICE_NO", viewModel.noticeNumber.get());
+        MultipartBody.Part para3 = MultipartBody.Part.createFormData("ADDRESS_CODE", viewModel.addressCode.get());
+        MultipartBody.Part para4 = MultipartBody.Part.createFormData("DOC_TYPE_ID", "2");
+        MultipartBody.Part para5 = MultipartBody.Part.createFormData("DOC_NAME", viewModel.imageFileServingDPR.get().getName());
+        MultipartBody.Part para6 = MultipartBody.Part.createFormData("DOC_PATH", viewModel.imageFileServingDPR.get().getAbsolutePath());
+        MultipartBody.Part para7 = MultipartBody.Part.createFormData("USER_ID", mobNum);
+        MultipartBody.Part para8 = MultipartBody.Part.createFormData("DOC_TIMESTAMP", todayDate);
+        Observable<MultipartImageResponse> imageResponseObservable = apiService1.FnSVM_UploadDocument_DPR(accessToken, para1, para2, para3, para4, para5, para6, para7, para8, para9);
+        imageResponseObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((result) -> {
+                    dialog.dismiss();
+                    if (result.getRESPONSE_CODE().contains("200")) {
+                        activity.onBackPressed();
+                        activity.finish();
+                        Toast.makeText(activity, "Data uploaded successfully", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(activity, result.getRESPONSE_MESSAGE(), Toast.LENGTH_LONG).show();
+                        saveServingDPRImageLocal(viewModel);
+                    }
+                }, (error) -> {
+                    error.printStackTrace();
+                    dialog.dismiss();
+                    String errMsg = error.getLocalizedMessage();
+                    if (errMsg.contains("401")) {
+                        new Constant(activity).getRefreshToken();
+                    } else {
+                        Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+
+                    }
+                });
     }
 
     private boolean isNetworkAvailable() {

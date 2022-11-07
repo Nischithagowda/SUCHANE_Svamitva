@@ -8,11 +8,12 @@ public interface DPR_FPR_FinalActivityInterface {
     void getHobli(DPR_FPR_FinalActivityViewModel viewModel);
     void getVillage(DPR_FPR_FinalActivityViewModel viewModel);
     void capturePropertyOrLandPhoto(DPR_FPR_FinalActivityViewModel viewModel);
-    void captureServingNoticePhoto(DPR_FPR_FinalActivityViewModel viewModel);
+    void captureServingDPRPhoto(DPR_FPR_FinalActivityViewModel viewModel);
     void imageProcessPropertyOrLand(DPR_FPR_FinalActivityViewModel viewModel);
-    void imageProcessServingNotice(DPR_FPR_FinalActivityViewModel viewModel);
+    void imageProcessServingDPR(DPR_FPR_FinalActivityViewModel viewModel);
     void loadData(DPR_FPR_FinalActivityViewModel viewModel);
     void showImagePropertyOrLand(DPR_FPR_FinalActivityViewModel viewModel);
-    void showImageServingNotice(DPR_FPR_FinalActivityViewModel viewModel);
+    void showImageServingDPR(DPR_FPR_FinalActivityViewModel viewModel);
     void saveAndNext(DPR_FPR_FinalActivityViewModel viewModel);
+    void goHome();
 }

@@ -91,8 +91,8 @@ public class MainActivityViewModel {
         Village village = (Village) parent.getItemAtPosition(position);
         this.villageName.set(village.getVILLAGE_NAME());
         this.villageCode.set(village.getVILLAGE_CODE());
-        this.LGD_VILLAGE_CODE.set(village.getLGD_VILLAGE_CODE());
-//        this.LGD_VILLAGE_CODE.set("598473");
+//        this.LGD_VILLAGE_CODE.set(village.getLGD_VILLAGE_CODE());
+        this.LGD_VILLAGE_CODE.set("598473");
         villageError.set(null);
     }
 
@@ -118,8 +118,8 @@ public class MainActivityViewModel {
         }
 
         if (!status) {
-//            mainActivityInterface.getPendingDPRDetails(this);
-            mainActivityInterface.onNavigateToNext(this);
+            mainActivityInterface.getPendingDPRDetails(this);
+//            mainActivityInterface.onNavigateToNext(this);
         }
 
     }

@@ -102,4 +102,5 @@
     <string name="property_number">Property No.</string>
     <string name="no_pending_data">No Pending data</string>
     <string name="no_approved_data">No Approved data</string>
+    <string name="doc_pid_owner">Doc/PID/Owner</string>
 </resources>
