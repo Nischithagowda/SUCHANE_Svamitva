@@ -37,11 +37,14 @@ import com.bmc.suchane_svamitva.api.APIClient_Suchane;
 import com.bmc.suchane_svamitva.api.API_Interface_Suchane;
 import com.bmc.suchane_svamitva.database.DBConnection;
 import com.bmc.suchane_svamitva.model.District;
+import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsRequest;
+import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsResponse;
 import com.bmc.suchane_svamitva.model.FnUpdateDRPServedRequest;
 import com.bmc.suchane_svamitva.model.FnUpdateDRPServedResponse;
 import com.bmc.suchane_svamitva.model.Hobli;
 import com.bmc.suchane_svamitva.model.Image;
 import com.bmc.suchane_svamitva.model.MultipartImageResponse;
+import com.bmc.suchane_svamitva.model.NoticeDetailsTbl;
 import com.bmc.suchane_svamitva.model.PendingDPRTbl_Updated;
 import com.bmc.suchane_svamitva.model.Taluka;
 import com.bmc.suchane_svamitva.model.Village;
@@ -49,6 +52,7 @@ import com.bmc.suchane_svamitva.utils.Constant;
 import com.bmc.suchane_svamitva.view.interfaces.DPR_FPR_FinalActivityInterface;
 import com.bmc.suchane_svamitva.view.ui.DPR_FPR_FinalActivity;
 import com.bmc.suchane_svamitva.view_model.DPR_FPR_FinalActivityViewModel;
+import com.bmc.suchane_svamitva.view_model.NoticeActivityViewModel;
 import com.iceteck.silicompressorr.SiliCompressor;
 
 import java.io.ByteArrayOutputStream;
@@ -531,7 +535,7 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
     @Override
     public void saveAndNext(DPR_FPR_FinalActivityViewModel viewModel) {
         if (viewModel.isChangesDone.get()) {
-
+            updateNoticeData(viewModel);
         } else {
             updatePendingDPRData(viewModel);
         }
@@ -567,6 +571,36 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
                 });
     }
 
+    private void updateNoticeData(DPR_FPR_FinalActivityViewModel viewModel) {
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(activity)
+                        .getDataBaseDao()
+                        .isNoticeDetailsAvailable(viewModel.noticeNumber.get(), viewModel.addressCode.get(), viewModel.propertyNo.get()))
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result ->
+                {
+                    if (result){
+                        Observable
+                                .fromCallable(() -> DBConnection.getConnection(activity)
+                                        .getDataBaseDao()
+                                        .deleteNoticeDetails(viewModel.noticeNumber.get(), viewModel.addressCode.get(), viewModel.propertyNo.get()))
+                                .subscribeOn(Schedulers.computation())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(result1 ->
+                                {
+                                    InsertNoticeDetailsLocally(viewModel);
+                                }, error -> {
+                                    error.printStackTrace();
+                                });
+                    } else {
+                        InsertNoticeDetailsLocally(viewModel);
+                    }
+                }, error -> {
+                    error.printStackTrace();
+                });
+    }
+
     public void InsertPendingDPRUpdatedDetailsLocally(DPR_FPR_FinalActivityViewModel viewModel){
 
         SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
@@ -577,6 +611,7 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
         pendingDPRTbl_updated.setADDRESS_CODE(viewModel.addressCode.get());
         pendingDPRTbl_updated.setPROPERTY_CODE(viewModel.propertyNo.get());
         pendingDPRTbl_updated.setUSER_ID(mobNum);
+        pendingDPRTbl_updated.setIsChangesDone(viewModel.isChangesDone.get()?1:0);
         pendingDPRTbl_updated.setUPD_FLAG(1);
 
         Observable
@@ -589,6 +624,53 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
                 {
                     if (isNetworkAvailable()) {
                         SendPendingDPRUpdatedDetailsToServer(viewModel);
+                    } else {
+                        savePropertyOrLandImageLocal(viewModel);
+                        Toast.makeText(activity, activity.getString(R.string.please_switch_on_the_internet), Toast.LENGTH_LONG).show();
+                    }
+                }, error -> {
+                    error.printStackTrace();
+                });
+    }
+
+    public void InsertNoticeDetailsLocally(DPR_FPR_FinalActivityViewModel viewModel) {
+
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
+        String mobNum = sharedPreferences.getString(Constant.USER_MOBILE, null);
+
+        NoticeDetailsTbl noticeDetailsTbl = new NoticeDetailsTbl();
+        noticeDetailsTbl.setNTC_VID(viewModel.propertyNo.get());
+        noticeDetailsTbl.setNTC_DIST_CODE(viewModel.districtCode.get());
+        noticeDetailsTbl.setNTC_TLK_TWN_CODE(viewModel.talukCode.get());
+        noticeDetailsTbl.setNTC_WRD_VLG_CODE(viewModel.villageCode.get());
+        noticeDetailsTbl.setNTC_LGD_VLG_CODE(viewModel.LGD_VILLAGE_CODE.get());
+        noticeDetailsTbl.setNTC_AREA_TYPE("2");
+        noticeDetailsTbl.setNTC_NOTICE_NO(viewModel.noticeNumber.get());
+        noticeDetailsTbl.setNTC_ADD_CODE(viewModel.addressCode.get());
+        noticeDetailsTbl.setNTC_OWNER_NAME(viewModel.ownerName.get());
+        noticeDetailsTbl.setNTC_OWNER_MOBILE_NO(viewModel.mobileNumber.get());
+        noticeDetailsTbl.setNTC_ADD_DOORNO(viewModel.doorNo.get());
+        noticeDetailsTbl.setNTC_BUILDING(viewModel.building.get());
+        noticeDetailsTbl.setNTC_STREET_AREA(viewModel.street.get());
+        noticeDetailsTbl.setNTC_LANDMARK(viewModel.landmark.get());
+        noticeDetailsTbl.setNTC_WARD_VILLAGE(viewModel.villageName.get());
+        noticeDetailsTbl.setNTC_CTY_TLK(viewModel.talukName.get());
+        noticeDetailsTbl.setNTC_DISTRICT(viewModel.districtName.get());
+        noticeDetailsTbl.setNTC_LAT(viewModel.Lat.get());
+        noticeDetailsTbl.setNTC_LONG(viewModel.Long.get());
+        noticeDetailsTbl.setNTC_ACCURACY("0");
+        noticeDetailsTbl.setNTC_CBY(mobNum);
+
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(activity)
+                        .getDataBaseDao()
+                        .InsertNoticeDetailsDetails(noticeDetailsTbl))
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result ->
+                {
+                    if (isNetworkAvailable()) {
+                        SendNoticeDetailsToServer(viewModel);
                     } else {
                         savePropertyOrLandImageLocal(viewModel);
                         Toast.makeText(activity, activity.getString(R.string.please_switch_on_the_internet), Toast.LENGTH_LONG).show();
@@ -637,6 +719,83 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
                                 .subscribe(result2 ->
                                 {
                                     sendPropertyOrLandImageToServer(viewModel);
+                                }, error -> {
+                                    error.printStackTrace();
+                                    Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                });
+                    } else {
+                        Toast.makeText(activity, "" + result1.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
+                    }
+                }, (error) -> {
+                    dialog.dismiss();
+                    error.printStackTrace();
+                    String errMsg = error.getLocalizedMessage();
+                    if (errMsg.contains("401")) {
+                        new Constant(activity).getRefreshToken();
+                    } else {
+                        Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+
+    }
+
+    public void SendNoticeDetailsToServer(DPR_FPR_FinalActivityViewModel viewModel) {
+
+        ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Sending Wait ..");
+        dialog.show();
+
+        SharedPreferences sharedPreferences1 = activity.getSharedPreferences(activity.getString(R.string.Auth), Context.MODE_PRIVATE);
+        String token = sharedPreferences1.getString(activity.getString(R.string.token), null);
+        String tokenType = sharedPreferences1.getString(activity.getString(R.string.token_type), null);
+        String accessToken=tokenType+" "+token;
+
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
+        String mobNum = sharedPreferences.getString(Constant.USER_MOBILE, null);
+
+        FnSvmInsertNoticeDetailsRequest svmInsertNoticeDetailsRequest = new FnSvmInsertNoticeDetailsRequest();
+        svmInsertNoticeDetailsRequest.setNTC_VID(viewModel.propertyNo.get());
+        svmInsertNoticeDetailsRequest.setNTC_DIST_CODE(viewModel.districtCode.get());
+        svmInsertNoticeDetailsRequest.setNTC_TLK_TWN_CODE(viewModel.talukCode.get());
+        svmInsertNoticeDetailsRequest.setNTC_WRD_VLG_CODE(viewModel.villageCode.get());
+        svmInsertNoticeDetailsRequest.setNTC_LGD_VLG_CODE(viewModel.LGD_VILLAGE_CODE.get());
+        svmInsertNoticeDetailsRequest.setNTC_AREA_TYPE("2");
+        svmInsertNoticeDetailsRequest.setNTC_NOTICE_NO(viewModel.noticeNumber.get());
+        svmInsertNoticeDetailsRequest.setNTC_ADD_CODE(viewModel.addressCode.get());
+        svmInsertNoticeDetailsRequest.setNTC_OWNER_NAME(viewModel.ownerName.get());
+        svmInsertNoticeDetailsRequest.setNTC_OWNER_MOBILE_NO(viewModel.mobileNumber.get());
+        svmInsertNoticeDetailsRequest.setNTC_ADD_DOORNO(viewModel.doorNo.get());
+        svmInsertNoticeDetailsRequest.setNTC_BUILDING(viewModel.building.get());
+        svmInsertNoticeDetailsRequest.setNTC_STREET_AREA(viewModel.street.get());
+        svmInsertNoticeDetailsRequest.setNTC_LANDMARK(viewModel.landmark.get());
+        svmInsertNoticeDetailsRequest.setNTC_WARD_VILLAGE(viewModel.villageName.get());
+        svmInsertNoticeDetailsRequest.setNTC_CTY_TLK(viewModel.talukName.get());
+        svmInsertNoticeDetailsRequest.setNTC_DISTRICT(viewModel.districtName.get());
+        svmInsertNoticeDetailsRequest.setNTC_LAT(viewModel.Lat.get());
+        svmInsertNoticeDetailsRequest.setNTC_LONG(viewModel.Long.get());
+        svmInsertNoticeDetailsRequest.setNTC_ACCURACY("0");
+        svmInsertNoticeDetailsRequest.setNTC_CBY(mobNum);
+
+        Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
+        API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
+        Observable<FnSvmInsertNoticeDetailsResponse> responseObservable = apiService1.FnSvmInsertNoticeDetails(accessToken, svmInsertNoticeDetailsRequest);
+        responseObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((result1) -> {
+                    dialog.dismiss();
+                    if (result1.getRESPONSE_CODE().contains("200")) {
+                        Observable
+                                .fromCallable(() -> DBConnection.getConnection(activity)
+                                        .getDataBaseDao()
+                                        .deleteNoticeDetails(viewModel.noticeNumber.get(), viewModel.addressCode.get(), viewModel.propertyNo.get()))
+                                .subscribeOn(Schedulers.computation())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(result2 ->
+                                {
+                                    updatePendingDPRData(viewModel);
+                                    //sendPropertyOrLandImageToServer(viewModel);
                                 }, error -> {
                                     error.printStackTrace();
                                     Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();

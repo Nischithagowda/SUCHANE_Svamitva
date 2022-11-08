@@ -11,7 +11,7 @@
         <item>English</item>
     </string-array>
 
-    <string name="app_name">SUCHANE[Svamitva]</string>
+    <string name="app_name">SUCHANE [Svamitva]</string>
     <string name="token">token</string>
     <string name="token_type">token_type</string>
     <string name="grant_type">password</string>

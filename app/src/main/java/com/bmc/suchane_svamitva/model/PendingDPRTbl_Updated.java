@@ -34,6 +34,11 @@ public class PendingDPRTbl_Updated {
     @Expose
     private String USER_ID;
 
+    @ColumnInfo(name = "isChangesDone")
+    @SerializedName("isChangesDone")
+    @Expose
+    private int isChangesDone;
+
     @ColumnInfo(name = "UPD_FLAG")
     @SerializedName("UPD_FLAG")
     @Expose
@@ -77,6 +82,14 @@ public class PendingDPRTbl_Updated {
 
     public void setUSER_ID(String USER_ID) {
         this.USER_ID = USER_ID;
+    }
+
+    public int getIsChangesDone() {
+        return isChangesDone;
+    }
+
+    public void setIsChangesDone(int isChangesDone) {
+        this.isChangesDone = isChangesDone;
     }
 
     public int getUPD_FLAG() {
