@@ -676,7 +676,8 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
 
         Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
         API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), viewModel.imageFilePropertyOrLand.get());
+        File file = viewModel.imageFilePropertyOrLand.get();
+        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
         MultipartBody.Part para9 = MultipartBody.Part.createFormData("File", viewModel.imageFilePropertyOrLand.get().getName(), requestBody);
         MultipartBody.Part para1 = MultipartBody.Part.createFormData("NTC_PROPERTYCODE", viewModel.virtualID.get());
         MultipartBody.Part para2 = MultipartBody.Part.createFormData("NOTICE_NO", viewModel.noticeNumber.get());
@@ -692,6 +693,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
                 .subscribe((result) -> {
                     dialog.dismiss();
                     if (result.getRESPONSE_CODE().contains("200")) {
+                        file.delete();
                         sendServingNoticeImageToServer(viewModel);
                     } else {
                         Toast.makeText(activity, result.getRESPONSE_MESSAGE(), Toast.LENGTH_LONG).show();
@@ -730,7 +732,8 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
 
         Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
         API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), viewModel.imageFileServingNotice.get());
+        File file = viewModel.imageFileServingNotice.get();
+        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
         MultipartBody.Part para9 = MultipartBody.Part.createFormData("File", viewModel.imageFileServingNotice.get().getName(), requestBody);
         MultipartBody.Part para1 = MultipartBody.Part.createFormData("NTC_PROPERTYCODE", viewModel.virtualID.get());
         MultipartBody.Part para2 = MultipartBody.Part.createFormData("NOTICE_NO", viewModel.noticeNumber.get());
@@ -746,6 +749,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
                 .subscribe((result) -> {
                     dialog.dismiss();
                     if (result.getRESPONSE_CODE().contains("200")) {
+                        file.delete();
                         activity.onBackPressed();
                         activity.finish();
                         Toast.makeText(activity, "Data uploaded successfully", Toast.LENGTH_LONG).show();
@@ -783,6 +787,8 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         image.setUSER_ID(mobNum);
         image.setDOC_TIMESTAMP(todayDate);
         image.setNotSent(true);
+        image.setWhichService(1);
+
         Observable
                 .fromCallable(() -> DBConnection.getConnection(activity)
                         .getDataBaseDao()
@@ -815,6 +821,8 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
         image.setUSER_ID(mobNum);
         image.setDOC_TIMESTAMP(todayDate);
         image.setNotSent(true);
+        image.setWhichService(1);
+
         Observable
                 .fromCallable(() -> DBConnection.getConnection(activity)
                         .getDataBaseDao()

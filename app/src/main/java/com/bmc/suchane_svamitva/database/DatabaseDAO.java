@@ -104,11 +104,14 @@ public interface DatabaseDAO {
     @Query("Select * from PendingDPRTbl where DPRFNL_NOTICE_NO = :NoticeNo")
     List<PendingDPRTbl> getPendingDPRDetailsByNoticeNo(String NoticeNo);
 
-    @Query("Select NTC_NOTICE_NO from PendingDPRTbl pp inner join PendingDPRTbl_Updated pu on pp.NTC_NOTICE_NO = pu.NOTICE_NO and pp.DPRFNL_PROPERTYCODE = pu.PROPERTY_CODE where pu.UPD_FLAG != 1")
+    @Query("Select NTC_NOTICE_NO from PendingDPRTbl pp inner join PendingDPRTbl_Updated pu on pp.DPRFNL_NOTICE_NO = pu.NOTICE_NO and pp.DPRFNL_PROPERTYCODE = pu.PROPERTY_CODE where pu.UPD_FLAG != 1")
     String[] getPendingDPRUpdatedDetails();
 
-    @Query("Select Count(*) from PendingDPRTbl pp inner join PendingDPRTbl_Updated pu on pp.NTC_NOTICE_NO = pu.NOTICE_NO and pp.DPRFNL_PROPERTYCODE = pu.PROPERTY_CODE where pu.UPD_FLAG != 1")
+    @Query("Select Count(*) from PendingDPRTbl pp inner join PendingDPRTbl_Updated pu on pp.DPRFNL_NOTICE_NO = pu.NOTICE_NO and pp.DPRFNL_PROPERTYCODE = pu.PROPERTY_CODE where pu.UPD_FLAG != 1")
     int getPendingDPRUpdatedCountDetails();
+
+    @Query("delete from PendingDPRTbl where DPRFNL_NOTICE_NO = :NOTICE_NO and DPRFNL_PROPERTYCODE = :PROPERTY_CODE")
+    int deletePendingDPRDetails(String NOTICE_NO, String PROPERTY_CODE);
 
     // PendingDPRTbl_Updated
     @Insert
@@ -119,6 +122,9 @@ public interface DatabaseDAO {
 
     @Query("SELECT CASE WHEN EXISTS (SELECT * FROM PendingDPRTbl_Updated where NOTICE_NO = :NOTICE_NO and PROPERTY_CODE = :PROPERTY_CODE)THEN CAST(1 AS BIT)ELSE CAST(0 AS BIT) END")
     Boolean isPendingDPRUpdatedAvailable(String NOTICE_NO, String PROPERTY_CODE);
+
+    @Query("Select * from PendingDPRTbl_Updated")
+    List<PendingDPRTbl_Updated> getPendingDPRTbl_UpdatedValues();
 
     //ApprovedDPR Tbl
     @Insert

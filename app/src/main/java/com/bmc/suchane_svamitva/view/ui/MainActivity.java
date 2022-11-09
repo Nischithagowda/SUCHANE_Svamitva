@@ -5,6 +5,7 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -26,16 +27,23 @@ import com.bmc.suchane_svamitva.database.DBConnection;
 import com.bmc.suchane_svamitva.databinding.ActivityMainBinding;
 import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsRequest;
 import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsResponse;
+import com.bmc.suchane_svamitva.model.FnUpdateDRPServedRequest;
+import com.bmc.suchane_svamitva.model.FnUpdateDRPServedResponse;
 import com.bmc.suchane_svamitva.model.Image;
 import com.bmc.suchane_svamitva.model.MultipartImageResponse;
 import com.bmc.suchane_svamitva.model.NoticeDetailsTbl;
+import com.bmc.suchane_svamitva.model.PendingDPRTbl_Updated;
 import com.bmc.suchane_svamitva.utils.Constant;
 import com.bmc.suchane_svamitva.view.callbacks.MainActivityCallback;
 import com.bmc.suchane_svamitva.view.interfaces.MainActivityInterface;
+import com.bmc.suchane_svamitva.view_model.DPR_FPR_FinalActivityViewModel;
 import com.bmc.suchane_svamitva.view_model.MainActivityViewModel;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import io.reactivex.Observable;
@@ -63,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         binding.setViewModel(viewModel);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -122,12 +131,41 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(result ->
                 {
                     if (result.size() == 0) {
-                        Toast.makeText(this, "No Data Pending", Toast.LENGTH_LONG).show();
+                        Observable
+                                .fromCallable(() -> DBConnection.getConnection(this)
+                                        .getDataBaseDao()
+                                        .getPendingDPRTbl_UpdatedValues())
+                                .subscribeOn(Schedulers.computation())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(result1 ->
+                                {
+                                    if (result1.size() == 0) {
+                                        Observable
+                                                .fromCallable(() -> DBConnection.getConnection(this)
+                                                        .getDataBaseDao()
+                                                        .getImageTblValues(true))
+                                                .subscribeOn(Schedulers.computation())
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                .subscribe(result2 ->
+                                                {
+                                                    if (result2.size() == 0) {
+                                                        Toast.makeText(this, "No Data Pending", Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        sendImageToServer(result2);
+                                                    }
+
+                                                }, error -> {
+                                                    error.printStackTrace();
+                                                });
+                                    } else {
+                                        SendPendingDPRUpdatedDetailsToServer(result1);
+                                    }
+                                }, error -> {
+                                    error.printStackTrace();
+                                });
                     } else {
                         sendNotSentDataToServer(result);
                     }
-
-
                 }, error -> {
                     error.printStackTrace();
                 });
@@ -256,7 +294,15 @@ public class MainActivity extends AppCompatActivity {
             MultipartBody.Part para6 = MultipartBody.Part.createFormData("DOC_PATH", images.get(i).getDOC_PATH());
             MultipartBody.Part para7 = MultipartBody.Part.createFormData("USER_ID", images.get(i).getUSER_ID());
             MultipartBody.Part para8 = MultipartBody.Part.createFormData("DOC_TIMESTAMP", images.get(i).getDOC_TIMESTAMP());
-            Observable<MultipartImageResponse> imageResponseObservable = apiService1.FnSVM_UploadDocument(accessToken, para1, para2, para3, para4, para5, para6, para7, para8, para9);
+            Observable<MultipartImageResponse> imageResponseObservable;
+            if (images.get(i).getWhichService() == 1) {
+                imageResponseObservable = apiService1.FnSVM_UploadDocument(accessToken, para1, para2, para3, para4, para5, para6, para7, para8, para9);
+            } else if (images.get(i).getWhichService() == 2) {
+                imageResponseObservable = apiService1.FnSVM_UploadDocument_DPR(accessToken, para1, para2, para3, para4, para5, para6, para7, para8, para9);
+            } else {
+                imageResponseObservable = apiService1.FnSVM_UploadDocument(accessToken, para1, para2, para3, para4, para5, para6, para7, para8, para9);
+            }
+
             imageResponseObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe((result) -> {
@@ -270,6 +316,7 @@ public class MainActivity extends AppCompatActivity {
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(result1 ->
                                     {
+                                        file.delete();
                                     } , error ->{
                                         error.printStackTrace();
                                     });
@@ -290,6 +337,84 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(this, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                             Toast.makeText(this, "Images Are Not Sent.", Toast.LENGTH_LONG).show();
+                        }
+                    });
+        }
+
+    }
+
+    public void SendPendingDPRUpdatedDetailsToServer(List<PendingDPRTbl_Updated> pendingDPRTbl_updatedList){
+
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Sending Wait ..");
+        dialog.show();
+
+        SharedPreferences sharedPreferences1 = getSharedPreferences(getString(R.string.Auth), Context.MODE_PRIVATE);
+        String token = sharedPreferences1.getString(getString(R.string.token), null);
+        String tokenType = sharedPreferences1.getString(getString(R.string.token_type), null);
+        String accessToken=tokenType+" "+token;
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
+        String mobNum = sharedPreferences.getString(Constant.USER_MOBILE, null);
+
+        for (int i = 0; i < pendingDPRTbl_updatedList.size(); i++) {
+            int finalI = i;
+
+            FnUpdateDRPServedRequest fnUpdateDRPServedRequest = new FnUpdateDRPServedRequest();
+            fnUpdateDRPServedRequest.setNOTICE_NO(pendingDPRTbl_updatedList.get(i).getNOTICE_NO());
+            fnUpdateDRPServedRequest.setADDRESS_CODE(pendingDPRTbl_updatedList.get(i).getADDRESS_CODE());
+            fnUpdateDRPServedRequest.setPROPERTY_CODE(pendingDPRTbl_updatedList.get(i).getPROPERTY_CODE());
+            fnUpdateDRPServedRequest.setUSER_ID(mobNum);
+
+            Retrofit client1 = APIClient_Suchane.getClientWithoutToken(getString(R.string.api_url));
+            API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
+            Observable<FnUpdateDRPServedResponse> responseObservable = apiService1.FnUpdateDRPServed(accessToken, fnUpdateDRPServedRequest);
+            responseObservable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe((result1) -> {
+                        dialog.dismiss();
+                        if (result1.getRESPONSE_CODE().contains("200")) {
+                            Observable
+                                    .fromCallable(() -> DBConnection.getConnection(this)
+                                            .getDataBaseDao()
+                                            .deletePendingDPRUpdatedDetails(pendingDPRTbl_updatedList.get(finalI).getNOTICE_NO(), pendingDPRTbl_updatedList.get(finalI).getPROPERTY_CODE()))
+                                    .subscribeOn(Schedulers.computation())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(result2 ->
+                                    {
+                                        Observable
+                                                .fromCallable(() -> DBConnection.getConnection(this)
+                                                        .getDataBaseDao()
+                                                        .deletePendingDPRDetails(pendingDPRTbl_updatedList.get(finalI).getNOTICE_NO(), pendingDPRTbl_updatedList.get(finalI).getPROPERTY_CODE()))
+                                                .subscribeOn(Schedulers.computation())
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                .subscribe(result3 ->
+                                                {
+                                                }, error -> {
+                                                    error.printStackTrace();
+                                                    Toast.makeText(this, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                                });
+                                    }, error -> {
+                                        error.printStackTrace();
+                                        Toast.makeText(this, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                    });
+                        } else {
+                            Toast.makeText(this, "" + result1.getRESPONSE_MESSAGE(), Toast.LENGTH_SHORT).show();
+                        }
+                        if (finalI == pendingDPRTbl_updatedList.size() - 1) {
+                            dialog.dismiss();
+                            sendImageToServer();
+                        }
+                    }, (error) -> {
+                        dialog.dismiss();
+                        error.printStackTrace();
+                        String errMsg = error.getLocalizedMessage();
+                        if (errMsg.contains("401")) {
+                            new Constant(this).getRefreshToken();
+                        } else {
+                            Toast.makeText(this, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                         }
                     });
         }

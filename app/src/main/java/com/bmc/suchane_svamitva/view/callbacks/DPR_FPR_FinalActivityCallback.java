@@ -718,7 +718,19 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(result2 ->
                                 {
-                                    sendPropertyOrLandImageToServer(viewModel);
+                                    Observable
+                                            .fromCallable(() -> DBConnection.getConnection(activity)
+                                                    .getDataBaseDao()
+                                                    .deletePendingDPRDetails(viewModel.noticeNumber.get(), viewModel.propertyNo.get()))
+                                            .subscribeOn(Schedulers.computation())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe(result3 ->
+                                            {
+                                                sendPropertyOrLandImageToServer(viewModel);
+                                            }, error -> {
+                                                error.printStackTrace();
+                                                Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                            });
                                 }, error -> {
                                     error.printStackTrace();
                                     Toast.makeText(activity, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
@@ -833,6 +845,8 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
         image.setUSER_ID(mobNum);
         image.setDOC_TIMESTAMP(todayDate);
         image.setNotSent(true);
+        image.setWhichService(2);
+
         Observable
                 .fromCallable(() -> DBConnection.getConnection(activity)
                         .getDataBaseDao()
@@ -865,6 +879,8 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
         image.setUSER_ID(mobNum);
         image.setDOC_TIMESTAMP(todayDate);
         image.setNotSent(true);
+        image.setWhichService(2);
+
         Observable
                 .fromCallable(() -> DBConnection.getConnection(activity)
                         .getDataBaseDao()
@@ -902,7 +918,8 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
 
         Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
         API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), viewModel.imageFilePropertyOrLand.get());
+        File file = viewModel.imageFilePropertyOrLand.get();
+        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
         MultipartBody.Part para9 = MultipartBody.Part.createFormData("File", viewModel.imageFilePropertyOrLand.get().getName(), requestBody);
         MultipartBody.Part para1 = MultipartBody.Part.createFormData("NTC_PROPERTYCODE", viewModel.propertyNo.get());
         MultipartBody.Part para2 = MultipartBody.Part.createFormData("NOTICE_NO", viewModel.noticeNumber.get());
@@ -918,6 +935,7 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
                 .subscribe((result) -> {
                     dialog.dismiss();
                     if (result.getRESPONSE_CODE().contains("200")) {
+                        file.delete();
                         sendServingDPRImageToServer(viewModel);
                     } else {
                         Toast.makeText(activity, result.getRESPONSE_MESSAGE(), Toast.LENGTH_LONG).show();
@@ -956,7 +974,8 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
 
         Retrofit client1 = APIClient_Suchane.getClientWithoutToken(activity.getString(R.string.api_url));
         API_Interface_Suchane apiService1 = client1.create(API_Interface_Suchane.class);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), viewModel.imageFileServingDPR.get());
+        File file = viewModel.imageFileServingDPR.get();
+        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
         MultipartBody.Part para9 = MultipartBody.Part.createFormData("File", viewModel.imageFileServingDPR.get().getName(), requestBody);
         MultipartBody.Part para1 = MultipartBody.Part.createFormData("NTC_PROPERTYCODE", viewModel.propertyNo.get());
         MultipartBody.Part para2 = MultipartBody.Part.createFormData("NOTICE_NO", viewModel.noticeNumber.get());
@@ -972,6 +991,7 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
                 .subscribe((result) -> {
                     dialog.dismiss();
                     if (result.getRESPONSE_CODE().contains("200")) {
+                        file.delete();
                         activity.onBackPressed();
                         activity.finish();
                         Toast.makeText(activity, "Data uploaded successfully", Toast.LENGTH_LONG).show();

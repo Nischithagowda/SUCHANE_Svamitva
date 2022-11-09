@@ -36,6 +36,10 @@ public class Image {
     @ColumnInfo(name = "is_not_sent")
     private boolean isNotSent;
 
+    // 1-Notice, 2 - DPR, 3 - FPR
+    @ColumnInfo(name = "whichService")
+    private int whichService;
+
     public int getId() {
         return id;
     }
@@ -114,5 +118,13 @@ public class Image {
 
     public void setNotSent(boolean notSent) {
         isNotSent = notSent;
+    }
+
+    public int getWhichService() {
+        return whichService;
+    }
+
+    public void setWhichService(int whichService) {
+        this.whichService = whichService;
     }
 }
