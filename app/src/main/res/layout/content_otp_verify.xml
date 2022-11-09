@@ -15,7 +15,8 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".view.ui.OTPVerify"
-        tools:showIn="@layout/activity_otp_verify">
+        tools:showIn="@layout/activity_otp_verify"
+        android:background="@android:color/white">
         <androidx.cardview.widget.CardView
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -23,10 +24,11 @@
             app:layout_constraintTop_toTopOf="parent"
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_gravity="center"
-            android:layout_margin="32dp"
+            android:layout_margin="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            card_view:cardCornerRadius="4dp">
+            card_view:cardCornerRadius="4dp"
+            card_view:cardBackgroundColor="@color/white">
             <LinearLayout
                 android:layout_margin="16dp"
                 android:layout_width="match_parent"
@@ -40,7 +42,8 @@
                     android:gravity="center"
                     android:text="@string/verification_code"
                     android:textSize="@dimen/header_text"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_grey"/>
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -48,7 +51,7 @@
                     android:gravity="center"
                     android:text="@string/please_enter_otp_sent_to"
                     android:textSize="@dimen/app_default_text_size"
-                    />
+                    android:textColor="@color/dark_grey" />
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_marginBottom="8dp"
                     android:layout_width="wrap_content"
@@ -57,7 +60,8 @@
                     android:gravity="center"
                     android:text="@{`*******`+viewModel.USER_MOBILE.substring(7,viewModel.USER_MOBILE.length())}"
                     android:textSize="@dimen/app_default_text_size"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_grey"/>
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:gravity="center"
                     android:layout_gravity="center"
@@ -74,7 +78,8 @@
                         android:textSize="@dimen/header_text"
                         android:background="@drawable/edittext_otp_mobile_border"
                         android:inputType="number"
-                        android:maxLength="1" />
+                        android:maxLength="1"
+                        android:textColor="@android:color/black"/>
                     <androidx.appcompat.widget.AppCompatEditText
                         android:onTextChanged="@{(text,start,end,count)->viewModel.value2Watcher(text,start,end,count)}"
                         android:text="@{viewModel.value2}"
@@ -86,7 +91,7 @@
                         android:background="@drawable/edittext_otp_mobile_border"
                         android:inputType="number"
                         android:maxLength="1"
-                        />
+                        android:textColor="@android:color/black" />
                     <androidx.appcompat.widget.AppCompatEditText
                         android:onTextChanged="@{(text,start,end,count)->viewModel.value3Watcher(text,start,end,count)}"
                         android:text="@{viewModel.value3}"
@@ -98,7 +103,7 @@
                         android:maxLength="1"
                         android:textSize="@dimen/header_text"
                         android:background="@drawable/edittext_otp_mobile_border"
-                        />
+                        android:textColor="@android:color/black" />
                     <androidx.appcompat.widget.AppCompatEditText
                         android:onTextChanged="@{(text,start,end,count)->viewModel.value4Watcher(text,start,end,count)}"
                         android:text="@{viewModel.value4}"
@@ -110,7 +115,7 @@
                         android:maxLength="1"
                         android:textSize="@dimen/header_text"
                         android:background="@drawable/edittext_otp_mobile_border"
-                        />
+                        android:textColor="@android:color/black" />
                     <androidx.appcompat.widget.AppCompatEditText
                         android:onTextChanged="@{(text,start,end,count)->viewModel.value5Watcher(text,start,end,count)}"
                         android:text="@{viewModel.value5}"
@@ -122,7 +127,7 @@
                         android:maxLength="1"
                         android:textSize="@dimen/header_text"
                         android:background="@drawable/edittext_otp_mobile_border"
-                        />
+                        android:textColor="@android:color/black"/>
                     <androidx.appcompat.widget.AppCompatEditText
                         android:onTextChanged="@{(text,start,end,count)->viewModel.value6Watcher(text,start,end,count)}"
                         android:text="@{viewModel.value6}"
@@ -134,7 +139,7 @@
                         android:maxLength="1"
                         android:textSize="@dimen/header_text"
                         android:background="@drawable/edittext_otp_mobile_border"
-                        />
+                        android:textColor="@android:color/black"/>
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <ImageButton
@@ -162,9 +167,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="@string/resend"
-
-                        />
+                        android:text="@string/resend" />
                 </LinearLayout>
 
             </LinearLayout>

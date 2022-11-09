@@ -39,7 +39,8 @@
             android:gravity="center"
             android:text="@{`*******`+viewModel.mobNum.substring(7,viewModel.mobNum.length())}"
             android:textSize="@dimen/app_default_text_size"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="@color/dark_grey"/>
         <androidx.appcompat.widget.LinearLayoutCompat
             android:gravity="center"
             android:layout_gravity="center"

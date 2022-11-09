@@ -75,7 +75,8 @@
                             android:layout_height="wrap_content"
                             app:error="@{viewModel.mobileNumberError}"
                             app:errorEnabled="true"
-                            android:layout_marginTop="20dp">
+                            android:layout_marginTop="20dp"
+                            android:textColorHint="@android:color/darker_gray">
 
                             <androidx.appcompat.widget.AppCompatEditText
                                 android:layout_width="match_parent"
@@ -87,7 +88,7 @@
                                 android:maxLines="1"
                                 android:onTextChanged="@{(text,start,end,count)->viewModel.mobileNumberWatcher(text)}"
                                 android:text="@{viewModel.mobileNumber}"
-                                style="@style/edit_text"/>
+                                style="@style/edit_text" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <ImageButton

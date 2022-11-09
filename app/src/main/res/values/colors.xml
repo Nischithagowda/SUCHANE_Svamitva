@@ -13,5 +13,6 @@
     <color name="yellow">#FFC107</color>
     <color name="layout_border_color">#f5f5f5</color>
     <color name="light_grey">#CACACA</color>
+    <color name="dark_grey">#858484</color>
     <color name="radio_button_selected_color">#299BAF</color>
 </resources>

@@ -118,8 +118,8 @@ public class MainActivityViewModel {
         }
 
         if (!status) {
-            mainActivityInterface.getPendingDPRDetails(this);
-//            mainActivityInterface.onNavigateToNext(this);
+//            mainActivityInterface.getPendingDPRDetails(this);
+            mainActivityInterface.onNavigateToNext(this);
         }
 
     }

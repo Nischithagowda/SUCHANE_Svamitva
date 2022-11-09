@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:contentDescription="@string/logo_name"
-        android:src="@drawable/gok_logo" />
+        android:src="@drawable/gok_logo"
+        android:background="@android:color/white"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -18,6 +20,7 @@
         android:paddingHorizontal="30dp"
         android:text="@string/copyright_bhoomi_monitoring_cell_2020_all_right_reserved"
         android:textColor="@android:color/black"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:background="@android:color/white"/>
 
 </RelativeLayout>
