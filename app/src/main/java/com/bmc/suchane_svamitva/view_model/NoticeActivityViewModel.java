@@ -275,7 +275,7 @@ public class NoticeActivityViewModel {
 
     public void onClickSaveAndNextData(View view) {
         boolean status = false;
-        boolean isMobileNumEntered = false;
+        //boolean isMobileNumEntered = false;
 
         if (imageDataPropertyOrLand.get() == null) {
             Toast.makeText(view.getContext(), "Capture Property Or Land photo to proceed", Toast.LENGTH_LONG).show();
@@ -319,13 +319,14 @@ public class NoticeActivityViewModel {
             status = true;
         }
 
-        if (!TextUtils.isEmpty(mobNum.get()) && isMobileValid(mobNum.get())){
-            isMobileNumEntered = true;
-        }
-
-        if (isMobileNumEntered && !status && !this.isOwnerOTPValidationDone.get()){
-            noticeActivityInterface.sendOtp_Public(this);
-        } else if (!status) {
+//        if (!TextUtils.isEmpty(mobNum.get()) && isMobileValid(mobNum.get())){
+//            isMobileNumEntered = true;
+//        }
+//
+//        if (isMobileNumEntered && !status && !this.isOwnerOTPValidationDone.get()){
+//            noticeActivityInterface.sendOtp_Public(this);
+//        } else
+        if (!status) {
             noticeActivityInterface.saveAndNext(this);
         }
     }

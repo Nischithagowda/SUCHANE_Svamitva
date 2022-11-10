@@ -36,7 +36,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/star"
                         android:textColor="@android:color/holo_red_dark"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp"
+                        android:layout_marginEnd="5dp"/>
                     <com.google.android.material.textfield.TextInputLayout
                         android:enabled="@{viewModel.fieldEnable}"
                         android:error="@{viewModel.doorNoError}"
@@ -181,7 +182,8 @@
                             style="@style/edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:maxLength="10"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
