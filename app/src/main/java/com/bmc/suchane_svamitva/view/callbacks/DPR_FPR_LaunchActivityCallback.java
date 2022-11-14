@@ -119,7 +119,7 @@ public class DPR_FPR_LaunchActivityCallback implements DPR_FPR_LaunchActivityInt
     }
 
     @Override
-    public void onNavigateToDPR_FPR_Final(DPR_FPR_LaunchActivityViewModel viewModel, OwnerTbl ownerTbl, String NoticeNo){
+    public void onNavigateToDPR_FPR_Final(DPR_FPR_LaunchActivityViewModel viewModel, OwnerTbl ownerTbl, String NoticeNo) {
         Intent intent = new Intent(activity, DPR_FPR_FinalActivity.class);
         intent.putExtra("districtCode", ""+viewModel.districtCode.get());
         intent.putExtra("districtName", ""+viewModel.districtName.get());
