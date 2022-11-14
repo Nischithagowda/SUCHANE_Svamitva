@@ -72,6 +72,7 @@
         <activity android:name=".view.ui.DPR_FPR_LaunchActivity"/>
         <activity android:name=".view.ui.DPR_FPR_FinalActivity"/>
         <activity android:name=".view.ui.ProfileActivity"/>
+        <activity android:name=".view.ui.DocsUploadActivity"/>
         <activity android:name=".view.ui.NoticeMapsFragment"
             android:configChanges="screenSize|orientation" />
     </application>

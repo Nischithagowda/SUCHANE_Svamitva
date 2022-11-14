@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.bmc.suchane_svamitva.view_model.DocsUploadViewModel" />
+    </data>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto">
+
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_margin="2dp"-->
+<!--            app:cardCornerRadius="4dp"-->
+<!--            card_view:cardBackgroundColor="@color/white">-->
+
+<!--            <androidx.appcompat.widget.SearchView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="8"-->
+<!--                android:onQueryTextListener="@{viewModel.onQueryTextListenerApproved}"-->
+<!--                app:iconifiedByDefault="false"-->
+<!--                app:queryHint="Search Name/ID/Property No" />-->
+<!--        </androidx.cardview.widget.CardView>-->
+
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_margin="2dp"-->
+<!--            app:cardCornerRadius="4dp"-->
+<!--            android:backgroundTint="@color/colorPrimary">-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal">-->
+
+<!--                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                    style="@style/text_list_header"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="1.1"-->
+<!--                    android:text="@string/notice_number" />-->
+
+<!--                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                    style="@style/text_list_header"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="0.9"-->
+<!--                    android:text="@string/property_number" />-->
+
+<!--                &lt;!&ndash;                    <androidx.appcompat.widget.AppCompatTextView&ndash;&gt;-->
+<!--                &lt;!&ndash;                        style="@style/text_list_header"&ndash;&gt;-->
+<!--                &lt;!&ndash;                        android:layout_width="0dp"&ndash;&gt;-->
+<!--                &lt;!&ndash;                        android:layout_height="match_parent"&ndash;&gt;-->
+<!--                &lt;!&ndash;                        android:layout_weight="1"&ndash;&gt;-->
+<!--                &lt;!&ndash;                        android:text="@string/municipal_gpfd" />&ndash;&gt;-->
+
+<!--                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                    style="@style/text_list_header"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:text="@string/owner_name"/>-->
+
+<!--                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                    style="@style/text_list_header"-->
+<!--                    android:layout_width="70dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:text="@string/action"/>-->
+<!--            </LinearLayout>-->
+<!--        </androidx.cardview.widget.CardView>-->
+
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="2dp"-->
+<!--            app:cardCornerRadius="4dp"-->
+<!--            card_view:cardBackgroundColor="@color/white"-->
+<!--            app:visibility="@{viewModel.isNoApprovedDataAvailable}">-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:gravity="center">-->
+
+<!--                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                    style="@style/text_view_value"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:text="@string/no_approved_data"/>-->
+<!--            </LinearLayout>-->
+<!--        </androidx.cardview.widget.CardView>-->
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:adapter="@{viewModel.ownerApprovedAdapter}"-->
+<!--            app:data="@{viewModel.ownerApprovedList}"-->
+<!--            android:layout_margin="2dp"/>-->
+    </LinearLayout>
+</layout>
