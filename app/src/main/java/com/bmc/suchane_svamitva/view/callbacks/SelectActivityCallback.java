@@ -18,7 +18,7 @@ import com.bmc.suchane_svamitva.database.DBConnection;
 import com.bmc.suchane_svamitva.utils.Constant;
 import com.bmc.suchane_svamitva.view.interfaces.SelectActivityInterface;
 import com.bmc.suchane_svamitva.view.ui.DPR_FPR_LaunchActivity;
-import com.bmc.suchane_svamitva.view.ui.DocsUploadActivity;
+import com.bmc.suchane_svamitva.view.ui.DocsUploadLaunchActivity;
 import com.bmc.suchane_svamitva.view.ui.NoticeMapsFragment;
 import com.bmc.suchane_svamitva.view.ui.SelectActivity;
 import com.bmc.suchane_svamitva.view_model.SelectActivityViewModel;
@@ -86,7 +86,7 @@ public class SelectActivityCallback implements SelectActivityInterface {
 
     @Override
     public void onNavigateToDocUpload(SelectActivityViewModel viewModel){
-        Intent intent = new Intent(activity, DocsUploadActivity.class);
+        Intent intent = new Intent(activity, DocsUploadLaunchActivity.class);
         intent.putExtra("districtCode", ""+viewModel.districtCode.get());
         intent.putExtra("districtName", ""+viewModel.districtName.get());
         intent.putExtra("talukCode", ""+viewModel.talukCode.get());

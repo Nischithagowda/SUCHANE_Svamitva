@@ -3,7 +3,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.bmc.suchane_svamitva.view_model.DocsUploadViewModel" />
+            type="com.bmc.suchane_svamitva.view_model.DocsUploadFinalViewModel" />
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -34,7 +34,7 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <include layout="@layout/content_docs_upload"
+        <include layout="@layout/content_docs_upload_final"
             app:viewModel="@{viewModel}"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

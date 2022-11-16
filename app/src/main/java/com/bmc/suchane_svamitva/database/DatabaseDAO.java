@@ -41,7 +41,7 @@ public interface DatabaseDAO {
     @Query("Select DistrictCode, BhoomiDistrictName from USER_DETAILS")
     List<District> getUserDistrict();
 
-    @Query("Select DistrictCode, TalukCode, BhoomiTalukName from USER_DETAILS where DistrictCode = :DistrictCode")
+    @Query("Select DistrictCode, TalukCode, BhoomiTalukName from USER_DETAILS where DistrictCode = :DistrictCode order by BhoomiTalukName")
     List<Taluka> getUserTaluk(String DistrictCode);
 
     //Hobli Tbl
@@ -52,7 +52,7 @@ public interface DatabaseDAO {
     @Query("delete from Hobli")
     int deleteHobliDetails();
 
-    @Query("Select * from Hobli where DISTRICT_CODE = :DistrictCode and TALUKA_CODE = :TalukCode")
+    @Query("Select * from Hobli where DISTRICT_CODE = :DistrictCode and TALUKA_CODE = :TalukCode order by HOBLI_NAME")
     List<Hobli> getHobliDetails(String DistrictCode, String TalukCode);
 
     //Village Tbl
@@ -62,7 +62,7 @@ public interface DatabaseDAO {
     @Query("delete from Village where DISTRICT_CODE = :DistrictCode and TALUK_CODE = :TalukCode and HOBLI_CODE = :HobliCode")
     int deleteVillageDetails(String DistrictCode, String TalukCode, String HobliCode);
 
-    @Query("Select * from Village where DISTRICT_CODE = :DistrictCode and TALUK_CODE = :TalukCode and HOBLI_CODE = :HobliCode")
+    @Query("Select * from Village where DISTRICT_CODE = :DistrictCode and TALUK_CODE = :TalukCode and HOBLI_CODE = :HobliCode order by VILLAGE_NAME")
     List<Village> getVillageDetails(String DistrictCode, String TalukCode, String HobliCode);
 
     //NoticeDetails Tbl

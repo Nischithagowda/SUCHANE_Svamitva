@@ -4,28 +4,30 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentActivity;
+
 import com.bmc.suchane_svamitva.R;
 import com.bmc.suchane_svamitva.database.DBConnection;
-import com.bmc.suchane_svamitva.view.interfaces.DocsUploadInterface;
-import com.bmc.suchane_svamitva.view.ui.DPR_FPR_LaunchApprovedFragment;
-import com.bmc.suchane_svamitva.view.ui.DPR_FPR_LaunchPendingFragment;
-import com.bmc.suchane_svamitva.view.ui.DocsUploadActivity;
-import com.bmc.suchane_svamitva.view_model.DPR_FPR_LaunchActivityViewModel;
-import com.bmc.suchane_svamitva.view_model.DocsUploadViewModel;
+import com.bmc.suchane_svamitva.model.OwnerTbl;
+import com.bmc.suchane_svamitva.view.interfaces.DocsUploadLaunchInterface;
+import com.bmc.suchane_svamitva.view.ui.DocsUploadFinalActivity;
+import com.bmc.suchane_svamitva.view.ui.DocsUploadLaunchCompletedFragment;
+import com.bmc.suchane_svamitva.view.ui.DocsUploadLaunchPendingFragment;
+import com.bmc.suchane_svamitva.view_model.DocsUploadLaunchViewModel;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class DocsUploadCallback implements DocsUploadInterface {
-    DocsUploadActivity activity;
+public class DocsUploadLaunchCallback implements DocsUploadLaunchInterface {
+    FragmentActivity activity;
 
-    public DocsUploadCallback(DocsUploadActivity activity) {
+    public DocsUploadLaunchCallback(FragmentActivity activity) {
         this.activity = activity;
     }
 
     @Override
-    public void loadOwnerList(DocsUploadViewModel viewModel){
+    public void loadOwnerList(DocsUploadLaunchViewModel viewModel){
         ProgressDialog dialog = new ProgressDialog(activity);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
@@ -91,5 +93,46 @@ public class DocsUploadCallback implements DocsUploadInterface {
             ex.printStackTrace();
             Toast.makeText(activity, ""+ex.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void loadDefaultFragment() {
+        androidx.fragment.app.FragmentTransaction fragmentTransaction =
+                activity.getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.docs_upload_frame_layout, new DocsUploadLaunchPendingFragment());
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onTypeCheckChanged(DocsUploadLaunchViewModel viewModel, int checkedId) {
+        if (checkedId == R.id.pending){
+            androidx.fragment.app.FragmentTransaction fragmentTransaction1 =
+                    activity.getSupportFragmentManager().beginTransaction();
+            fragmentTransaction1.replace(R.id.docs_upload_frame_layout, new DocsUploadLaunchPendingFragment());
+            fragmentTransaction1.commit();
+            viewModel.isDocsUploadBtnVisible.set(true);
+        } else if (checkedId == R.id.completed){
+            androidx.fragment.app.FragmentTransaction fragmentTransaction2 =
+                    activity.getSupportFragmentManager().beginTransaction();
+            fragmentTransaction2.replace(R.id.docs_upload_frame_layout, new DocsUploadLaunchCompletedFragment());
+            fragmentTransaction2.commit();
+            viewModel.isDocsUploadBtnVisible.set(false);
+        }
+    }
+
+    @Override
+    public void onNavigateToDocsUploadFinal(DocsUploadLaunchViewModel viewModel, OwnerTbl ownerTbl, String NoticeNo) {
+        Intent intent = new Intent(activity, DocsUploadFinalActivity.class);
+        intent.putExtra("districtCode", ""+viewModel.districtCode.get());
+        intent.putExtra("districtName", ""+viewModel.districtName.get());
+        intent.putExtra("talukCode", ""+viewModel.talukCode.get());
+        intent.putExtra("talukName", ""+viewModel.talukName.get());
+        intent.putExtra("hobliCode", ""+viewModel.hobliCode.get());
+        intent.putExtra("hobliName", ""+viewModel.hobliName.get());
+        intent.putExtra("villageCode", ""+viewModel.villageCode.get());
+        intent.putExtra("LGD_VILLAGE_CODE", ""+viewModel.LGD_VILLAGE_CODE.get());
+        intent.putExtra("villageName", ""+viewModel.villageName.get());
+        intent.putExtra("NoticeNo", ""+NoticeNo);
+        activity.startActivity(intent);
     }
 }

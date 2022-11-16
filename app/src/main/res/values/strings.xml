@@ -103,4 +103,6 @@
     <string name="no_pending_data">No Pending data</string>
     <string name="no_approved_data">No Approved data</string>
     <string name="doc_pid_owner">Doc/PID/Owner</string>
+    <string name="docs_upload">Docs Upload</string>
+    <string name="docs_upload_for_notice_not_generated_properties">Docs Upload \n(For Notice not generated Properties)</string>
 </resources>

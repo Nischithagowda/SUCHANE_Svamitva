@@ -5,6 +5,7 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 
 import com.bmc.suchane_svamitva.model.District;
 import com.bmc.suchane_svamitva.model.Hobli;
@@ -13,6 +14,8 @@ import com.bmc.suchane_svamitva.model.Taluka;
 import com.bmc.suchane_svamitva.model.Village;
 import com.bmc.suchane_svamitva.view.adapter.OwnerAdapterApproved;
 import com.bmc.suchane_svamitva.view.adapter.OwnerAdapterPending;
+import com.bmc.suchane_svamitva.view.adapter.OwnerDocsUploadAdapterCompleted;
+import com.bmc.suchane_svamitva.view.adapter.OwnerDocsUploadAdapterPending;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
@@ -120,6 +123,20 @@ public class ViewBinding {
 
     @BindingAdapter({"data", "adapter"})
     public static void ownerApprovedAdapter(RecyclerView recyclerView, List<OwnerTbl> ownerTblList, OwnerAdapterApproved adapter) {
+        adapter.addData(ownerTblList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
+    }
+
+    @BindingAdapter({"data", "adapter"})
+    public static void ownerDocsUploadAdapterPending(RecyclerView recyclerView, List<OwnerTbl> ownerTblList, OwnerDocsUploadAdapterPending adapter) {
+        adapter.addData(ownerTblList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
+    }
+
+    @BindingAdapter({"data", "adapter"})
+    public static void ownerDocsUploadAdapterCompleted(RecyclerView recyclerView, List<OwnerTbl> ownerTblList, OwnerDocsUploadAdapterCompleted adapter) {
         adapter.addData(ownerTblList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
