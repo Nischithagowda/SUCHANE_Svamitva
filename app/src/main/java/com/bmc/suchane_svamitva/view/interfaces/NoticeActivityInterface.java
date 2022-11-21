@@ -1,5 +1,7 @@
 package com.bmc.suchane_svamitva.view.interfaces;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 
 import com.bmc.suchane_svamitva.view_model.NoticeActivityViewModel;

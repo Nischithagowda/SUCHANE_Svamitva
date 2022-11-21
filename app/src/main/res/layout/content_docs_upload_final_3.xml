@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout >
+    <data>
+        <variable
+            name="viewModel"
+            type="com.bmc.suchane_svamitva.view_model.DocsUploadFinalViewModel" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="2dp"
+            card_view:cardCornerRadius="4dp"
+            card_view:cardBackgroundColor="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/star"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="16sp"/>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:enabled="@{viewModel.fieldEnable}"
+                        android:error="@{viewModel.doorNoError}"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/door_no"
+                        android:textColorHint="@android:color/darker_gray">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:text="@{viewModel.doorNo_UPD}"
+                            android:onTextChanged="@{viewModel::onContactDoorNoTextChanged}"
+                            style="@style/edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/star"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="16sp"
+                        android:layout_marginEnd="5dp"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:enabled="@{viewModel.fieldEnable}"
+                        android:error="@{viewModel.buildingError}"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/building"
+                        android:textColorHint="@android:color/darker_gray">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:text="@{viewModel.building_UPD}"
+                            android:onTextChanged="@{viewModel::onContactBuildingTextChanged}"
+                            style="@style/edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/star"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="16sp"
+                        android:layout_marginEnd="5dp"/>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:enabled="@{viewModel.fieldEnable}"
+                        android:error="@{viewModel.streetError}"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/street_or_area"
+                        android:textColorHint="@android:color/darker_gray">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:text="@{viewModel.street_UPD}"
+                            android:onTextChanged="@{viewModel::onContactStreetTextChanged}"
+                            style="@style/edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/star"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="16sp"
+                        android:layout_marginEnd="5dp"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:enabled="@{viewModel.fieldEnable}"
+                        android:error="@{viewModel.landmarkError}"
+                        android:layout_width="0dp"
+                        app:errorEnabled="true"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/landmark"
+                        android:textColorHint="@android:color/darker_gray">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:text="@{viewModel.landmark_UPD}"
+                            android:onTextChanged="@{viewModel::onContactLandmarkTextChanged}"
+                            style="@style/edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:text="@string/district"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    app:items="@{viewModel.districtNameList}"
+                    android:text="@{viewModel.districtName}"
+                    android:error="@{viewModel.districtError}"
+                    android:onItemClick="@{viewModel::onContactDistrictItemClick}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/select_district"
+                    android:enabled="false"
+                    app:met_textColor="@android:color/darker_gray"
+                    app:met_textColorHint="@android:color/darker_gray" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:text="@string/taluk"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    app:items="@{viewModel.talukNameList}"
+                    android:text="@{viewModel.talukName}"
+                    android:error="@{viewModel.talukError}"
+                    android:onItemClick="@{viewModel::onContactTalukItemClick}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/select_taluk"
+                    android:enabled="false"
+                    app:met_textColor="@android:color/darker_gray"
+                    app:met_textColorHint="@android:color/darker_gray"/>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:text="@string/hobli"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    app:items="@{viewModel.hobliNameList}"
+                    android:text="@{viewModel.hobliName}"
+                    android:error="@{viewModel.hobliError}"
+                    android:onItemClick="@{viewModel::onContactHobliItemClick}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/select_hobli"
+                    android:enabled="false"
+                    app:met_textColor="@android:color/darker_gray"
+                    app:met_textColorHint="@android:color/darker_gray" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:text="@string/village"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    app:items="@{viewModel.villageNameList}"
+                    android:text="@{viewModel.villageName}"
+                    android:error="@{viewModel.villageError}"
+                    android:onItemClick="@{viewModel::onContactVillageItemClick}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/select_village"
+                    android:enabled="false"
+                    app:met_textColor="@android:color/darker_gray"
+                    app:met_textColorHint="@android:color/darker_gray"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+                    <Button
+                        android:layout_weight="1"
+                        android:onClick="@{viewModel::onClickSaveAndNextData}"
+                        style="@style/btn"
+                        android:textAllCaps="false"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/save_amp_next"/>
+                    <Button
+                        android:layout_weight="1"
+                        android:onClick="@{viewModel::onClickHomeData}"
+                        style="@style/btn"
+                        android:textAllCaps="false"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+</layout>

@@ -5,7 +5,7 @@ import com.bmc.suchane_svamitva.view_model.DocsUploadLaunchViewModel;
 
 public interface DocsUploadLaunchInterface {
     void loadOwnerList(DocsUploadLaunchViewModel viewModel);
-    void onNavigateToDocsUploadFinal(DocsUploadLaunchViewModel viewModel, OwnerTbl ownerTbl, String NoticeNo);
+    void onNavigateToDocsUploadFinal(DocsUploadLaunchViewModel viewModel, OwnerTbl ownerTbl);
     void onTypeCheckChanged(DocsUploadLaunchViewModel viewModel, int checkedId);
     void loadDefaultFragment();
 }

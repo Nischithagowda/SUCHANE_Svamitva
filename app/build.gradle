@@ -83,4 +83,9 @@ dependencies {
 
     //Image Compressor
     implementation 'com.iceteck.silicompressorr:silicompressor:2.2.3'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.github.yalantis:ucrop:2.2.6'
+
+    //pdf library
+    implementation 'com.itextpdf:itextg:5.5.10'
 }

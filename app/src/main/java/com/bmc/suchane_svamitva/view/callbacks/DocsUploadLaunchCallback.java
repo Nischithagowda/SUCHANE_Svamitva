@@ -121,7 +121,7 @@ public class DocsUploadLaunchCallback implements DocsUploadLaunchInterface {
     }
 
     @Override
-    public void onNavigateToDocsUploadFinal(DocsUploadLaunchViewModel viewModel, OwnerTbl ownerTbl, String NoticeNo) {
+    public void onNavigateToDocsUploadFinal(DocsUploadLaunchViewModel viewModel, OwnerTbl ownerTbl) {
         Intent intent = new Intent(activity, DocsUploadFinalActivity.class);
         intent.putExtra("districtCode", ""+viewModel.districtCode.get());
         intent.putExtra("districtName", ""+viewModel.districtName.get());
@@ -132,7 +132,8 @@ public class DocsUploadLaunchCallback implements DocsUploadLaunchInterface {
         intent.putExtra("villageCode", ""+viewModel.villageCode.get());
         intent.putExtra("LGD_VILLAGE_CODE", ""+viewModel.LGD_VILLAGE_CODE.get());
         intent.putExtra("villageName", ""+viewModel.villageName.get());
-        intent.putExtra("NoticeNo", ""+NoticeNo);
+        intent.putExtra("NOTICE_NO", ""+ownerTbl.getNOTICE_NO());
+        intent.putExtra("Property_no", ""+ownerTbl.getProperty_no());
         activity.startActivity(intent);
     }
 }

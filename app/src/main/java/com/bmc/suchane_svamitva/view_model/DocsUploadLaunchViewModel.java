@@ -71,21 +71,27 @@ public class DocsUploadLaunchViewModel implements OwnerListDocsUploadInterface, 
 //        Log.d("CurrentPosition", ""+position);
 //        Log.d("LastCheckedPosition", ""+last_checked_position.get());
         RadioButton radioButton = view.findViewById(R.id.radioButton);
-        if(selected != null && position != last_checked_position.get() && selected.isChecked())
-        {
-            Log.d("selectedGetId", ""+selected.getId());
-            Log.d("last_checked_position", ""+last_checked_position.get());
-            selected.setChecked(false);
-        } else {
-            Log.d("isChecked", ""+radioButton.isChecked());
-            Log.d("CurrentPosition", ""+position);
-            Log.d("getId", ""+radioButton.getId());
-            radioButton.setChecked(true);
-        }
-        selected = radioButton;
-        last_checked_position.set(position);
-        //docsUploadLaunchInterface.onNavigateToDocsUploadFinal(this, ownerTbl, NoticeNo);
+        radioButton.setChecked(false);
+//        radioButton.setId(position);
+//        Log.d("isChecked", ""+radioButton.isChecked());
+//        Log.d("CurrentPosition", ""+position);
+//        Log.d("last_checked_position", ""+last_checked_position.get());
+//        Log.d("getId", ""+radioButton.getId());
+//        if (selected != null) {
+//            if (position != last_checked_position.get() && selected.isChecked()) {
+//                Log.d("selectedGetId", "" + selected.getId());
+//                Log.d("selectedIsChecked", "" + selected.isChecked());
+//                Log.d("selected", "if");
+//                selected.setChecked(false);
+//            } else {
+//                selected.setChecked(true);
+//                Log.d("selected", "else");
+//            }
+//        }
+//        selected = radioButton;
 //        last_checked_position.set(position);
+        docsUploadLaunchInterface.onNavigateToDocsUploadFinal(this, ownerTbl);
+//        Log.d("NewSelectedGetId", ""+selected.getId());
 //        Log.d("NewLastCheckedPosition", ""+last_checked_position.get());
     }
 }

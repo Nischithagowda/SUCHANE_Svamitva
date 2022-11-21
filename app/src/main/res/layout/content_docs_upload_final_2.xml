@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:card_view="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.bmc.suchane_svamitva.view_model.DocsUploadFinalViewModel" />
+        <variable
+            name="link"
+            type="android.text.method.LinkMovementMethod" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="@color/white">
+
+        <androidx.core.widget.NestedScrollView
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/owner_details"
+                    android:textColor="@color/white"
+                    style="@style/text_view_header"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="@string/owner_name"
+                        style="@style/text_view" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="0.1"
+                        android:layout_height="match_parent"
+                        android:text="@string/colon"
+                        android:textStyle="bold"
+                        style="@style/text_view" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="@{viewModel.ownerName}"
+                        style="@style/text_view_value" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="@string/mobile_number"
+                        style="@style/text_view" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="0.1"
+                        android:layout_height="match_parent"
+                        android:text="@string/colon"
+                        android:textStyle="bold"
+                        style="@style/text_view" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        style="@style/text_view_value"
+                        android:text="@{`*******`+viewModel.mobileNumber.substring(7,viewModel.mobileNumber.length())}" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="@string/property_number"
+                        style="@style/text_view" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="0.1"
+                        android:layout_height="match_parent"
+                        android:text="@string/colon"
+                        android:textStyle="bold"
+                        style="@style/text_view" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="@{viewModel.propertyNo}"
+                        style="@style/text_view_value" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/documents"
+                    android:textColor="@color/white"
+                    style="@style/text_view_header"
+                    android:layout_marginTop="5dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="10dp">
+                    <Button
+                        android:onClick="@{viewModel::onClickAddDocument}"
+                        style="@style/btn"
+                        android:textAllCaps="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_document"/>
+                    <androidx.cardview.widget.CardView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:onClick="@{viewModel::capturePID_or_TaxReceiptPicture}"
+                        card_view:cardCornerRadius="4dp"
+                        card_view:cardBackgroundColor="@color/white">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="5dp"
+                            android:background="@color/colorPrimary">
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/star"
+                                android:textColor="@android:color/holo_red_dark"
+                                android:textSize="16sp"
+                                android:layout_marginStart="5dp"/>
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/click_photo_of_pid_tax_receipt"
+                                android:textSize="14sp"
+                                android:layout_marginStart="5dp"
+                                android:textColor="@color/white"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:onClick="@{viewModel::capturePrpertyOrAlternateDocsPicture}"
+                        card_view:cardCornerRadius="4dp"
+                        card_view:cardBackgroundColor="@color/white">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="5dp"
+                            android:background="@color/colorPrimary">
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/star"
+                                android:textColor="@android:color/holo_red_dark"
+                                android:textSize="16sp"/>
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/click_photo_of_property_or_alternate_documents"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                android:layout_marginStart="5dp"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="2dp"
+                        app:cardCornerRadius="4dp"
+                        android:backgroundTint="@color/colorPrimary">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                style="@style/text_list_header"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:text="@string/document_id" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                style="@style/text_list_header"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.9"
+                                android:text="@string/document_name" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@android:color/darker_gray"
+                        android:dividerHeight="1sp"
+                        app:adapter="@{viewModel.documentListAdapter}"
+                        app:data="@{viewModel.documentTblList}"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:visibility="@{viewModel.isImageVisible}">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+                        android:layout_gravity="center"
+                        android:src="@drawable/img_png"
+                        app:imageBitMap="@{viewModel.imageBitMapPropertyOrLand}"
+                        android:onClick="@{viewModel::onClickShowImagePropertyOrLand}"/>
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+                        android:layout_gravity="center"
+                        android:src="@drawable/img_png"
+                        android:layout_marginStart="15dp"
+                        app:imageBitMap="@{viewModel.imageBitMapServingDPR}"
+                        android:onClick="@{viewModel::onClickShowImageServingDPR}"/>
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/postal_address"
+                    android:textColor="@color/white"
+                    style="@style/text_view_header"/>
+
+                <include layout="@layout/content_docs_upload_final_3"
+                    app:viewModel="@{viewModel}"/>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

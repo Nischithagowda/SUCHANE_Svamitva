@@ -214,7 +214,7 @@
                         android:adjustViewBounds="true"
                         android:scaleType="centerInside"
                         android:layout_gravity="center"
-                        android:src="@{@drawable/img_png}"
+                        android:src="@drawable/img_png"
                         app:imageBitMap="@{viewModel.imageBitMapPropertyOrLand}"
                         android:onClick="@{viewModel::onClickShowImagePropertyOrLand}"/>
                     <androidx.appcompat.widget.AppCompatImageView
@@ -224,7 +224,7 @@
                         android:adjustViewBounds="true"
                         android:scaleType="centerInside"
                         android:layout_gravity="center"
-                        android:src="@{@drawable/img_png}"
+                        android:src="@drawable/img_png"
                         android:layout_marginStart="15dp"
                         app:imageBitMap="@{viewModel.imageBitMapServingDPR}"
                         android:onClick="@{viewModel::onClickShowImageServingDPR}"/>

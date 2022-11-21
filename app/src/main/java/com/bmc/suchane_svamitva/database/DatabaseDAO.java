@@ -6,8 +6,10 @@ import androidx.room.Query;
 
 import com.bmc.suchane_svamitva.model.ApprovedDPRTbl;
 import com.bmc.suchane_svamitva.model.District;
+import com.bmc.suchane_svamitva.model.DocumentTbl;
 import com.bmc.suchane_svamitva.model.Hobli;
 import com.bmc.suchane_svamitva.model.Image;
+import com.bmc.suchane_svamitva.model.ImageTempTbl;
 import com.bmc.suchane_svamitva.model.NoticeDetailsTbl;
 import com.bmc.suchane_svamitva.model.OwnerTbl;
 import com.bmc.suchane_svamitva.model.PendingDPRTbl;
@@ -88,6 +90,29 @@ public interface DatabaseDAO {
     @Query("delete from Image where NOTICE_NO = :NoticeNo and ADDRESS_CODE = :AddrCode")
     int deleteImageDetails(String NoticeNo, String AddrCode);
 
+    //Document Tbl
+    @Insert
+    long InsertDocument(DocumentTbl documentTbl);
+
+    @Query("Select * from DocumentTbl where NOTICE_NO = :NOTICE_NO and property_no = :property_no")
+    List<DocumentTbl> getDocumentTblValues(String NOTICE_NO, String property_no);
+
+    @Query("delete from DocumentTbl where NOTICE_NO = :NoticeNo and property_no = :property_no")
+    int deleteDocumentDetails(String NoticeNo, String property_no);
+
+    //Image_Temp Tbl
+    @Insert
+    long InsertTempImage(ImageTempTbl image);
+
+    @Query("Select count(NOTICE_NO) from ImageTempTbl where NOTICE_NO = :NOTICE_NO and property_no = :property_no")
+    int getTempImagePageCount(String NOTICE_NO, String property_no);
+
+    @Query("Select * from ImageTempTbl where NOTICE_NO = :NOTICE_NO and property_no = :property_no")
+    List<ImageTempTbl> getTempImagePath(String NOTICE_NO, String property_no);
+
+    @Query("delete from ImageTempTbl where NOTICE_NO = :NoticeNo and property_no = :property_no")
+    int deleteTempImageDetails(String NoticeNo, String property_no);
+
     //PendingDPR Tbl
     @Insert
     Long[] InsertPendingDPRDetails(List<PendingDPRTbl> pendingDPRTblList);
@@ -101,8 +126,8 @@ public interface DatabaseDAO {
     @Query("Select DPRFNL_NOTICE_NO as NOTICE_NO, DPRFNL_PROPERTYCODE as property_no, DPROWNFNL_OWNERNAME as Owner_Name from PendingDPRTbl where DPROWNFNL_VLGDCODE = :DPROWNFNL_VLGDCODE")
     List<OwnerTbl> getPendingDPRList(String DPROWNFNL_VLGDCODE);
 
-    @Query("Select * from PendingDPRTbl where DPRFNL_NOTICE_NO = :NoticeNo")
-    List<PendingDPRTbl> getPendingDPRDetailsByNoticeNo(String NoticeNo);
+    @Query("Select * from PendingDPRTbl where DPRFNL_NOTICE_NO = :NoticeNo and DPRFNL_PROPERTYCODE = :PropertyNo")
+    List<PendingDPRTbl> getPendingDPRDetailsByNoticeNo(String NoticeNo, String PropertyNo);
 
     @Query("Select NTC_NOTICE_NO from PendingDPRTbl pp inner join PendingDPRTbl_Updated pu on pp.DPRFNL_NOTICE_NO = pu.NOTICE_NO and pp.DPRFNL_PROPERTYCODE = pu.PROPERTY_CODE where pu.UPD_FLAG != 1")
     String[] getPendingDPRUpdatedDetails();

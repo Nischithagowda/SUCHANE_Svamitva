@@ -65,6 +65,7 @@ import com.bmc.suchane_svamitva.view.interfaces.NoticeActivityInterface;
 import com.bmc.suchane_svamitva.view.ui.NoticeActivity;
 import com.bmc.suchane_svamitva.view_model.NoticeActivityViewModel;
 import com.iceteck.silicompressorr.SiliCompressor;
+import com.yalantis.ucrop.UCrop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

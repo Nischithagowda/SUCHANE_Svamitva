@@ -15,12 +15,12 @@ import com.bmc.suchane_svamitva.utils.Constant;
 import com.bmc.suchane_svamitva.view.callbacks.NoticeActivityCallback;
 import com.bmc.suchane_svamitva.view.interfaces.NoticeActivityInterface;
 import com.bmc.suchane_svamitva.view_model.NoticeActivityViewModel;
+import com.yalantis.ucrop.UCrop;
 
 import java.util.Objects;
 
 public class NoticeActivity extends AppCompatActivity {
     NoticeActivityViewModel viewModel;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -91,13 +91,14 @@ public class DPR_FPR_FinalActivityCallback implements DPR_FPR_FinalActivityInter
             viewModel.villageCode.set(intent.getStringExtra("villageCode"));
             viewModel.LGD_VILLAGE_CODE.set(intent.getStringExtra("LGD_VILLAGE_CODE"));
             viewModel.villageName.set(intent.getStringExtra("villageName"));
-            viewModel.noticeNumber.set(intent.getStringExtra("NoticeNo"));
+            viewModel.noticeNumber.set(intent.getStringExtra("NOTICE_NO"));
+            viewModel.propertyNo.set(intent.getStringExtra("Property_no"));
 
             DecimalFormat df = new DecimalFormat("#.0000000");
             Observable
                     .fromCallable(() -> DBConnection.getConnection(activity)
                             .getDataBaseDao()
-                            .getPendingDPRDetailsByNoticeNo(viewModel.noticeNumber.get()))
+                            .getPendingDPRDetailsByNoticeNo(viewModel.noticeNumber.get(), viewModel.propertyNo.get()))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(result -> {

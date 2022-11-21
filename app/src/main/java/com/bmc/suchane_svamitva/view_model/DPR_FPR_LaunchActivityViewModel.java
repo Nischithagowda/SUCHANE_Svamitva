@@ -66,6 +66,6 @@ public class DPR_FPR_LaunchActivityViewModel implements OwnerListInterface, Sear
 
     @Override
     public void onClickOwner(OwnerTbl ownerTbl, String NoticeNo) {
-        dpr_fpr_launchActivityInterface.onNavigateToDPR_FPR_Final(this, ownerTbl, NoticeNo);
+        dpr_fpr_launchActivityInterface.onNavigateToDPR_FPR_Final(this, ownerTbl);
     }
 }

@@ -74,8 +74,17 @@
         <activity android:name=".view.ui.ProfileActivity"/>
         <activity android:name=".view.ui.DocsUploadLaunchActivity"/>
         <activity android:name=".view.ui.DocsUploadFinalActivity"/>
+        <activity android:name=".view.ui.ClickDocumentActivity"/>
         <activity android:name=".view.ui.NoticeMapsFragment"
             android:configChanges="screenSize|orientation" />
+
+        <activity
+            android:launchMode="standard"
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

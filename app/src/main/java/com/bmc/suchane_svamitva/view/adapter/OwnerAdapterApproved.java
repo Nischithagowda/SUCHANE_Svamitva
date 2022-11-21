@@ -35,10 +35,10 @@ public class OwnerAdapterApproved extends RecyclerView.Adapter<OwnerAdapterAppro
 
     @NonNull
     @Override
-    public OwnerAdapterApproved.DataViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DataViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.owner_list,
                 new FrameLayout(parent.getContext()), false);
-        return new OwnerAdapterApproved.DataViewHolder(itemView);
+        return new DataViewHolder(itemView);
     }
 
     @Override

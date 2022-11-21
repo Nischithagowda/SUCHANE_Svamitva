@@ -1,22 +1,30 @@
 package com.bmc.suchane_svamitva.binding;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 
 import com.bmc.suchane_svamitva.model.District;
+import com.bmc.suchane_svamitva.model.DocumentTbl;
 import com.bmc.suchane_svamitva.model.Hobli;
+import com.bmc.suchane_svamitva.model.ImageTempTbl;
 import com.bmc.suchane_svamitva.model.OwnerTbl;
 import com.bmc.suchane_svamitva.model.Taluka;
 import com.bmc.suchane_svamitva.model.Village;
+import com.bmc.suchane_svamitva.view.adapter.DocumentListAdapter;
+import com.bmc.suchane_svamitva.view.adapter.ImageListAdapter;
 import com.bmc.suchane_svamitva.view.adapter.OwnerAdapterApproved;
 import com.bmc.suchane_svamitva.view.adapter.OwnerAdapterPending;
 import com.bmc.suchane_svamitva.view.adapter.OwnerDocsUploadAdapterCompleted;
 import com.bmc.suchane_svamitva.view.adapter.OwnerDocsUploadAdapterPending;
 import com.google.android.material.textfield.TextInputEditText;
+import com.yalantis.ucrop.UCrop;
 
 import java.util.List;
 
@@ -138,6 +146,29 @@ public class ViewBinding {
     @BindingAdapter({"data", "adapter"})
     public static void ownerDocsUploadAdapterCompleted(RecyclerView recyclerView, List<OwnerTbl> ownerTblList, OwnerDocsUploadAdapterCompleted adapter) {
         adapter.addData(ownerTblList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
+    }
+
+    @BindingAdapter({"data", "adapter"})
+    public static void DocumentListAdapter(RecyclerView recyclerView, List<DocumentTbl> documentTblList, DocumentListAdapter adapter) {
+        adapter.addData(documentTblList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
+    }
+
+    @BindingAdapter({"imageBitMap"})
+    public static void appImageDataByPathBinding(AppCompatImageView imageView, String imagePath) {
+        if (imagePath != null) {
+            Uri resultUri = Uri.parse(imagePath);
+            Bitmap bitmap = BitmapFactory.decodeFile(resultUri.getPath());
+            imageView.setImageBitmap(bitmap);
+        }
+    }
+
+    @BindingAdapter({"data", "adapter"})
+    public static void ImageListAdapter(RecyclerView recyclerView, List<ImageTempTbl> imageTempTbls, ImageListAdapter adapter) {
+        adapter.addData(imageTempTbls);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
     }
