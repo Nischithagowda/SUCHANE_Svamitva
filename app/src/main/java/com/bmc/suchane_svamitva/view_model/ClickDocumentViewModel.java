@@ -1,9 +1,11 @@
 package com.bmc.suchane_svamitva.view_model;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 
 import androidx.databinding.ObservableArrayList;
+import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
 import androidx.databinding.ObservableList;
@@ -36,10 +38,23 @@ public class ClickDocumentViewModel implements ImageListInterface {
     public final ObservableInt ImageCapturedCount = new ObservableInt(0);
     public final ObservableField<ImageListAdapter> imageListAdapter = new ObservableField<>();
     public final ObservableList<ImageTempTbl> imageTempTblList = new ObservableArrayList<>();
+    public ObservableBoolean canCreatePDF = new ObservableBoolean(false);
 
     public ClickDocumentViewModel(ClickDocumentInterface clickDocumentInterface) {
         this.clickDocumentInterface = clickDocumentInterface;
         imageListAdapter.set(new ImageListAdapter(this));
+    }
+
+    public void ProcessDocsImage(){
+        clickDocumentInterface.ProcessDocsImage(this);
+    }
+
+    public void handleUCropResult(Intent data){
+        clickDocumentInterface.handleUCropResult(data, this);
+    }
+
+    public void setResultCancelled() {
+        clickDocumentInterface.setResultCancelled();
     }
 
     public void onContactDocsNameTextChanged(CharSequence s, int start, int before, int count) {
@@ -51,7 +66,8 @@ public class ClickDocumentViewModel implements ImageListInterface {
         if (TextUtils.isEmpty(this.docsName.get())){
             docsNameError.set(view.getContext().getString(R.string.enter_name_of_the_document));
         } else {
-            clickDocumentInterface.onClickSetDocsName(this);
+            clickDocumentInterface.
+                    onClickSetDocsName(this);
         }
     }
 

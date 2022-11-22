@@ -1,5 +1,6 @@
 package com.bmc.suchane_svamitva.view.callbacks;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static android.content.Context.MODE_PRIVATE;
 import static androidx.core.app.ActivityCompat.requestPermissions;
 import static com.bmc.suchane_svamitva.utils.Constant.IMAGE_CAPTURE_REQ;
@@ -150,13 +151,13 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
     }
 
     @Override
-    public void imageProcess(ClickDocumentViewModel viewModel) {
+    public void ProcessDocsImage(ClickDocumentViewModel viewModel) {
         try {
             Uri sourceUri = Uri.fromFile(new File(viewModel.mDocsImagePath.get()));
             Log.d("sourceUri", ""+sourceUri);
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date());
             String fileName = "JPEG_" + timeStamp + "_";
-            String folder_main = "PropertyOrLandPicturesCrop";
+            String folder_main = "DocsImagesCrop";
             File myDir = activity.getDir( folder_main, MODE_PRIVATE);
             File file = File.createTempFile(fileName, ".jpg", myDir);
             String filePath = file.getAbsolutePath();
@@ -168,6 +169,7 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
             // applying UI theme
             options.setToolbarColor(ContextCompat.getColor(activity, R.color.colorPrimary));
             options.setStatusBarColor(ContextCompat.getColor(activity, R.color.colorPrimaryDark));
+            options.withAspectRatio(3,4);
 
             UCrop.of(sourceUri, destinationUri)
                     .withOptions(options)
@@ -179,7 +181,7 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
     }
 
     @Override
-    public Uri handleUCropResult(Intent data, ClickDocumentViewModel viewModel){
+    public void handleUCropResult(Intent data, ClickDocumentViewModel viewModel){
 
         ProgressDialog dialog = new ProgressDialog(activity);
         dialog.setCanceledOnTouchOutside(false);
@@ -222,6 +224,8 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
                                         dialog.dismiss();
                                         viewModel.imageTempTblList.clear();
                                         viewModel.imageTempTblList.addAll(result1);
+                                        viewModel.canCreatePDF.set(true);
+
                                     }, error -> {
                                         error.printStackTrace();
                                         dialog.dismiss();
@@ -232,37 +236,17 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
                             dialog.dismiss();
                         }
                 );
-        try {
-            String folder_main_PDF = "ServingNoticePDF";
-
-            File mydir = activity.getDir( folder_main_PDF, MODE_PRIVATE); //Creating an internal dir;
-
-            Document document = new Document();
-
-            String directoryPath = mydir.getAbsolutePath();
-
-            PdfWriter.getInstance(document, new FileOutputStream(directoryPath + "/example.pdf")); //  Change pdf's name.
-
-            document.open();
-
-            com.itextpdf.text.Image image = com.itextpdf.text.Image.getInstance(resultUri.getPath());  // Change image's name and extension.
-
-            float scaler = ((document.getPageSize().getWidth() - document.leftMargin()
-                    - document.rightMargin() - 0) / image.getWidth()) * 100; // 0 means you have no indentation. If you have any, change it.
-            image.scalePercent(scaler);
-            image.setAlignment(com.itextpdf.text.Image.ALIGN_CENTER | com.itextpdf.text.Image.ALIGN_TOP);
-            document.add(image);
-
-            document.close();
-
-        } catch (Exception ex){
-            ex.printStackTrace();
-        }
-        return resultUri;
     }
 
     @Override
-    public void onClickCreatePDF(ClickDocumentViewModel viewModel){
+    public void setResultCancelled() {
+        Intent intent = new Intent();
+        activity.setResult(RESULT_CANCELED, intent);
+        activity.finish();
+    }
+
+    @Override
+    public void onClickCreatePDF(ClickDocumentViewModel viewModel) {
         DocsNameDialogBinding binding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.docs_name_dialog, null, false);
         binding.setViewModel(viewModel);
         view = binding.getRoot();
@@ -277,42 +261,99 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
     @Override
     public void onClickSetDocsName(ClickDocumentViewModel viewModel){
 
-        Observable
-                .fromCallable(() -> DBConnection.getConnection(activity)
-                        .getDataBaseDao()
-                        .getTempImagePageCount(viewModel.noticeNumber.get(), viewModel.propertyNo.get()))
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result ->
-                {
-
-                }, error -> {
-                    error.printStackTrace();
-                });
-
         SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
         String mobNum = sharedPreferences.getString(Constant.USER_MOBILE, null);
 
         Date date = new Date();
         String todayDate = new SimpleDateFormat(Constant.DATE_TIME_FORMAT, Locale.ENGLISH).format(date);
 
-        DocumentTbl documentTbl = new DocumentTbl();
-        documentTbl.setDocumentName(viewModel.docsName.get());
-        documentTbl.setDocumentPath();
-        documentTbl.setNOTICE_NO(viewModel.noticeNumber.get());
-        documentTbl.setProperty_no(viewModel.propertyNo.get());
-        documentTbl.setDOC_TIMESTAMP(todayDate);
-        documentTbl.setUSER_ID(mobNum);
-
         Observable
                 .fromCallable(() -> DBConnection.getConnection(activity)
                         .getDataBaseDao()
-                        .InsertDocument(documentTbl))
+                        .getTempImagePath(viewModel.noticeNumber.get(), viewModel.propertyNo.get()))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result ->
                 {
-                    Toast.makeText(activity, "Document Saved Successfully", Toast.LENGTH_SHORT).show();
+                    if (result.size()>0) {
+                        String folder_main_PDF = "DocumentPDF";
+                        File mydir = activity.getDir(folder_main_PDF, MODE_PRIVATE); //Creating an internal dir;
+                        Document document = new Document();
+                        String directoryPath = mydir.getAbsolutePath();
+                        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date());
+                        String destinationDocsPath = directoryPath + "/Docs"+viewModel.propertyNo.get()+"_"+timeStamp+".pdf";
+                        PdfWriter.getInstance(document, new FileOutputStream(destinationDocsPath)); //  Change pdf's name.
+                        document.open();
+                        try {
+                            for (int i = 1; i <= result.size(); i++) {
+                                String filePathString = result.get(i).getDocumentPath();
+                                File f = new File(filePathString);
+                                if (f.exists()) {
+                                    com.itextpdf.text.Image image = com.itextpdf.text.Image.getInstance(filePathString);  // Change image's name and extension.
+                                    float scaler = ((document.getPageSize().getWidth() - document.leftMargin()
+                                            - document.rightMargin() - 0) / image.getWidth()) * 100; // 0 means you have no indentation. If you have any, change it.
+                                    image.scalePercent(scaler);
+                                    image.setAlignment(com.itextpdf.text.Image.ALIGN_CENTER | com.itextpdf.text.Image.ALIGN_TOP);
+                                    document.add(image);
+                                } else {
+                                    deleteImage(viewModel, result.get(i).getDocumentID());
+                                }
+
+                                if (i==result.size()){
+                                    document.close();
+
+                                    DocumentTbl documentTbl = new DocumentTbl();
+                                    documentTbl.setDocumentName(viewModel.docsName.get());
+                                    documentTbl.setDocumentPath(destinationDocsPath);
+                                    documentTbl.setNOTICE_NO(viewModel.noticeNumber.get());
+                                    documentTbl.setProperty_no(viewModel.propertyNo.get());
+                                    documentTbl.setDOC_TIMESTAMP(todayDate);
+                                    documentTbl.setUSER_ID(mobNum);
+
+                                    Observable
+                                            .fromCallable(() -> DBConnection.getConnection(activity)
+                                                    .getDataBaseDao()
+                                                    .InsertDocument(documentTbl))
+                                            .subscribeOn(Schedulers.computation())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe(result1 ->
+                                            {
+                                                File dir1 = activity.getDir( "DocsImagesCrop", MODE_PRIVATE);
+                                                File dir2 = activity.getDir( "DocsImages", MODE_PRIVATE);
+                                                if (dir1.exists())
+                                                    dir1.delete();
+                                                if (dir2.exists())
+                                                    dir2.delete();
+                                                Toast.makeText(activity, "Document Saved Successfully", Toast.LENGTH_SHORT).show();
+                                            }, error -> {
+                                                Toast.makeText(activity, "Some Issue in saving the document", Toast.LENGTH_SHORT).show();
+                                                error.printStackTrace();
+                                            });
+                                }
+                            }
+
+                        } catch (Exception ex){
+                            ex.printStackTrace();
+                        }
+                    } else {
+                        Toast.makeText(activity, "Photo not yet captured", Toast.LENGTH_SHORT).show();
+                    }
+
+                }, error -> {
+                    error.printStackTrace();
+                });
+
+    }
+
+    public void deleteImage(ClickDocumentViewModel viewModel, int ImageId){
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(activity)
+                        .getDataBaseDao()
+                        .deleteTempImageDetailsByID(viewModel.noticeNumber.get(), viewModel.propertyNo.get(), ImageId))
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result1 ->
+                {
                 }, error -> {
                     error.printStackTrace();
                 });

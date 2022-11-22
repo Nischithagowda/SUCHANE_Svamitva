@@ -63,7 +63,7 @@
                             app:data="@{viewModel.imageTempTblList}"/>
 
                         <Button
-                            app:visiblity="@{viewModel.}"
+                            app:visibility="@{viewModel.canCreatePDF}"
                             android:onClick="@{viewModel::onClickGeneratePDF}"
                             style="@style/btn"
                             android:textAllCaps="false"

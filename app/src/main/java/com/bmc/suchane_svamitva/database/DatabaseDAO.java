@@ -113,6 +113,9 @@ public interface DatabaseDAO {
     @Query("delete from ImageTempTbl where NOTICE_NO = :NoticeNo and property_no = :property_no")
     int deleteTempImageDetails(String NoticeNo, String property_no);
 
+    @Query("delete from ImageTempTbl where NOTICE_NO = :NoticeNo and property_no = :property_no and DocumentID = :DocumentID")
+    int deleteTempImageDetailsByID(String NoticeNo, String property_no, int DocumentID);
+
     //PendingDPR Tbl
     @Insert
     Long[] InsertPendingDPRDetails(List<PendingDPRTbl> pendingDPRTblList);

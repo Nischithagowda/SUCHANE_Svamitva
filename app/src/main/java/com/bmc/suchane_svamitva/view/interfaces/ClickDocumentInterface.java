@@ -11,6 +11,7 @@ public interface ClickDocumentInterface {
     void onClickSetDocsName(ClickDocumentViewModel viewModel);
     void onClickCancel();
     void onClickCreatePDF(ClickDocumentViewModel viewModel);
-    void imageProcess(ClickDocumentViewModel viewModel);
-    Uri handleUCropResult(Intent data, ClickDocumentViewModel viewModel);
+    void ProcessDocsImage(ClickDocumentViewModel viewModel);
+    void handleUCropResult(Intent data, ClickDocumentViewModel viewModel);
+    void setResultCancelled();
 }
