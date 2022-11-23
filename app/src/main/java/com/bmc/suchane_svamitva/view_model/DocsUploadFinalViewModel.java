@@ -12,14 +12,13 @@ import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableList;
 
+import com.bmc.suchane_svamitva.R;
 import com.bmc.suchane_svamitva.model.District;
 import com.bmc.suchane_svamitva.model.DocumentTbl;
 import com.bmc.suchane_svamitva.model.Hobli;
-import com.bmc.suchane_svamitva.model.OwnerTbl;
 import com.bmc.suchane_svamitva.model.Taluka;
 import com.bmc.suchane_svamitva.model.Village;
 import com.bmc.suchane_svamitva.view.adapter.DocumentListAdapter;
-import com.bmc.suchane_svamitva.view.adapter.OwnerDocsUploadAdapterCompleted;
 import com.bmc.suchane_svamitva.view.interfaces.DocsUploadFinalInterface;
 import com.bmc.suchane_svamitva.view.interfaces.DocumentListInterface;
 
@@ -45,6 +44,11 @@ public class DocsUploadFinalViewModel implements DocumentListInterface {
     public final ObservableField<String> landmarkError = new ObservableField<>();
     public final ObservableField<String> landmark = new ObservableField<>("");
     public final ObservableField<String> landmark_UPD = new ObservableField<>("");
+    public final ObservableList<String> documentNameList = new ObservableArrayList<>();
+    public final ObservableField<String> documentNameError = new ObservableField<>();
+    public final ObservableField<String> editDocsNameError = new ObservableField<>();
+    public final ObservableField<String> documentName = new ObservableField<>("");
+    public final ObservableField<String> editDocsName = new ObservableField<>("");
     public final ObservableList<District> districtNameList = new ObservableArrayList<>();
     public final ObservableField<String> districtCode = new ObservableField<>();
     public final ObservableField<String> districtError = new ObservableField<>();
@@ -65,18 +69,10 @@ public class DocsUploadFinalViewModel implements DocumentListInterface {
     public final ObservableField<String> mobileNumber = new ObservableField<>("0000000000");
     public final ObservableField<String> propertyNo = new ObservableField<>("");
     public final ObservableField<String> ownerName = new ObservableField<>("");
-    public ObservableField<Bitmap> imageBitMapPropertyOrLand = new ObservableField<>();
-    public ObservableField<String> mCurrentPropertyOrLandPhotoPath = new ObservableField<>();
-    public final ObservableField<byte[]> imageDataPropertyOrLand = new ObservableField<>();
-    public final ObservableField<File> imageFilePropertyOrLand = new ObservableField<>();
-    public ObservableField<Bitmap> imageBitMapServingDPR = new ObservableField<>();
-    public ObservableField<String> mCurrentServingDPRPhotoPath = new ObservableField<>();
-    public final ObservableField<byte[]> imageDataServingDPR = new ObservableField<>();
-    public final ObservableField<File> imageFileServingDPR = new ObservableField<>();
-    public ObservableBoolean isImageVisible = new ObservableBoolean(false);
     public ObservableBoolean isChangesDone = new ObservableBoolean(false);
     public final ObservableField<DocumentListAdapter> documentListAdapter = new ObservableField<>();
     public final ObservableList<DocumentTbl> documentTblList = new ObservableArrayList<>();
+    public ObservableBoolean isDocumentCaptured = new ObservableBoolean(false);
 
     public DocsUploadFinalViewModel(DocsUploadFinalInterface docsUploadFinalInterface) {
         this.docsUploadFinalInterface = docsUploadFinalInterface;
@@ -85,35 +81,42 @@ public class DocsUploadFinalViewModel implements DocumentListInterface {
     }
 
     public void onClickAddDocument(View view){
-        docsUploadFinalInterface.onClickAddDocument(this);
+        if (TextUtils.isEmpty(this.documentName.get())){
+            documentNameError.set("Select any document");
+        } else {
+            docsUploadFinalInterface.onClickAddDocument(this);
+        }
     }
 
-    public void capturePID_or_TaxReceiptPicture(View view){
-        docsUploadFinalInterface.capturePropertyOrLandPhoto(this);
+    public void onClickSetDocsName(View view) {
+        if (TextUtils.isEmpty(this.editDocsName.get())){
+            editDocsNameError.set(view.getContext().getString(R.string.enter_name_of_the_document));
+        } else {
+            this.documentName.set(this.editDocsName.get());
+            docsUploadFinalInterface.onClickCancel();
+        }
     }
 
-    public void capturePrpertyOrAlternateDocsPicture(View view){
-        docsUploadFinalInterface.captureServingDPRPhoto(this);
+    public void onClickCancel(View view) {
+        this.documentName.set("");
+        this.editDocsName.set("");
+        this.editDocsNameError.set(null);
+        docsUploadFinalInterface.onClickCancel();
     }
 
-    public void onClickShowImagePropertyOrLand(View view){
-        docsUploadFinalInterface.showImagePropertyOrLand(this);
+    public void onContactDocumentNameItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
+        String docsName = parent.getItemAtPosition(position).toString();
+        if (docsName.equals(arg1.getResources().getString(R.string.other_document))){
+            docsUploadFinalInterface.captureDocumentName(this);
+        } else {
+            this.documentName.set(docsName);
+            this.documentNameError.set(null);
+        }
     }
 
-    public void onClickShowImageServingDPR(View view){
-        docsUploadFinalInterface.showImageServingDPR(this);
-    }
-
-    public void processImagePropertyOrLand() {
-        docsUploadFinalInterface.imageProcessPropertyOrLand(this);
-    }
-
-    public void processImageServingDPR() {
-        docsUploadFinalInterface.imageProcessServingDPR(this);
-    }
-
-    public void handleUCropResult(Intent data) {
-        docsUploadFinalInterface.handleUCropResult(data, this);
+    public void onContactDocsNameTextChanged(CharSequence s, int start, int before, int count) {
+        this.editDocsName.set(s.toString());
+        this.editDocsNameError.set(null);
     }
 
     public void onContactDoorNoTextChanged(CharSequence s, int start, int before, int count) {
@@ -182,11 +185,8 @@ public class DocsUploadFinalViewModel implements DocumentListInterface {
     public void onClickSaveAndNextData(View view) {
         boolean status = false;
 
-        if (imageDataPropertyOrLand.get() == null) {
-            Toast.makeText(view.getContext(), "Capture Property Or Land photo to proceed", Toast.LENGTH_LONG).show();
-            status = true;
-        } else if (imageDataServingDPR.get() == null) {
-            Toast.makeText(view.getContext(), "Capture Serving DPR photo to proceed", Toast.LENGTH_LONG).show();
+        if (this.documentTblList.size() <= 0) {
+            Toast.makeText(view.getContext(), "Add document to proceed", Toast.LENGTH_LONG).show();
             status = true;
         } else if (TextUtils.isEmpty(doorNo_UPD.get()) || doorNo_UPD.get() == null){
             doorNoError.set("Enter door number");

@@ -33,26 +33,26 @@ public class DocsUploadFinalActivity extends AppCompatActivity {
         viewModel = new DocsUploadFinalViewModel(docsUploadFinalInterface);
         binding.setViewModel(viewModel);
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constant.CAMERA_REQUEST_PropertyOrLand) {
-            if (resultCode == RESULT_OK) {
-                viewModel.processImagePropertyOrLand();
-            }
-        } else if (requestCode == Constant.CAMERA_REQUEST_ServingNotice) {
-            if (resultCode == RESULT_OK) {
-                viewModel.processImageServingDPR();
-            }
-        } else if (requestCode == UCrop.REQUEST_CROP){
-            if (resultCode == RESULT_OK){
-                viewModel.handleUCropResult(data);
-            } else {
-                //viewModel.setResultCancelled();
-            }
-        }
-    }
+//
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == Constant.CAMERA_REQUEST_PropertyOrLand) {
+//            if (resultCode == RESULT_OK) {
+//                viewModel.processImagePropertyOrLand();
+//            }
+//        } else if (requestCode == Constant.CAMERA_REQUEST_ServingNotice) {
+//            if (resultCode == RESULT_OK) {
+//                viewModel.processImageServingDPR();
+//            }
+//        } else if (requestCode == UCrop.REQUEST_CROP){
+//            if (resultCode == RESULT_OK){
+//                viewModel.handleUCropResult(data);
+//            } else {
+//                //viewModel.setResultCancelled();
+//            }
+//        }
+//    }
 
     @Override
     public void onBackPressed() {

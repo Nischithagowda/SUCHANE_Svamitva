@@ -1,6 +1,7 @@
 package com.bmc.suchane_svamitva.view.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -49,7 +50,7 @@ public class ClickDocumentActivity extends AppCompatActivity {
             }
         } else if (requestCode == UCrop.REQUEST_CROP){
             if (resultCode == RESULT_OK){
-                String filePath = data.getData().getPath();
+                String filePath = UCrop.getOutput(data).getPath();
                 File f = new File(filePath);
                 if (f.length()/1024 <300)//Bytes to kb
                     viewModel.handleUCropResult(data);
@@ -62,5 +63,16 @@ public class ClickDocumentActivity extends AppCompatActivity {
                 viewModel.setResultCancelled();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

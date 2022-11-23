@@ -7,6 +7,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 
@@ -95,6 +96,13 @@ public class ViewBinding {
     }
 
     @BindingAdapter({"items"})
+    public static void docsNameSpinner1(com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner spinner, List<String> entries) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(spinner.getContext(),
+                android.R.layout.simple_spinner_dropdown_item, entries);
+        spinner.setAdapter(adapter);
+    }
+
+    @BindingAdapter({"items"})
     public static void districtSpinner1(com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner spinner, List<District> entries) {
         ArrayAdapter<District> adapter = new ArrayAdapter<>(spinner.getContext(),
                 android.R.layout.simple_spinner_dropdown_item, entries);
@@ -164,6 +172,15 @@ public class ViewBinding {
             Bitmap bitmap = BitmapFactory.decodeFile(resultUri.getPath());
             imageView.setImageBitmap(bitmap);
         }
+    }
+
+    @BindingAdapter({"onCheckedChanged"})
+    public static void onCheckedChanged(CompoundButton button, boolean isChecked) {
+        button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            }
+        });
     }
 
     @BindingAdapter({"data", "adapter"})

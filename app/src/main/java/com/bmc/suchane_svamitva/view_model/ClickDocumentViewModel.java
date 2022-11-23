@@ -1,8 +1,9 @@
 package com.bmc.suchane_svamitva.view_model;
 
 import android.content.Intent;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 
 import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableBoolean;
@@ -10,14 +11,13 @@ import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
 import androidx.databinding.ObservableList;
 
-import com.bmc.suchane_svamitva.R;
 import com.bmc.suchane_svamitva.model.ImageTempTbl;
-import com.bmc.suchane_svamitva.model.OwnerTbl;
 import com.bmc.suchane_svamitva.view.adapter.ImageListAdapter;
-import com.bmc.suchane_svamitva.view.adapter.OwnerDocsUploadAdapterCompleted;
-import com.bmc.suchane_svamitva.view.adapter.OwnerDocsUploadAdapterPending;
 import com.bmc.suchane_svamitva.view.interfaces.ClickDocumentInterface;
 import com.bmc.suchane_svamitva.view.interfaces.ImageListInterface;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClickDocumentViewModel implements ImageListInterface {
     ClickDocumentInterface clickDocumentInterface;
@@ -33,15 +33,18 @@ public class ClickDocumentViewModel implements ImageListInterface {
     public final ObservableField<String> propertyNo = new ObservableField<>("");
     public final ObservableField<String> noticeNumber = new ObservableField<>("");
     public ObservableField<String> mDocsImagePath = new ObservableField<>();
-    public final ObservableField<String> docsNameError = new ObservableField<>();
     public final ObservableField<String> docsName = new ObservableField<>("");
     public final ObservableInt ImageCapturedCount = new ObservableInt(0);
     public final ObservableField<ImageListAdapter> imageListAdapter = new ObservableField<>();
     public final ObservableList<ImageTempTbl> imageTempTblList = new ObservableArrayList<>();
+    public final ObservableList<Integer> DocumentIDList = new ObservableArrayList<>();
     public ObservableBoolean canCreatePDF = new ObservableBoolean(false);
+    public ObservableBoolean isCheckboxChecked = new ObservableBoolean(false);
+    List<ImageTempTbl> list = new ArrayList<>();
 
     public ClickDocumentViewModel(ClickDocumentInterface clickDocumentInterface) {
         this.clickDocumentInterface = clickDocumentInterface;
+        this.clickDocumentInterface.loadData(this);
         imageListAdapter.set(new ImageListAdapter(this));
     }
 
@@ -57,24 +60,6 @@ public class ClickDocumentViewModel implements ImageListInterface {
         clickDocumentInterface.setResultCancelled();
     }
 
-    public void onContactDocsNameTextChanged(CharSequence s, int start, int before, int count) {
-        docsName.set(s.toString());
-        docsNameError.set(null);
-    }
-
-    public void onClickSetDocsName(View view) {
-        if (TextUtils.isEmpty(this.docsName.get())){
-            docsNameError.set(view.getContext().getString(R.string.enter_name_of_the_document));
-        } else {
-            clickDocumentInterface.
-                    onClickSetDocsName(this);
-        }
-    }
-
-    public void onClickCancel(View view) {
-        clickDocumentInterface.onClickCancel();
-    }
-
     public void onClickCapturePhoto(View view) {
         clickDocumentInterface.captureDocumentPhoto(this);
     }
@@ -82,4 +67,18 @@ public class ClickDocumentViewModel implements ImageListInterface {
     public void onClickGeneratePDF(View view) {
         clickDocumentInterface.onClickCreatePDF(this);
     }
+
+    public void onClickDeletePhoto(View view) {
+        clickDocumentInterface.onClickDeletePhoto(this, DocumentIDList);
+    }
+
+    public void onImageChecked(CompoundButton buttonView, boolean isChecked, ImageTempTbl dataVariable, int position) {
+        isCheckboxChecked.set(isChecked);
+    }
+
+//    public void onCheckBoxClicked(View view, ImageTempTbl dataVariable, int position){
+//        if (!list.contains(dataVariable))
+//            list.add(dataVariable);
+//        Log.d("onImageChecked", "position: "+position);
+//    }
 }

@@ -22,7 +22,6 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Data
     private List<ImageTempTbl> data;
     ImageListInterface imageListInterface;
 
-
     public ImageListAdapter(ImageListInterface imageListInterface) {
         this.imageListInterface = imageListInterface;
         this.data = new ArrayList<>();
@@ -41,6 +40,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Data
         ImageTempTbl imageTempTbl = data.get(position);
         holder.setVDataVariable(imageTempTbl);
         holder.setHandler(imageListInterface);
+        holder.setPosition(position);
     }
 
     @Override
@@ -99,7 +99,8 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Data
             }
         }
 
-        /* package */ void setVDataVariable(final ImageTempTbl dataVariable) {
+        /* package */
+        void setVDataVariable(final ImageTempTbl dataVariable) {
             if (binding != null) {
                 binding.setDataVariable(dataVariable);
 
@@ -108,6 +109,11 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Data
         void setHandler(final ImageListInterface handler) {
             if (binding != null) {
                 binding.setHandler(handler);
+            }
+        }
+        void setPosition(final Integer position) {
+            if (binding != null) {
+                binding.setPosition(position);
             }
         }
     }

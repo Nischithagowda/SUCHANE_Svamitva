@@ -136,83 +136,56 @@
                     android:layout_marginTop="5dp"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_margin="10dp">
-                    <Button
-                        android:onClick="@{viewModel::onClickAddDocument}"
-                        style="@style/btn"
-                        android:textAllCaps="false"
-                        android:layout_width="wrap_content"
+                    android:layout_marginStart="5dp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/add_document"/>
-                    <androidx.cardview.widget.CardView
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:onClick="@{viewModel::capturePID_or_TaxReceiptPicture}"
-                        card_view:cardCornerRadius="4dp"
-                        card_view:cardBackgroundColor="@color/white">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:padding="5dp"
-                            android:background="@color/colorPrimary">
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/star"
-                                android:textColor="@android:color/holo_red_dark"
-                                android:textSize="16sp"
-                                android:layout_marginStart="5dp"/>
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/click_photo_of_pid_tax_receipt"
-                                android:textSize="14sp"
-                                android:layout_marginStart="5dp"
-                                android:textColor="@color/white"/>
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-                    <androidx.cardview.widget.CardView
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
+                        android:text="@string/bulletPoint"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="11sp"
+                        android:layout_gravity="center" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="@string/document_of_pid_tax_receipt_is_mandatory"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="11sp"
                         android:layout_gravity="center"
-                        android:layout_marginStart="10dp"
-                        android:onClick="@{viewModel::capturePrpertyOrAlternateDocsPicture}"
-                        card_view:cardCornerRadius="4dp"
-                        card_view:cardBackgroundColor="@color/white">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:padding="5dp"
-                            android:background="@color/colorPrimary">
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/star"
-                                android:textColor="@android:color/holo_red_dark"
-                                android:textSize="16sp"/>
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/click_photo_of_property_or_alternate_documents"
-                                android:textColor="@color/white"
-                                android:textSize="14sp"
-                                android:layout_marginStart="5dp"/>
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+                        android:layout_marginStart="10dp"/>
                 </LinearLayout>
+
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    app:items="@{viewModel.documentNameList}"
+                    android:text="@{viewModel.documentName}"
+                    android:error="@{viewModel.documentNameError}"
+                    android:onItemClick="@{viewModel::onContactDocumentNameItemClick}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/select_document_name"
+                    app:met_textColor="@android:color/black"
+                    app:met_textColorHint="@android:color/darker_gray"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp" />
+
+                <Button
+                    android:onClick="@{viewModel::onClickAddDocument}"
+                    style="@style/btn"
+                    android:textAllCaps="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/add_document"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    app:visibility="@{viewModel.isDocumentCaptured}">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
@@ -231,7 +204,7 @@
                                 style="@style/text_list_header"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1"
+                                android:layout_weight="0.5"
                                 android:text="@string/document_id" />
 
                             <androidx.appcompat.widget.AppCompatTextView
@@ -252,40 +225,13 @@
                         app:data="@{viewModel.documentTblList}"/>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:visibility="@{viewModel.isImageVisible}">
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="80dp"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerInside"
-                        android:layout_gravity="center"
-                        android:src="@drawable/img_png"
-                        app:imageBitMap="@{viewModel.imageBitMapPropertyOrLand}"
-                        android:onClick="@{viewModel::onClickShowImagePropertyOrLand}"/>
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="80dp"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerInside"
-                        android:layout_gravity="center"
-                        android:src="@drawable/img_png"
-                        android:layout_marginStart="15dp"
-                        app:imageBitMap="@{viewModel.imageBitMapServingDPR}"
-                        android:onClick="@{viewModel::onClickShowImageServingDPR}"/>
-                </LinearLayout>
-
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/postal_address"
                     android:textColor="@color/white"
-                    style="@style/text_view_header"/>
+                    style="@style/text_view_header"
+                    android:layout_marginTop="5dp"/>
 
                 <include layout="@layout/content_docs_upload_final_3"
                     app:viewModel="@{viewModel}"/>

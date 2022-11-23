@@ -11,8 +11,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -29,14 +27,12 @@ import com.bmc.suchane_svamitva.BuildConfig;
 import com.bmc.suchane_svamitva.R;
 import com.bmc.suchane_svamitva.database.DBConnection;
 import com.bmc.suchane_svamitva.databinding.DocsNameDialogBinding;
-import com.bmc.suchane_svamitva.databinding.ValidateOtpDialogBinding;
 import com.bmc.suchane_svamitva.model.DocumentTbl;
 import com.bmc.suchane_svamitva.model.ImageTempTbl;
 import com.bmc.suchane_svamitva.utils.Constant;
 import com.bmc.suchane_svamitva.view.interfaces.ClickDocumentInterface;
 import com.bmc.suchane_svamitva.view.ui.ClickDocumentActivity;
 import com.bmc.suchane_svamitva.view_model.ClickDocumentViewModel;
-import com.bmc.suchane_svamitva.view_model.DocsUploadFinalViewModel;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.yalantis.ucrop.UCrop;
@@ -46,6 +42,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import io.reactivex.Observable;
@@ -83,6 +80,7 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
             viewModel.villageName.set(intent.getStringExtra("villageName"));
             viewModel.noticeNumber.set(intent.getStringExtra("NOTICE_NO"));
             viewModel.propertyNo.set(intent.getStringExtra("Property_no"));
+            viewModel.docsName.set(intent.getStringExtra("docsName"));
 
             Observable
                     .fromCallable(() -> DBConnection.getConnection(activity)
@@ -94,6 +92,7 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
                                 dialog.dismiss();
                                 viewModel.imageTempTblList.clear();
                                 viewModel.imageTempTblList.addAll(result);
+                                viewModel.canCreatePDF.set(true);
                             }, error -> {
                                 error.printStackTrace();
                                 dialog.dismiss();
@@ -246,20 +245,14 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
     }
 
     @Override
-    public void onClickCreatePDF(ClickDocumentViewModel viewModel) {
-        DocsNameDialogBinding binding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.docs_name_dialog, null, false);
-        binding.setViewModel(viewModel);
-        view = binding.getRoot();
-
-        builder = new AlertDialog.Builder(activity);
-        builder.setView(view)
-                .setCancelable(false);
-        alertDialog = builder.create();
-        alertDialog.show();
+    public void onClickDeletePhoto(ClickDocumentViewModel viewModel, List<Integer> DocumentIDList){
+        for (int i = 0;i<DocumentIDList.size();i++) {
+            deleteImageByImageID(viewModel, DocumentIDList.get(i));
+        }
     }
 
     @Override
-    public void onClickSetDocsName(ClickDocumentViewModel viewModel){
+    public void onClickCreatePDF(ClickDocumentViewModel viewModel){
 
         SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
         String mobNum = sharedPreferences.getString(Constant.USER_MOBILE, null);
@@ -285,7 +278,7 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
                         PdfWriter.getInstance(document, new FileOutputStream(destinationDocsPath)); //  Change pdf's name.
                         document.open();
                         try {
-                            for (int i = 1; i <= result.size(); i++) {
+                            for (int i = 0; i < result.size(); i++) {
                                 String filePathString = result.get(i).getDocumentPath();
                                 File f = new File(filePathString);
                                 if (f.exists()) {
@@ -296,10 +289,10 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
                                     image.setAlignment(com.itextpdf.text.Image.ALIGN_CENTER | com.itextpdf.text.Image.ALIGN_TOP);
                                     document.add(image);
                                 } else {
-                                    deleteImage(viewModel, result.get(i).getDocumentID());
+                                    deleteImageByImageID(viewModel, result.get(i).getDocumentID());
                                 }
 
-                                if (i==result.size()){
+                                if (i==result.size()-1){
                                     document.close();
 
                                     DocumentTbl documentTbl = new DocumentTbl();
@@ -318,6 +311,7 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
                                             .observeOn(AndroidSchedulers.mainThread())
                                             .subscribe(result1 ->
                                             {
+                                                deleteImages(viewModel);
                                                 File dir1 = activity.getDir( "DocsImagesCrop", MODE_PRIVATE);
                                                 File dir2 = activity.getDir( "DocsImages", MODE_PRIVATE);
                                                 if (dir1.exists())
@@ -325,6 +319,7 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
                                                 if (dir2.exists())
                                                     dir2.delete();
                                                 Toast.makeText(activity, "Document Saved Successfully", Toast.LENGTH_SHORT).show();
+                                                activity.onBackPressed();
                                             }, error -> {
                                                 Toast.makeText(activity, "Some Issue in saving the document", Toast.LENGTH_SHORT).show();
                                                 error.printStackTrace();
@@ -345,7 +340,7 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
 
     }
 
-    public void deleteImage(ClickDocumentViewModel viewModel, int ImageId){
+    public void deleteImageByImageID(ClickDocumentViewModel viewModel, int ImageId){
         Observable
                 .fromCallable(() -> DBConnection.getConnection(activity)
                         .getDataBaseDao()
@@ -359,11 +354,17 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
                 });
     }
 
-    @Override
-    public void onClickCancel(){
-        alertDialog.dismiss();
-        if (view.getParent() != null) {
-            ((ViewGroup) view.getParent()).removeView(view);
-        }
+    public void deleteImages(ClickDocumentViewModel viewModel){
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(activity)
+                        .getDataBaseDao()
+                        .deleteTempImageDetails(viewModel.noticeNumber.get(), viewModel.propertyNo.get()))
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result1 ->
+                {
+                }, error -> {
+                    error.printStackTrace();
+                });
     }
 }

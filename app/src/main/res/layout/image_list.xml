@@ -8,8 +8,14 @@
             name="dataVariable"
             type="com.bmc.suchane_svamitva.model.ImageTempTbl" />
         <variable
+            name="position"
+            type="Integer" />
+        <variable
             name="handler"
             type="com.bmc.suchane_svamitva.view.interfaces.ImageListInterface" />
+        <variable
+            name="viewModel"
+            type="com.bmc.suchane_svamitva.view_model.ClickDocumentViewModel" />
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -24,26 +30,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="centerInside"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_baseline_delete_24"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="50dp"
-                    android:layout_height="60dp"
+                    android:layout_width="60dp"
+                    android:layout_height="70dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
                     android:layout_gravity="center"
                     android:src="@drawable/img_png"
                     app:imageBitMap="@{dataVariable.documentPath}"
                     android:layout_marginStart="10dp"/>
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    app:onCheckedChanged="@{(compoundButton, checked)->viewModel.onImageChecked(compoundButton, checked, dataVariable, position)"/>
             </LinearLayout>
         </LinearLayout>
 
