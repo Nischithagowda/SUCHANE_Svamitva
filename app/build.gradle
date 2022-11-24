@@ -15,12 +15,12 @@ android {
         abortOnError false
     }
 
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.bmc.suchane_svamitva"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0.0.1"
         multiDexEnabled true
@@ -86,6 +86,8 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.github.yalantis:ucrop:2.2.6'
 
-    //pdf library
+    //PDF library
     implementation 'com.itextpdf:itextg:5.5.10'
+    //PDF Viewer
+    implementation 'com.github.barteksc:AndroidPdfViewer:2.3.0'
 }

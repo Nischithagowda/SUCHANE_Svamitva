@@ -13,9 +13,6 @@
         <variable
             name="handler"
             type="com.bmc.suchane_svamitva.view.interfaces.ImageListInterface" />
-        <variable
-            name="viewModel"
-            type="com.bmc.suchane_svamitva.view_model.ClickDocumentViewModel" />
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -44,11 +41,17 @@
                     app:imageBitMap="@{dataVariable.documentPath}"
                     android:layout_marginStart="10dp"/>
 
+<!--                <androidx.appcompat.widget.AppCompatCheckBox-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:checked="@{viewModel.isCheckBoxChecked}"-->
+<!--                    android:onCheckedChanged="@{viewModel::onImageChecked}" />-->
                 <androidx.appcompat.widget.AppCompatCheckBox
+                    android:textSize="14sp"
+                    android:onCheckedChanged="@{(CompoundButton, isChecked)->handler.onCheckedChangeListener(dataVariable, position, isChecked)}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="false"
-                    app:onCheckedChanged="@{(compoundButton, checked)->viewModel.onImageChecked(compoundButton, checked, dataVariable, position)"/>
+                    android:maxLines="1" />
             </LinearLayout>
         </LinearLayout>
 

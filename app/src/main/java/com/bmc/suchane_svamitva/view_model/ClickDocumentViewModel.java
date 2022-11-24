@@ -3,7 +3,7 @@ package com.bmc.suchane_svamitva.view_model;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
-import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableBoolean;
@@ -37,10 +37,9 @@ public class ClickDocumentViewModel implements ImageListInterface {
     public final ObservableInt ImageCapturedCount = new ObservableInt(0);
     public final ObservableField<ImageListAdapter> imageListAdapter = new ObservableField<>();
     public final ObservableList<ImageTempTbl> imageTempTblList = new ObservableArrayList<>();
-    public final ObservableList<Integer> DocumentIDList = new ObservableArrayList<>();
     public ObservableBoolean canCreatePDF = new ObservableBoolean(false);
-    public ObservableBoolean isCheckboxChecked = new ObservableBoolean(false);
-    List<ImageTempTbl> list = new ArrayList<>();
+    public ObservableBoolean isCheckBoxChecked = new ObservableBoolean(false);
+    public List<ImageTempTbl> SelectedImagelist = new ArrayList<>();
 
     public ClickDocumentViewModel(ClickDocumentInterface clickDocumentInterface) {
         this.clickDocumentInterface = clickDocumentInterface;
@@ -65,20 +64,29 @@ public class ClickDocumentViewModel implements ImageListInterface {
     }
 
     public void onClickGeneratePDF(View view) {
-        clickDocumentInterface.onClickCreatePDF(this);
+        if (this.SelectedImagelist.size()>0) {
+            clickDocumentInterface.onClickCreatePDF(this, this.SelectedImagelist);
+        } else {
+            Toast.makeText(view.getContext(), "Please Select any photo to convert into PDF", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onClickDeletePhoto(View view) {
-        clickDocumentInterface.onClickDeletePhoto(this, DocumentIDList);
+        if (this.SelectedImagelist.size()>0) {
+            clickDocumentInterface.onClickDeletePhoto(this, this.SelectedImagelist);
+        } else {
+            Toast.makeText(view.getContext(), "Please Select the photo you want to delete", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    public void onImageChecked(CompoundButton buttonView, boolean isChecked, ImageTempTbl dataVariable, int position) {
-        isCheckboxChecked.set(isChecked);
+    public void onCheckedChangeListener(ImageTempTbl dataVariable, int position, boolean isChecked) {
+        if (this.SelectedImagelist.contains(dataVariable))
+            this.SelectedImagelist.remove(dataVariable);
+        else
+            this.SelectedImagelist.add(dataVariable);
+        this.isCheckBoxChecked.set(isChecked);
+        Log.d("onImageChecked", "position: "+position);
+        Log.d("onImageChecked", "isCheckBoxChecked: "+this.isCheckBoxChecked.get());
+        Log.d("onImageChecked", "list.Size: "+this.SelectedImagelist.size());
     }
-
-//    public void onCheckBoxClicked(View view, ImageTempTbl dataVariable, int position){
-//        if (!list.contains(dataVariable))
-//            list.add(dataVariable);
-//        Log.d("onImageChecked", "position: "+position);
-//    }
 }

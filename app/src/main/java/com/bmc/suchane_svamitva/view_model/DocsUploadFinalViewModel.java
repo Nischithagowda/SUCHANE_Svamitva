@@ -69,6 +69,7 @@ public class DocsUploadFinalViewModel implements DocumentListInterface {
     public final ObservableField<String> mobileNumber = new ObservableField<>("0000000000");
     public final ObservableField<String> propertyNo = new ObservableField<>("");
     public final ObservableField<String> ownerName = new ObservableField<>("");
+    public final ObservableField<String> pdfPathForView = new ObservableField<>("");
     public ObservableBoolean isChangesDone = new ObservableBoolean(false);
     public final ObservableField<DocumentListAdapter> documentListAdapter = new ObservableField<>();
     public final ObservableList<DocumentTbl> documentTblList = new ObservableArrayList<>();
@@ -217,5 +218,13 @@ public class DocsUploadFinalViewModel implements DocumentListInterface {
 
     public void onClickHomeData(View view) {
         docsUploadFinalInterface.goHome();
+    }
+
+    public void onClickViewPDF(DocumentTbl documentTbl){
+        docsUploadFinalInterface.onClickViewPDF(this, documentTbl);
+    }
+
+    public void onClickClose(View view){
+        docsUploadFinalInterface.onClickClosePDF();
     }
 }

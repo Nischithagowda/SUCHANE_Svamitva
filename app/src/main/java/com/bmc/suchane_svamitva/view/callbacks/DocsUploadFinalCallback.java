@@ -42,6 +42,7 @@ import com.bmc.suchane_svamitva.api.API_Interface_Suchane;
 import com.bmc.suchane_svamitva.database.DBConnection;
 import com.bmc.suchane_svamitva.databinding.DocsNameDialogBinding;
 import com.bmc.suchane_svamitva.model.District;
+import com.bmc.suchane_svamitva.model.DocumentTbl;
 import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsRequest;
 import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsResponse;
 import com.bmc.suchane_svamitva.model.FnUpdateDRPServedRequest;
@@ -89,6 +90,9 @@ public class DocsUploadFinalCallback implements DocsUploadFinalInterface {
     AlertDialog.Builder builder;
     AlertDialog alertDialog;
     View view;
+    AlertDialog.Builder builderPDF;
+    AlertDialog alertDialogPDF;
+    View viewPDF;
 
     public DocsUploadFinalCallback(DocsUploadFinalActivity activity) {
         this.activity = activity;
@@ -96,11 +100,6 @@ public class DocsUploadFinalCallback implements DocsUploadFinalInterface {
 
     @Override
     public void loadData(DocsUploadFinalViewModel viewModel){
-        ProgressDialog dialog = new ProgressDialog(activity);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-        dialog.setMessage("Loading Data Wait ..");
-        dialog.show();
         try {
 
             String[] documentNameList = activity.getResources().getStringArray(R.array.document_name);
@@ -146,33 +145,56 @@ public class DocsUploadFinalCallback implements DocsUploadFinalInterface {
                             viewModel.landmark_UPD.set(result.get(0).getNTC_LANDMARK());
                         }
                     }, error -> error.printStackTrace());
-
-            Observable
-                    .fromCallable(() -> DBConnection.getConnection(activity)
-                            .getDataBaseDao()
-                            .getDocumentTblValues(viewModel.noticeNumber.get(), viewModel.propertyNo.get()))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(result -> {
-                                dialog.dismiss();
-                                for (int i = 0; i<result.size();i++) {
-                                    result.get(i).setDocumentID(i+1);
-                                    if (i==result.size()-1){
-                                        viewModel.documentTblList.clear();
-                                        viewModel.documentTblList.addAll(result);
-                                        viewModel.isDocumentCaptured.set(true);
-                                    }
-                                }
-                            }, error -> {
-                                error.printStackTrace();
-                                dialog.dismiss();
-                            }
-                    );
+            onLoadDocsList(viewModel);
             //getUserDistrict(viewModel);
         } catch (Exception ex){
             ex.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void onLoadDocsList(DocsUploadFinalViewModel viewModel){
+        ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Loading Data Wait ..");
+        dialog.show();
+
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(activity)
+                        .getDataBaseDao()
+                        .getDocumentTblValues(viewModel.noticeNumber.get(), viewModel.propertyNo.get()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                            dialog.dismiss();
+                            for (int i = 0; i<result.size();i++) {
+                                result.get(i).setDocumentID(i+1);
+                                if (i==result.size()-1){
+                                    viewModel.documentTblList.clear();
+                                    viewModel.documentTblList.addAll(result);
+                                    viewModel.isDocumentCaptured.set(true);
+                                }
+                            }
+                        }, error -> {
+                            error.printStackTrace();
+                            dialog.dismiss();
+                        }
+                );
+    }
+    @Override
+    public void onClickViewPDF(DocsUploadFinalViewModel viewModel, DocumentTbl documentTbl){
+        viewModel.pdfPathForView.set(documentTbl.getDocumentPath());
+        DocsNameDialogBinding binding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.pdf_viewer_dialog, null, false);
+        binding.setViewModel(viewModel);
+        viewPDF = binding.getRoot();
+
+        builderPDF = new AlertDialog.Builder(activity);
+        builderPDF.setView(viewPDF)
+                .setCancelable(false);
+        alertDialogPDF = builderPDF.create();
+        alertDialogPDF.show();
     }
 
     @Override
@@ -209,6 +231,14 @@ public class DocsUploadFinalCallback implements DocsUploadFinalInterface {
         alertDialog.dismiss();
         if (view.getParent() != null) {
             ((ViewGroup) view.getParent()).removeView(view);
+        }
+    }
+
+    @Override
+    public void onClickClosePDF(){
+        alertDialogPDF.dismiss();
+        if (viewPDF.getParent() != null) {
+            ((ViewGroup) viewPDF.getParent()).removeView(viewPDF);
         }
     }
 

@@ -1,8 +1,6 @@
 package com.bmc.suchane_svamitva.view.interfaces;
 
-import android.content.Intent;
-import android.net.Uri;
-
+import com.bmc.suchane_svamitva.model.DocumentTbl;
 import com.bmc.suchane_svamitva.view_model.DocsUploadFinalViewModel;
 
 public interface DocsUploadFinalInterface {
@@ -15,5 +13,8 @@ public interface DocsUploadFinalInterface {
     void saveAndNext(DocsUploadFinalViewModel viewModel);
     void goHome();
     void captureDocumentName(DocsUploadFinalViewModel viewModel);
+    void onClickViewPDF(DocsUploadFinalViewModel viewModel, DocumentTbl documentTbl);
     void onClickCancel();
+    void onClickClosePDF();
+    void onLoadDocsList(DocsUploadFinalViewModel viewModel);
 }

@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,9 +52,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ClickDocumentCallback implements ClickDocumentInterface {
     ClickDocumentActivity activity;
-    AlertDialog.Builder builder;
-    AlertDialog alertDialog;
-    View view;
 
     public ClickDocumentCallback(ClickDocumentActivity activity) {
         this.activity = activity;
@@ -61,12 +59,6 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
 
     @Override
     public void loadData(ClickDocumentViewModel viewModel) {
-        ProgressDialog dialog = new ProgressDialog(activity);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-        dialog.setMessage("Loading Data Wait ..");
-        dialog.show();
-
         try {
             Intent intent = activity.getIntent();
             viewModel.districtCode.set(intent.getStringExtra("districtCode"));
@@ -82,22 +74,8 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
             viewModel.propertyNo.set(intent.getStringExtra("Property_no"));
             viewModel.docsName.set(intent.getStringExtra("docsName"));
 
-            Observable
-                    .fromCallable(() -> DBConnection.getConnection(activity)
-                            .getDataBaseDao()
-                            .getTempImagePath(viewModel.noticeNumber.get(), viewModel.propertyNo.get()))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(result -> {
-                                dialog.dismiss();
-                                viewModel.imageTempTblList.clear();
-                                viewModel.imageTempTblList.addAll(result);
-                                viewModel.canCreatePDF.set(true);
-                            }, error -> {
-                                error.printStackTrace();
-                                dialog.dismiss();
-                            }
-                    );
+            loadImageList(viewModel);
+
         } catch (Exception ex){
             ex.printStackTrace();
         }
@@ -213,23 +191,8 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                            Observable
-                            .fromCallable(() -> DBConnection.getConnection(activity)
-                                    .getDataBaseDao()
-                                    .getTempImagePath(viewModel.noticeNumber.get(), viewModel.propertyNo.get()))
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(result1 -> {
-                                        dialog.dismiss();
-                                        viewModel.imageTempTblList.clear();
-                                        viewModel.imageTempTblList.addAll(result1);
-                                        viewModel.canCreatePDF.set(true);
-
-                                    }, error -> {
-                                        error.printStackTrace();
-                                        dialog.dismiss();
-                                    }
-                            );
+                            dialog.dismiss();
+                            loadImageList(viewModel);
                         }, error -> {
                             error.printStackTrace();
                             dialog.dismiss();
@@ -245,41 +208,42 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
     }
 
     @Override
-    public void onClickDeletePhoto(ClickDocumentViewModel viewModel, List<Integer> DocumentIDList){
-        for (int i = 0;i<DocumentIDList.size();i++) {
-            deleteImageByImageID(viewModel, DocumentIDList.get(i));
+    public void onClickDeletePhoto(ClickDocumentViewModel viewModel, List<ImageTempTbl> SelectedImagelist){
+        for (int i = 0;i<SelectedImagelist.size();i++) {
+            deleteImageByImageID(viewModel, SelectedImagelist.get(i).getDocumentID(), SelectedImagelist.get(i).getDocumentPath(), SelectedImagelist.get(i));
         }
     }
 
     @Override
-    public void onClickCreatePDF(ClickDocumentViewModel viewModel){
+    public void onClickCreatePDF(ClickDocumentViewModel viewModel, List<ImageTempTbl> SelectedImagelist){
 
+        try {
         SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
         String mobNum = sharedPreferences.getString(Constant.USER_MOBILE, null);
 
         Date date = new Date();
         String todayDate = new SimpleDateFormat(Constant.DATE_TIME_FORMAT, Locale.ENGLISH).format(date);
 
-        Observable
-                .fromCallable(() -> DBConnection.getConnection(activity)
-                        .getDataBaseDao()
-                        .getTempImagePath(viewModel.noticeNumber.get(), viewModel.propertyNo.get()))
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result ->
-                {
-                    if (result.size()>0) {
-                        String folder_main_PDF = "DocumentPDF";
-                        File mydir = activity.getDir(folder_main_PDF, MODE_PRIVATE); //Creating an internal dir;
-                        Document document = new Document();
-                        String directoryPath = mydir.getAbsolutePath();
-                        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date());
-                        String destinationDocsPath = directoryPath + "/Docs"+viewModel.propertyNo.get()+"_"+timeStamp+".pdf";
-                        PdfWriter.getInstance(document, new FileOutputStream(destinationDocsPath)); //  Change pdf's name.
-                        document.open();
-                        try {
-                            for (int i = 0; i < result.size(); i++) {
-                                String filePathString = result.get(i).getDocumentPath();
+            for (int i = 0; i < SelectedImagelist.size(); i++) {
+                int finalI = i;
+                String folder_main_PDF = "DocumentPDF";
+                File mydir = activity.getDir(folder_main_PDF, MODE_PRIVATE); //Creating an internal dir;
+                Document document = new Document();
+                String directoryPath = mydir.getAbsolutePath();
+                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date());
+                String destinationDocsPath = directoryPath + "/Docs" + viewModel.propertyNo.get() + "_" + timeStamp + viewModel.docsName.get() + ".pdf";
+                PdfWriter.getInstance(document, new FileOutputStream(destinationDocsPath)); //  Change pdf's name.
+                document.open();
+                Observable
+                        .fromCallable(() -> DBConnection.getConnection(activity)
+                                .getDataBaseDao()
+                                .getTempImageDataByDocsID(viewModel.noticeNumber.get(), viewModel.propertyNo.get(), SelectedImagelist.get(finalI).getDocumentID()))
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(result ->
+                        {
+                            if (!TextUtils.isEmpty(result.getDocumentPath())) {
+                                String filePathString = result.getDocumentPath();
                                 File f = new File(filePathString);
                                 if (f.exists()) {
                                     com.itextpdf.text.Image image = com.itextpdf.text.Image.getInstance(filePathString);  // Change image's name and extension.
@@ -288,59 +252,89 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
                                     image.scalePercent(scaler);
                                     image.setAlignment(com.itextpdf.text.Image.ALIGN_CENTER | com.itextpdf.text.Image.ALIGN_TOP);
                                     document.add(image);
+
+                                    if (finalI == SelectedImagelist.size() - 1) {
+                                        document.close();
+
+                                        DocumentTbl documentTbl = new DocumentTbl();
+                                        documentTbl.setDocumentName(viewModel.docsName.get());
+                                        documentTbl.setDocumentPath(destinationDocsPath);
+                                        documentTbl.setNOTICE_NO(viewModel.noticeNumber.get());
+                                        documentTbl.setProperty_no(viewModel.propertyNo.get());
+                                        documentTbl.setDOC_TIMESTAMP(todayDate);
+                                        documentTbl.setUSER_ID(mobNum);
+
+                                        Observable
+                                                .fromCallable(() -> DBConnection.getConnection(activity)
+                                                        .getDataBaseDao()
+                                                        .InsertDocument(documentTbl))
+                                                .subscribeOn(Schedulers.computation())
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                .subscribe(result1 ->
+                                                {
+                                                    deleteImages(viewModel);
+                                                    File dir1 = activity.getDir("app_DocsImagesCrop", MODE_PRIVATE);
+                                                    File dir2 = activity.getDir("app_DocsImages", MODE_PRIVATE);
+                                                    if (dir1.exists())
+                                                        dir1.delete();
+                                                    if (dir2.exists())
+                                                        dir2.delete();
+                                                    Toast.makeText(activity, "Document Saved Successfully", Toast.LENGTH_SHORT).show();
+                                                    activity.onBackPressed();
+                                                }, error -> {
+                                                    Toast.makeText(activity, "Some Issue in saving the document", Toast.LENGTH_SHORT).show();
+                                                    error.printStackTrace();
+                                                });
+                                    }
                                 } else {
-                                    deleteImageByImageID(viewModel, result.get(i).getDocumentID());
+                                    deleteImageByImageID(viewModel, result.getDocumentID(), result.getDocumentPath(), SelectedImagelist.get(finalI));
                                 }
 
-                                if (i==result.size()-1){
-                                    document.close();
-
-                                    DocumentTbl documentTbl = new DocumentTbl();
-                                    documentTbl.setDocumentName(viewModel.docsName.get());
-                                    documentTbl.setDocumentPath(destinationDocsPath);
-                                    documentTbl.setNOTICE_NO(viewModel.noticeNumber.get());
-                                    documentTbl.setProperty_no(viewModel.propertyNo.get());
-                                    documentTbl.setDOC_TIMESTAMP(todayDate);
-                                    documentTbl.setUSER_ID(mobNum);
-
-                                    Observable
-                                            .fromCallable(() -> DBConnection.getConnection(activity)
-                                                    .getDataBaseDao()
-                                                    .InsertDocument(documentTbl))
-                                            .subscribeOn(Schedulers.computation())
-                                            .observeOn(AndroidSchedulers.mainThread())
-                                            .subscribe(result1 ->
-                                            {
-                                                deleteImages(viewModel);
-                                                File dir1 = activity.getDir( "DocsImagesCrop", MODE_PRIVATE);
-                                                File dir2 = activity.getDir( "DocsImages", MODE_PRIVATE);
-                                                if (dir1.exists())
-                                                    dir1.delete();
-                                                if (dir2.exists())
-                                                    dir2.delete();
-                                                Toast.makeText(activity, "Document Saved Successfully", Toast.LENGTH_SHORT).show();
-                                                activity.onBackPressed();
-                                            }, error -> {
-                                                Toast.makeText(activity, "Some Issue in saving the document", Toast.LENGTH_SHORT).show();
-                                                error.printStackTrace();
-                                            });
-                                }
+                            } else {
+                                deleteImageByImageID(viewModel, result.getDocumentID(), result.getDocumentPath(), SelectedImagelist.get(finalI));
                             }
 
-                        } catch (Exception ex){
-                            ex.printStackTrace();
-                        }
-                    } else {
-                        Toast.makeText(activity, "Photo not yet captured", Toast.LENGTH_SHORT).show();
-                    }
-
-                }, error -> {
-                    error.printStackTrace();
-                });
+                        }, error -> {
+                            error.printStackTrace();
+                        });
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
     }
 
-    public void deleteImageByImageID(ClickDocumentViewModel viewModel, int ImageId){
+    public void loadImageList(ClickDocumentViewModel viewModel){
+        ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setMessage("Loading Data Wait ..");
+        dialog.show();
+
+        Observable
+                .fromCallable(() -> DBConnection.getConnection(activity)
+                        .getDataBaseDao()
+                        .getTempImagePath(viewModel.noticeNumber.get(), viewModel.propertyNo.get()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result1 -> {
+                            dialog.dismiss();
+                            viewModel.imageTempTblList.clear();
+                            if (result1.size()>0) {
+                                viewModel.imageTempTblList.addAll(result1);
+                                viewModel.canCreatePDF.set(true);
+                            } else {
+                                viewModel.canCreatePDF.set(false);
+                            }
+
+                        }, error -> {
+                            dialog.dismiss();
+                            error.printStackTrace();
+                        }
+                );
+    }
+
+    public void deleteImageByImageID(ClickDocumentViewModel viewModel, int ImageId, String ImagePath, ImageTempTbl imageTempTbl){
         Observable
                 .fromCallable(() -> DBConnection.getConnection(activity)
                         .getDataBaseDao()
@@ -349,6 +343,13 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result1 ->
                 {
+                    if (!TextUtils.isEmpty(ImagePath)) {
+                        File dir1 = new File(ImagePath);
+                        if (dir1.exists())
+                            dir1.delete();
+                    }
+                    viewModel.SelectedImagelist.remove(imageTempTbl);
+                    loadImageList(viewModel);
                 }, error -> {
                     error.printStackTrace();
                 });

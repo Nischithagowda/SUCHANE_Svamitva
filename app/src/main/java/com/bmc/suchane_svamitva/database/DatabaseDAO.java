@@ -110,6 +110,9 @@ public interface DatabaseDAO {
     @Query("Select * from ImageTempTbl where NOTICE_NO = :NOTICE_NO and property_no = :property_no")
     List<ImageTempTbl> getTempImagePath(String NOTICE_NO, String property_no);
 
+    @Query("Select * from ImageTempTbl where NOTICE_NO = :NOTICE_NO and property_no = :property_no and DocumentID = :DocumentID")
+    ImageTempTbl getTempImageDataByDocsID(String NOTICE_NO, String property_no, int DocumentID);
+
     @Query("delete from ImageTempTbl where NOTICE_NO = :NoticeNo and property_no = :property_no")
     int deleteTempImageDetails(String NoticeNo, String property_no);
 

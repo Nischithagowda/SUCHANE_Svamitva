@@ -20,7 +20,7 @@ import java.util.Objects;
 
 public class DocsUploadFinalActivity extends AppCompatActivity {
     DocsUploadFinalViewModel viewModel;
-
+    DocsUploadFinalInterface docsUploadFinalInterface;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,30 +29,22 @@ public class DocsUploadFinalActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        DocsUploadFinalInterface docsUploadFinalInterface = new DocsUploadFinalCallback(this);
+        docsUploadFinalInterface = new DocsUploadFinalCallback(this);
         viewModel = new DocsUploadFinalViewModel(docsUploadFinalInterface);
         binding.setViewModel(viewModel);
     }
-//
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == Constant.CAMERA_REQUEST_PropertyOrLand) {
-//            if (resultCode == RESULT_OK) {
-//                viewModel.processImagePropertyOrLand();
-//            }
-//        } else if (requestCode == Constant.CAMERA_REQUEST_ServingNotice) {
-//            if (resultCode == RESULT_OK) {
-//                viewModel.processImageServingDPR();
-//            }
-//        } else if (requestCode == UCrop.REQUEST_CROP){
-//            if (resultCode == RESULT_OK){
-//                viewModel.handleUCropResult(data);
-//            } else {
-//                //viewModel.setResultCancelled();
-//            }
-//        }
-//    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        docsUploadFinalInterface.onLoadDocsList(viewModel);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        docsUploadFinalInterface.onLoadDocsList(viewModel);
+    }
 
     @Override
     public void onBackPressed() {

@@ -34,6 +34,14 @@
                 android:layout_height="match_parent"
                 android:text="@{dataVariable.documentName}"
                 style="@style/owner_list_tv_value" />
+
+            <Button
+                android:onClick="@{(v)->handler.onClickViewPDF(dataVariable)}"
+                style="@style/btn"
+                android:textAllCaps="false"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:text="@string/view_pdf"/>
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

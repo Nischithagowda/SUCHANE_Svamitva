@@ -24,9 +24,11 @@ import com.bmc.suchane_svamitva.view.adapter.OwnerAdapterApproved;
 import com.bmc.suchane_svamitva.view.adapter.OwnerAdapterPending;
 import com.bmc.suchane_svamitva.view.adapter.OwnerDocsUploadAdapterCompleted;
 import com.bmc.suchane_svamitva.view.adapter.OwnerDocsUploadAdapterPending;
+import com.github.barteksc.pdfviewer.PDFView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.yalantis.ucrop.UCrop;
 
+import java.io.File;
 import java.util.List;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -38,11 +40,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ViewBinding {
-    @BindingAdapter({"android:checked"})
-    public static void checkBox(AppCompatCheckBox spinner, boolean status) {
-        spinner.setChecked(status);
-
-    }
 
     @BindingAdapter({"inputType"})
     public static void inputType(TextInputEditText textInputEditText, int value) {
@@ -87,6 +84,14 @@ public class ViewBinding {
     public static void appCompatImageDataBinding(AppCompatImageView imageView, Bitmap bitmap) {
         if (bitmap != null)
             imageView.setImageBitmap(bitmap);
+    }
+
+    @BindingAdapter({"pdfFromFile"})
+    public static void appPDFViewBinding(PDFView pdfView, String filePathString) {
+        if (filePathString != null) {
+            File filePath = new File(filePathString);
+            pdfView.fromFile(filePath);
+        }
     }
 
     @BindingAdapter({"imageBitMap"})
@@ -172,15 +177,6 @@ public class ViewBinding {
             Bitmap bitmap = BitmapFactory.decodeFile(resultUri.getPath());
             imageView.setImageBitmap(bitmap);
         }
-    }
-
-    @BindingAdapter({"onCheckedChanged"})
-    public static void onCheckedChanged(CompoundButton button, boolean isChecked) {
-        button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-            }
-        });
     }
 
     @BindingAdapter({"data", "adapter"})
