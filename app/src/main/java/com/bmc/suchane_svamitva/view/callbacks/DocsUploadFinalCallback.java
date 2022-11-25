@@ -1,98 +1,54 @@
 package com.bmc.suchane_svamitva.view.callbacks;
 
-import static android.content.Context.MODE_PRIVATE;
 import static androidx.core.app.ActivityCompat.requestPermissions;
 import static com.bmc.suchane_svamitva.utils.Constant.IMAGE_CAPTURE_REQ;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
-import androidx.exifinterface.media.ExifInterface;
 
-import com.bmc.suchane_svamitva.BuildConfig;
 import com.bmc.suchane_svamitva.R;
-import com.bmc.suchane_svamitva.api.APIClient_Suchane;
-import com.bmc.suchane_svamitva.api.API_Interface_Suchane;
 import com.bmc.suchane_svamitva.database.DBConnection;
 import com.bmc.suchane_svamitva.databinding.DocsNameDialogBinding;
 import com.bmc.suchane_svamitva.model.District;
 import com.bmc.suchane_svamitva.model.DocumentTbl;
-import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsRequest;
-import com.bmc.suchane_svamitva.model.FnSvmInsertNoticeDetailsResponse;
-import com.bmc.suchane_svamitva.model.FnUpdateDRPServedRequest;
-import com.bmc.suchane_svamitva.model.FnUpdateDRPServedResponse;
 import com.bmc.suchane_svamitva.model.Hobli;
-import com.bmc.suchane_svamitva.model.Image;
-import com.bmc.suchane_svamitva.model.MultipartImageResponse;
-import com.bmc.suchane_svamitva.model.NoticeDetailsTbl;
-import com.bmc.suchane_svamitva.model.PendingDPRTbl_Updated;
 import com.bmc.suchane_svamitva.model.Taluka;
 import com.bmc.suchane_svamitva.model.Village;
-import com.bmc.suchane_svamitva.utils.Constant;
 import com.bmc.suchane_svamitva.view.interfaces.DocsUploadFinalInterface;
 import com.bmc.suchane_svamitva.view.ui.ClickDocumentActivity;
 import com.bmc.suchane_svamitva.view.ui.DocsUploadFinalActivity;
-import com.bmc.suchane_svamitva.view_model.ClickDocumentViewModel;
 import com.bmc.suchane_svamitva.view_model.DocsUploadFinalViewModel;
-import com.iceteck.silicompressorr.SiliCompressor;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.yalantis.ucrop.UCrop;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Retrofit;
 
 public class DocsUploadFinalCallback implements DocsUploadFinalInterface {
     DocsUploadFinalActivity activity;
     AlertDialog.Builder builder;
     AlertDialog alertDialog;
     View view;
-    AlertDialog.Builder builderPDF;
-    AlertDialog alertDialogPDF;
-    View viewPDF;
 
     public DocsUploadFinalCallback(DocsUploadFinalActivity activity) {
         this.activity = activity;
@@ -183,18 +139,27 @@ public class DocsUploadFinalCallback implements DocsUploadFinalInterface {
                         }
                 );
     }
+
     @Override
     public void onClickViewPDF(DocsUploadFinalViewModel viewModel, DocumentTbl documentTbl){
-        viewModel.pdfPathForView.set(documentTbl.getDocumentPath());
-        DocsNameDialogBinding binding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.pdf_viewer_dialog, null, false);
-        binding.setViewModel(viewModel);
-        viewPDF = binding.getRoot();
 
-        builderPDF = new AlertDialog.Builder(activity);
-        builderPDF.setView(viewPDF)
-                .setCancelable(false);
-        alertDialogPDF = builderPDF.create();
-        alertDialogPDF.show();
+        File filePath = new File(documentTbl.getDocumentPath());
+        try {
+            Intent pdfOpenintent = new Intent(Intent.ACTION_VIEW);
+            pdfOpenintent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            // New Approach
+            Uri pdfURI = FileProvider.getUriForFile(
+                    activity,
+                    activity.getApplicationContext()
+                            .getPackageName() + ".provider", filePath);
+            pdfOpenintent.setDataAndType(pdfURI, "application/pdf");
+            pdfOpenintent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            activity.startActivity(pdfOpenintent);
+
+        }
+        catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -231,14 +196,6 @@ public class DocsUploadFinalCallback implements DocsUploadFinalInterface {
         alertDialog.dismiss();
         if (view.getParent() != null) {
             ((ViewGroup) view.getParent()).removeView(view);
-        }
-    }
-
-    @Override
-    public void onClickClosePDF(){
-        alertDialogPDF.dismiss();
-        if (viewPDF.getParent() != null) {
-            ((ViewGroup) viewPDF.getParent()).removeView(viewPDF);
         }
     }
 

@@ -4,12 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 
 import com.bmc.suchane_svamitva.model.District;
 import com.bmc.suchane_svamitva.model.DocumentTbl;
@@ -24,15 +21,11 @@ import com.bmc.suchane_svamitva.view.adapter.OwnerAdapterApproved;
 import com.bmc.suchane_svamitva.view.adapter.OwnerAdapterPending;
 import com.bmc.suchane_svamitva.view.adapter.OwnerDocsUploadAdapterCompleted;
 import com.bmc.suchane_svamitva.view.adapter.OwnerDocsUploadAdapterPending;
-import com.github.barteksc.pdfviewer.PDFView;
 import com.google.android.material.textfield.TextInputEditText;
-import com.yalantis.ucrop.UCrop;
 
-import java.io.File;
 import java.util.List;
 
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.databinding.BindingAdapter;
@@ -84,14 +77,6 @@ public class ViewBinding {
     public static void appCompatImageDataBinding(AppCompatImageView imageView, Bitmap bitmap) {
         if (bitmap != null)
             imageView.setImageBitmap(bitmap);
-    }
-
-    @BindingAdapter({"pdfFromFile"})
-    public static void appPDFViewBinding(PDFView pdfView, String filePathString) {
-        if (filePathString != null) {
-            File filePath = new File(filePathString);
-            pdfView.fromFile(filePath);
-        }
     }
 
     @BindingAdapter({"imageBitMap"})

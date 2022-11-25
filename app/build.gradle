@@ -88,6 +88,4 @@ dependencies {
 
     //PDF library
     implementation 'com.itextpdf:itextg:5.5.10'
-    //PDF Viewer
-    implementation 'com.github.barteksc:AndroidPdfViewer:2.3.0'
 }

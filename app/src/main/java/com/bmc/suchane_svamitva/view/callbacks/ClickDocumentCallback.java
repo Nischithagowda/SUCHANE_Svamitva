@@ -35,6 +35,7 @@ import com.bmc.suchane_svamitva.view.interfaces.ClickDocumentInterface;
 import com.bmc.suchane_svamitva.view.ui.ClickDocumentActivity;
 import com.bmc.suchane_svamitva.view_model.ClickDocumentViewModel;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.yalantis.ucrop.UCrop;
 
@@ -218,22 +219,22 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
     public void onClickCreatePDF(ClickDocumentViewModel viewModel, List<ImageTempTbl> SelectedImagelist){
 
         try {
-        SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
-        String mobNum = sharedPreferences.getString(Constant.USER_MOBILE, null);
+            SharedPreferences sharedPreferences = activity.getSharedPreferences(Constant.MY_SHARED_PREF, MODE_PRIVATE);
+            String mobNum = sharedPreferences.getString(Constant.USER_MOBILE, null);
 
-        Date date = new Date();
-        String todayDate = new SimpleDateFormat(Constant.DATE_TIME_FORMAT, Locale.ENGLISH).format(date);
-
+            Date date = new Date();
+            String todayDate = new SimpleDateFormat(Constant.DATE_TIME_FORMAT, Locale.ENGLISH).format(date);
+            String folder_main_PDF = "DocumentPDF";
+            File mydir = activity.getDir(folder_main_PDF, MODE_PRIVATE); //Creating an internal dir;
+            Document document = new Document();
+            String directoryPath = mydir.getAbsolutePath();
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date());
+            String destinationDocsPath = directoryPath + "/Docs" + viewModel.propertyNo.get() + "_" + timeStamp + viewModel.docsName.get() + ".pdf";
+            PdfWriter.getInstance(document, new FileOutputStream(destinationDocsPath)); //  Change pdf's name.
+            document.open();
             for (int i = 0; i < SelectedImagelist.size(); i++) {
                 int finalI = i;
-                String folder_main_PDF = "DocumentPDF";
-                File mydir = activity.getDir(folder_main_PDF, MODE_PRIVATE); //Creating an internal dir;
-                Document document = new Document();
-                String directoryPath = mydir.getAbsolutePath();
-                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date());
-                String destinationDocsPath = directoryPath + "/Docs" + viewModel.propertyNo.get() + "_" + timeStamp + viewModel.docsName.get() + ".pdf";
-                PdfWriter.getInstance(document, new FileOutputStream(destinationDocsPath)); //  Change pdf's name.
-                document.open();
+                Log.d("SelectedImageList", "List :"+SelectedImagelist.get(finalI).getDocumentPath());
                 Observable
                         .fromCallable(() -> DBConnection.getConnection(activity)
                                 .getDataBaseDao()
@@ -252,7 +253,7 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
                                     image.scalePercent(scaler);
                                     image.setAlignment(com.itextpdf.text.Image.ALIGN_CENTER | com.itextpdf.text.Image.ALIGN_TOP);
                                     document.add(image);
-
+                                    Log.d("document", "Page :"+finalI);
                                     if (finalI == SelectedImagelist.size() - 1) {
                                         document.close();
 
@@ -264,6 +265,9 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
                                         documentTbl.setDOC_TIMESTAMP(todayDate);
                                         documentTbl.setUSER_ID(mobNum);
 
+                                        PdfReader reader = new PdfReader(documentTbl.getDocumentPath());
+                                        int pageNumber = reader.getNumberOfPages();
+                                        Log.d("document", "pageNumber :"+pageNumber);
                                         Observable
                                                 .fromCallable(() -> DBConnection.getConnection(activity)
                                                         .getDataBaseDao()
@@ -295,6 +299,7 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
                             }
 
                         }, error -> {
+                            document.close();
                             error.printStackTrace();
                         });
             }

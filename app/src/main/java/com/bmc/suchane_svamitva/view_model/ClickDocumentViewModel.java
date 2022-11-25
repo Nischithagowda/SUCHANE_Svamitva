@@ -38,7 +38,6 @@ public class ClickDocumentViewModel implements ImageListInterface {
     public final ObservableField<ImageListAdapter> imageListAdapter = new ObservableField<>();
     public final ObservableList<ImageTempTbl> imageTempTblList = new ObservableArrayList<>();
     public ObservableBoolean canCreatePDF = new ObservableBoolean(false);
-    public ObservableBoolean isCheckBoxChecked = new ObservableBoolean(false);
     public List<ImageTempTbl> SelectedImagelist = new ArrayList<>();
 
     public ClickDocumentViewModel(ClickDocumentInterface clickDocumentInterface) {
@@ -84,9 +83,7 @@ public class ClickDocumentViewModel implements ImageListInterface {
             this.SelectedImagelist.remove(dataVariable);
         else
             this.SelectedImagelist.add(dataVariable);
-        this.isCheckBoxChecked.set(isChecked);
         Log.d("onImageChecked", "position: "+position);
-        Log.d("onImageChecked", "isCheckBoxChecked: "+this.isCheckBoxChecked.get());
         Log.d("onImageChecked", "list.Size: "+this.SelectedImagelist.size());
     }
 }

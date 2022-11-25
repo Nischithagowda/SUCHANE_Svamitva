@@ -23,17 +23,19 @@
             android:padding="5dp">
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="0dp"
-                android:layout_weight="0.5"
+                android:layout_weight="0.6"
                 android:layout_height="match_parent"
                 android:text="@{dataVariable.documentID+``}"
-                style="@style/owner_list_tv_value" />
+                style="@style/owner_list_tv_value"
+                android:textStyle="bold"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:text="@{dataVariable.documentName}"
-                style="@style/owner_list_tv_value" />
+                style="@style/owner_list_tv_value"
+                android:textStyle="bold"/>
 
             <Button
                 android:onClick="@{(v)->handler.onClickViewPDF(dataVariable)}"
