@@ -222,4 +222,8 @@ public class DocsUploadFinalViewModel implements DocumentListInterface {
     public void onClickViewPDF(DocumentTbl documentTbl){
         docsUploadFinalInterface.onClickViewPDF(this, documentTbl);
     }
+
+    public void onClickDeletePDF(DocumentTbl documentTbl){
+        docsUploadFinalInterface.onClickDeletePDF(this, documentTbl);
+    }
 }

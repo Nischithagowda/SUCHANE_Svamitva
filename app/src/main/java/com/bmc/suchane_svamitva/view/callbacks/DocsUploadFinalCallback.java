@@ -163,6 +163,28 @@ public class DocsUploadFinalCallback implements DocsUploadFinalInterface {
     }
 
     @Override
+    public void onClickDeletePDF(DocsUploadFinalViewModel viewModel, DocumentTbl documentTbl){
+        try {
+            Observable
+                    .fromCallable(() -> DBConnection.getConnection(activity)
+                            .getDataBaseDao()
+                            .deleteDocumentByID(viewModel.noticeNumber.get(), viewModel.propertyNo.get(), documentTbl.getDocumentID()))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(result ->{
+                        File file = new File(documentTbl.getDocumentPath());
+                        if (file.exists())
+                            file.delete();
+                        onLoadDocsList(viewModel);
+                        Toast.makeText(activity, documentTbl.getDocumentName()+" deleted Successfully", Toast.LENGTH_SHORT).show();
+                    }, error -> error.printStackTrace());
+        }
+        catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void goHome() {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setMessage("Are you sure, Do you want to Discard the Changes?")

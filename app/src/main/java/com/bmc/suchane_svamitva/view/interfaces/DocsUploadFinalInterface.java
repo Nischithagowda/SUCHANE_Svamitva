@@ -14,6 +14,7 @@ public interface DocsUploadFinalInterface {
     void goHome();
     void captureDocumentName(DocsUploadFinalViewModel viewModel);
     void onClickViewPDF(DocsUploadFinalViewModel viewModel, DocumentTbl documentTbl);
+    void onClickDeletePDF(DocsUploadFinalViewModel viewModel, DocumentTbl documentTbl);
     void onClickCancel();
     void onLoadDocsList(DocsUploadFinalViewModel viewModel);
 }

@@ -100,6 +100,9 @@ public interface DatabaseDAO {
     @Query("delete from DocumentTbl where NOTICE_NO = :NoticeNo and property_no = :property_no")
     int deleteDocumentDetails(String NoticeNo, String property_no);
 
+    @Query("delete from DocumentTbl where NOTICE_NO = :NoticeNo and property_no = :property_no and DocumentID = :DocumentID")
+    int deleteDocumentByID(String NoticeNo, String property_no, int DocumentID );
+
     //Image_Temp Tbl
     @Insert
     long InsertTempImage(ImageTempTbl image);
