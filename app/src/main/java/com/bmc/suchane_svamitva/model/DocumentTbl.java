@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class DocumentTbl {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey()
     @ColumnInfo(name = "DocumentID")
     private int DocumentID;
 

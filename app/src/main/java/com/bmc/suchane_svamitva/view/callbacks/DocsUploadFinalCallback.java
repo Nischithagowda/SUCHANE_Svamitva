@@ -125,14 +125,17 @@ public class DocsUploadFinalCallback implements DocsUploadFinalInterface {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             dialog.dismiss();
-                            for (int i = 0; i<result.size();i++) {
-                                result.get(i).setDocumentID(i+1);
-                                if (i==result.size()-1){
-                                    viewModel.documentTblList.clear();
-                                    viewModel.documentTblList.addAll(result);
-                                    viewModel.isDocumentCaptured.set(true);
-                                }
-                            }
+                            viewModel.documentTblList.clear();
+                            viewModel.documentTblList.addAll(result);
+                            viewModel.isDocumentCaptured.set(true);
+//                            for (int i = 0; i<result.size();i++) {
+//                                result.get(i).setDocumentID(i+1);
+//                                if (i==result.size()-1){
+//                                    viewModel.documentTblList.clear();
+//                                    viewModel.documentTblList.addAll(result);
+//                                    viewModel.isDocumentCaptured.set(true);
+//                                }
+//                            }
                         }, error -> {
                             error.printStackTrace();
                             dialog.dismiss();

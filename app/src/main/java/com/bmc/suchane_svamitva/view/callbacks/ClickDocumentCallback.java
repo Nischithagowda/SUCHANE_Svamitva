@@ -271,6 +271,20 @@ public class ClickDocumentCallback implements ClickDocumentInterface {
                                         Observable
                                                 .fromCallable(() -> DBConnection.getConnection(activity)
                                                         .getDataBaseDao()
+                                                        .getDocumentID(viewModel.noticeNumber.get(), viewModel.propertyNo.get()))
+                                                .subscribeOn(Schedulers.computation())
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                .subscribe(result1 ->
+                                                {
+                                                    documentTbl.setDocumentID(result1+1);
+                                                    Log.d("NewDocumentID", ""+documentTbl.getDocumentID());
+                                                }, error -> {
+                                                    error.printStackTrace();
+                                                });
+
+                                        Observable
+                                                .fromCallable(() -> DBConnection.getConnection(activity)
+                                                        .getDataBaseDao()
                                                         .InsertDocument(documentTbl))
                                                 .subscribeOn(Schedulers.computation())
                                                 .observeOn(AndroidSchedulers.mainThread())

@@ -63,7 +63,7 @@
     <string name="address_code">Address Code</string>
     <string name="lat">Lat</string>
     <string name="long1">Long</string>
-    <string name="enter_above_notice_number_and_address_code_in_notice_you_are_serving">(Enter above Notice number and Address code in Notice you are serving)</string>
+    <string name="enter_above_notice_number_and_address_code_in_notice_you_are_serving">(Write the above Notice number and Address code in Notice you are serving)</string>
     <string name="click_full_property_land_photo">Click full Property/\nLand Photo</string>
     <string name="click_photo_of_serving_of_notice">Click photo of Serving \nof Notice</string>
     <string name="click_photo_of_serving_of_dpr_fpr">Click photo of Serving \DPR/FPR</string>

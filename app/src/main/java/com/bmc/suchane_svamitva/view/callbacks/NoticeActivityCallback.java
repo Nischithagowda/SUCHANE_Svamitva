@@ -94,7 +94,7 @@ public class NoticeActivityCallback implements NoticeActivityInterface {
     }
 
     @Override
-    public void loadData(NoticeActivityViewModel viewModel){
+    public void loadData(NoticeActivityViewModel viewModel) {
         DecimalFormat df = new DecimalFormat("#.0000000");
 
         Intent intent = activity.getIntent();

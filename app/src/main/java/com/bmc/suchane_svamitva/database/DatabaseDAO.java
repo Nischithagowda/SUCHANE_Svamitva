@@ -94,6 +94,9 @@ public interface DatabaseDAO {
     @Insert
     long InsertDocument(DocumentTbl documentTbl);
 
+    @Query("Select * from DocumentTbl where NOTICE_NO = :NOTICE_NO and property_no = :property_no ORDER BY DocumentID DESC LIMIT 1")
+    int getDocumentID(String NOTICE_NO, String property_no);
+
     @Query("Select * from DocumentTbl where NOTICE_NO = :NOTICE_NO and property_no = :property_no")
     List<DocumentTbl> getDocumentTblValues(String NOTICE_NO, String property_no);
 
