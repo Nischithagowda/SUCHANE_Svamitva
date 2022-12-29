@@ -86,38 +86,38 @@ public class SelectActivityCallback implements SelectActivityInterface {
 
     @Override
     public void onNavigateToDocUpload(SelectActivityViewModel viewModel){
-        Intent intent = new Intent(activity, DocsUploadLaunchActivity.class);
-        intent.putExtra("districtCode", ""+viewModel.districtCode.get());
-        intent.putExtra("districtName", ""+viewModel.districtName.get());
-        intent.putExtra("talukCode", ""+viewModel.talukCode.get());
-        intent.putExtra("talukName", ""+viewModel.talukName.get());
-        intent.putExtra("hobliCode", ""+viewModel.hobliCode.get());
-        intent.putExtra("hobliName", ""+viewModel.hobliName.get());
-        intent.putExtra("villageCode", ""+viewModel.villageCode.get());
-        intent.putExtra("LGD_VILLAGE_CODE", ""+viewModel.LGD_VILLAGE_CODE.get());
-        intent.putExtra("villageName", ""+viewModel.villageName.get());
-        activity.startActivity(intent);
-//        Toast.makeText(activity, "Service Not available", Toast.LENGTH_SHORT).show();
+//        Intent intent = new Intent(activity, DocsUploadLaunchActivity.class);
+//        intent.putExtra("districtCode", ""+viewModel.districtCode.get());
+//        intent.putExtra("districtName", ""+viewModel.districtName.get());
+//        intent.putExtra("talukCode", ""+viewModel.talukCode.get());
+//        intent.putExtra("talukName", ""+viewModel.talukName.get());
+//        intent.putExtra("hobliCode", ""+viewModel.hobliCode.get());
+//        intent.putExtra("hobliName", ""+viewModel.hobliName.get());
+//        intent.putExtra("villageCode", ""+viewModel.villageCode.get());
+//        intent.putExtra("LGD_VILLAGE_CODE", ""+viewModel.LGD_VILLAGE_CODE.get());
+//        intent.putExtra("villageName", ""+viewModel.villageName.get());
+//        activity.startActivity(intent);
+        Toast.makeText(activity, "Service Not available", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onNavigateToDPR(SelectActivityViewModel viewModel){
-        if (viewModel.pendingItemsCount.get() == 0 && viewModel.approvedItemsCount.get() == 0){
-            Toast.makeText(activity, "Data Not available", Toast.LENGTH_SHORT).show();
-        } else {
-            Intent intent = new Intent(activity, DPR_FPR_LaunchActivity.class);
-            intent.putExtra("districtCode", "" + viewModel.districtCode.get());
-            intent.putExtra("districtName", "" + viewModel.districtName.get());
-            intent.putExtra("talukCode", "" + viewModel.talukCode.get());
-            intent.putExtra("talukName", "" + viewModel.talukName.get());
-            intent.putExtra("hobliCode", "" + viewModel.hobliCode.get());
-            intent.putExtra("hobliName", "" + viewModel.hobliName.get());
-            intent.putExtra("villageCode", "" + viewModel.villageCode.get());
-            intent.putExtra("LGD_VILLAGE_CODE", "" + viewModel.LGD_VILLAGE_CODE.get());
-            intent.putExtra("villageName", "" + viewModel.villageName.get());
-            activity.startActivity(intent);
-        }
-//        Toast.makeText(activity, "Service Not available", Toast.LENGTH_SHORT).show();
+//        if (viewModel.pendingItemsCount.get() == 0 && viewModel.approvedItemsCount.get() == 0){
+//            Toast.makeText(activity, "Data Not available", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Intent intent = new Intent(activity, DPR_FPR_LaunchActivity.class);
+//            intent.putExtra("districtCode", "" + viewModel.districtCode.get());
+//            intent.putExtra("districtName", "" + viewModel.districtName.get());
+//            intent.putExtra("talukCode", "" + viewModel.talukCode.get());
+//            intent.putExtra("talukName", "" + viewModel.talukName.get());
+//            intent.putExtra("hobliCode", "" + viewModel.hobliCode.get());
+//            intent.putExtra("hobliName", "" + viewModel.hobliName.get());
+//            intent.putExtra("villageCode", "" + viewModel.villageCode.get());
+//            intent.putExtra("LGD_VILLAGE_CODE", "" + viewModel.LGD_VILLAGE_CODE.get());
+//            intent.putExtra("villageName", "" + viewModel.villageName.get());
+//            activity.startActivity(intent);
+//        }
+        Toast.makeText(activity, "Service Not available", Toast.LENGTH_SHORT).show();
     }
 
     @Override
